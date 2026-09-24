@@ -2232,7 +2232,7 @@ async function handleSitemap(
 
             if (v) {
               urls.push(
-                '/blog-post.html?slug=' +
+                '/blog-post?slug=' +
                 encodeURIComponent(v)
               );
             }
