@@ -62,7 +62,7 @@
     "🇳🇱 Nederlands": "🇳🇱 Nederlands",
     "🇷🇺 Русский": "🇷🇺 Русский",
     "Doç. Dr. Erol Vural": "Doç. Dr. Erol Vural",
-    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", uzun yıllara dayanan cerrahi tecrübesiyle, başta",
+    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", mit langjähriger chirurgischer Erfahrung, insbesondere",
     "obezite cerrahisi": "bariatrische Chirurgie",
     "ve": "und",
     "metabolik cerrahi": "metabolische Chirurgie",
@@ -250,6 +250,13 @@
     },
     "press.news1Summary": "Der IHA-Gesundheitsbericht fasst Erklärungen von Dr. Erol Vural zur Durchführung der Schlauchmagen-Operation, ihren Vorteilen, Grenzen und zur Gewichtskontrolle nach der Operation zusammen.",
     "press.news2Summary": "Der Bericht enthält ein Gespräch mit Dr. Erol Vural über den Umfang der bariatrischen Chirurgie, die Patientenbeurteilung, Eignungskriterien und die Vorbereitung vor der Operation.",
-    "press.news3Summary": "Der Bericht gibt Aussagen von Dr. Erol Vural zur metabolischen Chirurgie und zu chirurgischen Ansätzen bei Typ-2-Diabetes wieder. Die Überschrift enthält eine Erfolgsrate von 83 %; diese Zahl wird auf dieser Seite nicht unabhängig bewertet."
+    "press.news3Summary": "Der Bericht gibt Aussagen von Dr. Erol Vural zur metabolischen Chirurgie und zu chirurgischen Ansätzen bei Typ-2-Diabetes wieder. Die Überschrift enthält eine Erfolgsrate von 83 %; diese Zahl wird auf dieser Seite nicht unabhängig bewertet.",
+    "olmak üzere, genel cerrahinin ileri laparoskopik prosedürlerinde uzmanlaşmış önde gelen hekimlerden biridir": {
+      " Modern tıbbın gerektirdiği güncel tedavi protokollerini titizlikle takip eden Dr": {
+        " Vural, hastalarının sağlıklı, konforlu ve sürdürülebilir bir yaşama adım atmalarına rehberlik etmektedir": {
+          "": "und gehört zu den führenden Ärzten, die auf fortgeschrittene laparoskopische Verfahren der Allgemeinchirurgie spezialisiert sind. Dr. Vural verfolgt die aktuellen Behandlungsprotokolle sorgfältig und begleitet seine Patienten auf dem Weg zu einem gesunden, komfortablen und nachhaltigen Leben."
+        }
+      }
+    }
   }
 }
