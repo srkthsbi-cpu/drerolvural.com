@@ -216,6 +216,9 @@
     "menu": {
       "international": "Uluslararası Hastalar",
       "press": "Basında Biz"
+    },
+    "about": {
+      "pressIntro": "Doç. Dr. Erol Vural hakkında basında ve bilimsel etkinliklerde yer alan seçilmiş içeriklere göz atabilirsiniz."
     }
   }
 }
