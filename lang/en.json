@@ -62,7 +62,7 @@
     "🇳🇱 Nederlands": "🇳🇱 Nederlands",
     "🇷🇺 Русский": "🇷🇺 Русский",
     "Doç. Dr. Erol Vural": "Doç. Dr. Erol Vural",
-    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", uzun yıllara dayanan cerrahi tecrübesiyle, başta",
+    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", with many years of surgical experience, specializing particularly",
     "obezite cerrahisi": "bariatric surgery",
     "ve": "and",
     "metabolik cerrahi": "metabolic surgery",
@@ -250,6 +250,13 @@
     },
     "press.news1Summary": "The IHA health report compiles explanations by Dr. Erol Vural about how sleeve gastrectomy is performed, its advantages, limitations and postoperative weight management.",
     "press.news2Summary": "The report includes a Q&A with Dr. Erol Vural about the scope of bariatric surgery, patient assessment, eligibility criteria and preoperative preparation.",
-    "press.news3Summary": "The report presents Dr. Erol Vural's comments on metabolic surgery and surgical approaches related to type 2 diabetes. The headline contains an 83% success-rate statement; this figure is not independently assessed on this page."
+    "press.news3Summary": "The report presents Dr. Erol Vural's comments on metabolic surgery and surgical approaches related to type 2 diabetes. The headline contains an 83% success-rate statement; this figure is not independently assessed on this page.",
+    "olmak üzere, genel cerrahinin ileri laparoskopik prosedürlerinde uzmanlaşmış önde gelen hekimlerden biridir": {
+      " Modern tıbbın gerektirdiği güncel tedavi protokollerini titizlikle takip eden Dr": {
+        " Vural, hastalarının sağlıklı, konforlu ve sürdürülebilir bir yaşama adım atmalarına rehberlik etmektedir": {
+          "": "and is a leading physician specializing in advanced laparoscopic procedures in general surgery. Dr. Vural carefully follows current treatment protocols in modern medicine and guides his patients toward a healthy, comfortable and sustainable life."
+        }
+      }
+    }
   }
 }
