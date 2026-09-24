@@ -269,6 +269,16 @@
     "press.sourceNote": "Burimet: arkivat e botuesve përkatës",
     "press.editorialLabel": "Shënim editorial:",
     "press.scientificTitle": "Regjistër i një veprimtarie shkencore",
-    "press.scientificText": "Në librin e abstrakteve të Shoqatës Turke të Kirurgjisë së Obezitetit të vitit 2023 figuron një prezantim shkencor i Erol Vural."
+    "press.scientificText": "Në librin e abstrakteve të Shoqatës Turke të Kirurgjisë së Obezitetit të vitit 2023 figuron një prezantim shkencor i Erol Vural.",
+    "press.tagInterviewHealth": "Intervistë · Shëndet",
+    "press.tagInterviewObesity": "Intervistë · Obezitet",
+    "press.tagMetabolic": "Kirurgji metabolike",
+    "press.story1Title": "Çfarë nuk dihet gjerësisht për gastrektominë në mëngë",
+    "press.story2Title": "Kush mund të merret në konsideratë për kirurgji bariatrike?",
+    "press.story3Title": "Raport mbi kirurgjinë metabolike për diabetin në Stamboll",
+    "press.read": "Lexo raportin",
+    "press.editorialTextLabel": "Shënim editorial:",
+    "press.editorialTextText": "Kjo faqe është përgatitur si një arkiv i përzgjedhur i medias. Titujt dhe deklaratat mjekësore ose statistikore u përkasin botuesve përkatës; përfshirja këtu nuk garanton rezultat mjekësor dhe nuk nënkupton verifikim të pavarur.",
+    "press.viewProceedings": "Shiko librin e abstrakteve"
   }
 }
