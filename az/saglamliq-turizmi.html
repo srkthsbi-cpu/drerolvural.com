@@ -11,6 +11,29 @@ header.top .nav{height:78px!important;min-height:0!important;margin:0 auto!impor
 .top + main > .hero{margin:0!important;padding-top:0!important}
 @media(max-width:980px){header.top{height:78px!important}.nav{height:78px!important;min-height:0!important}.navlinks{display:none!important}.header-tools{display:flex!important}.mobilemenu.open{display:block;position:absolute;top:78px;left:12px;right:12px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:10px;z-index:101}.mobilemenu a{display:block;padding:11px;border-radius:10px;color:var(--blue);font-weight:850}.mobilemenu a:hover{background:var(--bg)}.menubtn{display:inline-flex!important;height:44px;min-width:44px}.langicon{height:44px}.language-menu{top:51px;right:-47px;width:235px}.hero-inner,.heroIn{padding:50px 16px}}
 @media(max-width:620px){.hero h1{font-size:38px}.hero p{font-size:16px}}
+
+/* FINAL MOBILE HEADER FIX — keep navigation closed until tapped */
+.navlinks{display:none!important}
+.mobilemenu{display:none!important}
+.language-menu{display:none!important}
+@media(max-width:980px){
+  .navlinks{display:none!important}
+  .header-tools{display:flex!important;align-items:center!important;gap:7px!important}
+  .language-switcher{display:block!important;position:relative!important}
+  .langicon{display:inline-flex!important;min-width:104px!important;height:44px!important}
+  .menubtn{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:44px!important;min-width:44px!important}
+  .mobilemenu{display:none!important;position:absolute!important;top:78px!important;left:12px!important;right:12px!important;background:#fff!important;border:1px solid var(--line)!important;border-radius:18px!important;box-shadow:var(--shadow)!important;padding:10px!important;z-index:101!important}
+  .mobilemenu.open{display:block!important}
+  .mobilemenu a{display:block!important;padding:11px!important;border-radius:10px!important;color:var(--blue)!important;font-weight:850!important}
+  .language-menu{display:none!important;position:absolute!important;top:51px!important;right:-47px!important;width:235px!important;background:#fff!important;border:1px solid var(--line)!important;border-radius:18px!important;box-shadow:var(--shadow)!important;padding:8px!important;z-index:200!important}
+  .language-switcher.open .language-menu{display:block!important}
+}
+@media(max-width:620px){
+  .nav{height:78px!important;min-height:0!important;padding:10px 16px!important}
+  .logo img{height:43px!important}
+  .hero h1{font-size:38px!important}
+  .hero p{font-size:16px!important}
+}
 </style></head><body>
 <header class="top"><div class="nav"><a class="logo" href="/az/saglamliq-turizmi.html"><img alt="Doç. Dr. Erol Vural" src="../logo1.png"/></a><nav class="navlinks"><a href="/az/saglamliq-turizmi.html">Ana səhifə</a><a href="/az/hakkimizda.html">Haqqımda</a><a href="/az/hizmetler.html">Xidmətlər</a><a href="/az/blog.html">Mütəxəssisdən məlumatlar</a><a href="/az/iletisim.html">Əlaqə</a></nav><div class="header-tools"><div class="language-switcher"><button aria-controls="language-menu" aria-expanded="false" class="langicon" type="button"><i aria-hidden="true" class="fas fa-globe"></i><span>AZ</span><i aria-hidden="true" class="fas fa-chevron-down"></i></button><div class="language-menu" id="language-menu" role="menu"><a href="/saglik-turizmi.html" lang="tr">TR · Türkçe</a><a href="/en/health-tourism.html" lang="en">EN · English</a><a href="/de/gesundheitstourismus.html" lang="de">DE · Deutsch</a><a href="/ar/alsiyaaha-alssihiyya.html" lang="ar">AR · العربية</a><a href="/ru/medturizm.html" lang="ru">RU · Русский</a><a href="/az/saglamliq-turizmi.html" lang="az" aria-current="true">AZ · Azərbaycan</a><a href="/sq/turizmi-shendetesor.html" lang="sq">SQ · Shqip</a><a href="/nl/medisch-toerisme.html" lang="nl">NL · Nederlands</a><a href="/es/turismo-sanitario.html" lang="es">ES · Español</a></div></div><button aria-controls="mobilemenu" aria-expanded="false" aria-label="Menu" class="menubtn" type="button"><span aria-hidden="true" class="hamburger-lines"></span></button></div></div><div class="mobilemenu" id="mobilemenu"><a href="/az/saglamliq-turizmi.html">Ana səhifə</a><a href="/az/hakkimizda.html">Haqqımda</a><a href="/az/hizmetler.html">Xidmətlər</a><a href="/az/blog.html">Mütəxəssisdən məlumatlar</a><a href="/az/iletisim.html">Əlaqə</a><a href="/az/saglamliq-turizmi.html">Beynəlxalq pasiyentlər</a></div></header>
 <main>
