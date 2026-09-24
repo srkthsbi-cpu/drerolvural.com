@@ -3333,6 +3333,8 @@ export default {
        matching root-level `article.html` directly.
     */
 
+    let response = null;
+
     /* =====================================================
        CLEAN BLOG ARTICLE ROUTING
        /blog/<slug> is the public canonical form for the site's
@@ -3367,10 +3369,9 @@ export default {
        NORMAL SITE DOSYASI
        ===================================================== */
 
-    let response =
-      await env.ASSETS.fetch(
-        request
-      );
+    if (!response) {
+      response = await env.ASSETS.fetch(request);
+    }
 
     // Robust clean-URL fallback: if the asset layer cannot resolve an
     // extensionless article and returns 404/octet-stream, try the real
