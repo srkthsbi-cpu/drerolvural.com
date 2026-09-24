@@ -3334,6 +3334,36 @@ export default {
     */
 
     /* =====================================================
+       CLEAN BLOG ARTICLE ROUTING
+       /blog/<slug> is the public canonical form for the site's
+       featured/dynamic articles. Internally render blog-post.html
+       with the slug while keeping the clean browser URL.
+       ===================================================== */
+    if (url.pathname.startsWith('/blog/') && url.pathname !== '/blog/') {
+      const slug = url.pathname.slice('/blog/'.length).replace(/\/$/, '');
+      if (slug && !slug.includes('.')) {
+        const articleUrl = new URL('/blog-post.html', request.url);
+        articleUrl.searchParams.set('slug', slug);
+        if (url.searchParams.has('lang')) {
+          articleUrl.searchParams.set('lang', url.searchParams.get('lang') || '');
+        }
+        const articleResponse = await env.ASSETS.fetch(new Request(articleUrl, request));
+        const articleType = (articleResponse.headers.get('content-type') || '').toLowerCase();
+        if (articleResponse.ok && articleType.includes('text/html')) {
+          response = articleResponse;
+        } else {
+          const notFoundUrl = new URL('/404.html', request.url);
+          const notFound = await env.ASSETS.fetch(new Request(notFoundUrl, request));
+          const h = new Headers(notFound.headers);
+          h.set('X-Robots-Tag', 'noindex, nofollow');
+          h.set('Cache-Control', 'no-store, max-age=0');
+          h.delete('Content-Disposition');
+          return enhanceHtmlResponse(new Response(notFound.body, { status: 404, headers: h }));
+        }
+      }
+    }
+
+    /* =====================================================
        NORMAL SITE DOSYASI
        ===================================================== */
 
