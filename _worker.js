@@ -2154,6 +2154,7 @@ async function handleSitemap(
       '/hizmetler',
       '/blog',
       '/iletisim',
+  '/basinda-biz',
       '/blog/tupe-mide-ameliyati-nedir',
       '/blog/tupe-mide-kimler-icin-uygun',
       '/blog/tupe-mide-ameliyati-sonrasi',
