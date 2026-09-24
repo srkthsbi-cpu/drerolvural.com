@@ -269,6 +269,16 @@
     "press.sourceNote": "Bronnen: archieven van de betreffende uitgevers",
     "press.editorialLabel": "Redactionele opmerking:",
     "press.scientificTitle": "Registratie van een wetenschappelijke bijeenkomst",
-    "press.scientificText": "In het congresboek 2023 van de Turkse Vereniging voor Obesitaschirurgie staat een wetenschappelijke presentatie van Erol Vural."
+    "press.scientificText": "In het congresboek 2023 van de Turkse Vereniging voor Obesitaschirurgie staat een wetenschappelijke presentatie van Erol Vural.",
+    "press.tagInterviewHealth": "Interview · Gezondheid",
+    "press.tagInterviewObesity": "Interview · Obesitas",
+    "press.tagMetabolic": "Metabole chirurgie",
+    "press.story1Title": "Wat minder bekend is over een sleeve-gastrectomie",
+    "press.story2Title": "Voor wie kan bariatrische chirurgie worden overwogen?",
+    "press.story3Title": "Bericht over metabole chirurgie bij diabetes in Istanbul",
+    "press.read": "Naar het artikel",
+    "press.editorialTextLabel": "Redactionele opmerking:",
+    "press.editorialTextText": "Deze pagina is samengesteld als een geselecteerd persarchief. Koppen en medische of statistische uitspraken zijn afkomstig van de betreffende uitgevers; opname hier garandeert geen medisch resultaat en betekent geen onafhankelijke verificatie.",
+    "press.viewProceedings": "Bekijk het congresboek"
   }
 }
