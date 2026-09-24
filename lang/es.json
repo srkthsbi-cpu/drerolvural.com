@@ -281,6 +281,10 @@
     "press.read": "Ver el reportaje",
     "press.editorialTextLabel": "Nota editorial:",
     "press.editorialTextText": "Esta página se ha preparado como un archivo de prensa seleccionado. Los titulares y las afirmaciones médicas o estadísticas pertenecen a sus respectivos medios; su inclusión aquí no garantiza un resultado médico ni implica una verificación independiente.",
-    "press.viewProceedings": "Consultar el libro de actas"
+    "press.viewProceedings": "Consultar el libro de actas",
+    "press.story1Summary": "El informe de salud de IHA reúne las explicaciones del Dr. Erol Vural sobre cómo se realiza la gastrectomía en manga, sus ventajas, limitaciones y el control del peso después de la operación.",
+    "press.story2Summary": "El informe incluye preguntas y respuestas con el Dr. Erol Vural sobre la cirugía bariátrica, la evaluación del paciente, los criterios de idoneidad y la preparación preoperatoria.",
+    "press.story3Summary": "El informe recoge los comentarios del Dr. Erol Vural sobre la cirugía metabólica y los enfoques quirúrgicos relacionados con la diabetes tipo 2. El titular menciona una tasa de éxito del 83 %; esta cifra no se evalúa de forma independiente en esta página.",
+    "press.editorialText": "Esta página se ha preparado como un archivo de prensa seleccionado. Los titulares y las afirmaciones médicas o estadísticas pertenecen a sus respectivos medios; su inclusión aquí no garantiza un resultado médico ni implica una verificación independiente."
   }
 }
