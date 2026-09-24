@@ -3063,7 +3063,32 @@ const GLOBAL_HTML_JS = `
   function init(){
     /* Prevent accidental double-submit handlers on the contact form. */
     const form=document.getElementById('contactForm');
-    if(form) form.setAttribute('data-global-qa','1');
+    if(form){
+      form.setAttribute('data-global-qa','1');
+      /* Contact page previously had both an inline FormSubmit handler and
+         the shared site.js handler. Capture-phase handling makes the submit
+         deterministic and prevents duplicate messages. */
+      if((form.getAttribute('action')||'').includes('formsubmit.co') && !form.dataset.qaSubmitBound){
+        form.dataset.qaSubmitBound='1';
+        form.addEventListener('submit',async function(e){
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          const btn=form.querySelector('button[type="submit"]');
+          const success=document.getElementById('successMessage');
+          if(btn){btn.disabled=true;btn.dataset.qaText=btn.textContent;btn.textContent='Gönderiliyor…';}
+          try{
+            const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+            if(!res.ok) throw new Error('Form submit failed');
+            form.reset();form.style.display='none';if(success)success.style.display='block';
+          }catch(err){
+            console.error(err);
+            alert('Bir hata oluştu, lütfen tekrar deneyin.');
+          }finally{
+            if(btn){btn.disabled=false;btn.textContent=btn.dataset.qaText||'Gönder';}
+          }
+        },true);
+      }
+    }
 
     /* Mobile navigation works even if an older inline handler is missing. */
     const nav=document.getElementById('navMenu');
@@ -3286,10 +3311,31 @@ export default {
        NORMAL SITE DOSYASI
        ===================================================== */
 
-    const response =
+    let response =
       await env.ASSETS.fetch(
         request
       );
+
+    // Robust clean-URL fallback: if the asset layer cannot resolve an
+    // extensionless article and returns 404/octet-stream, try the real
+    // root-level HTML asset without changing the public canonical URL.
+    const responseType = (response.headers.get('content-type') || '').toLowerCase();
+    const responseDisposition = (response.headers.get('content-disposition') || '').toLowerCase();
+    const extensionless = !cleanPathname.split('/').pop()?.includes('.');
+    if (
+      extensionless &&
+      cleanPathname !== '/' &&
+      (response.status === 404 ||
+       responseType.includes('application/octet-stream') ||
+       responseDisposition.includes('attachment'))
+    ) {
+      const htmlAssetUrl = new URL(cleanPathname + '.html', request.url);
+      const htmlResponse = await env.ASSETS.fetch(new Request(htmlAssetUrl, request));
+      const htmlType = (htmlResponse.headers.get('content-type') || '').toLowerCase();
+      if (htmlResponse.ok && htmlType.includes('text/html')) {
+        response = htmlResponse;
+      }
+    }
 
 
     /* =====================================================
