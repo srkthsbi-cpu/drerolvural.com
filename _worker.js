@@ -2226,17 +2226,13 @@ async function handleSitemap(
                 '{}'
             );
 
-          for (
-            const v of
-              Object.values(s)
-          ) {
-
-            if (v) {
-              // The query-string renderer is an implementation detail.
-              // The public sitemap must advertise the same clean canonical URL
-              // used by the Worker and post.js.
-              urls.push('/blog/' + encodeURIComponent(v).replace(/%2F/g, '/'));
-            }
+          for (const [lang, v] of Object.entries(s)) {
+            if (!v) continue;
+            // Turkish uses the clean canonical path. Other language slugs
+            // must retain their language selector so post.js renders the
+            // matching translation and canonicalizes consistently.
+            const clean = '/blog/' + encodeURIComponent(v).replace(/%2F/g, '/');
+            urls.push(lang === 'tr' ? clean : clean + '?lang=' + encodeURIComponent(lang));
           }
         }
 
