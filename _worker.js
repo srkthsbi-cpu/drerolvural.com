@@ -2305,6 +2305,8 @@ async function getAdminUIHTML() {
    - Unknown legacy-looking URLs are never downloaded; they become real 404s.
    ===================================================== */
 const LEGACY_REDIRECTS = Object.freeze({
+  "/diyabet-ve-obezite": "/blog/metabolik-cerrahi-tip2-diyabet",
+  "/diyabet-ve-obezite/": "/blog/metabolik-cerrahi-tip2-diyabet",
   "/10-maddede-obezite": "/blog/obezite-cerrahisi-rehberi",
   "/10-soruda-obezite": "/blog/obezite-cerrahisi-rehberi",
   "/5-soruda-seker-hastaligi-ameliyati": "/blog/metabolik-cerrahi-tip2-diyabet",
@@ -3016,6 +3018,114 @@ const GSC_LEGACY_410 = new Set([
   '/page/17',
 ]);
 
+const GLOBAL_HTML_CSS = `
+/* DREROLVURAL.COM — global QA/UI layer */
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{max-width:100%;overflow-x:hidden}
+*,*:before,*:after{box-sizing:border-box}
+img,video,svg{max-width:100%;height:auto}
+a,button,input,textarea,select{touch-action:manipulation}
+button,a{ -webkit-tap-highlight-color:transparent }
+header{max-width:100vw}
+main,section,article,.container,.content,.page-container{max-width:100%;overflow-wrap:anywhere}
+h1,h2,h3,h4,h5,h6{overflow-wrap:anywhere}
+table{max-width:100%;border-collapse:collapse}
+.article-content,.content,main{overflow-wrap:anywhere}
+.article-content img,.content img,article img{display:block;margin-left:auto;margin-right:auto}
+.article-content table,.content table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+input,textarea,select{font-size:16px;max-width:100%}
+button,.btn-primary,.read,.back,[role="button"]{min-height:44px}
+.mobile-menu-btn{min-width:44px;min-height:44px;display:none;align-items:center;justify-content:center}
+nav{z-index:1002}
+.lang-dropdown{z-index:1003}
+.lang-content{z-index:1004;max-width:calc(100vw - 20px)}
+.whatsapp-floating-btn,.whatsapp{z-index:1100}
+footer{overflow:hidden}
+@media(max-width:992px){
+  header{padding-left:max(14px,4vw)!important;padding-right:max(14px,4vw)!important}
+  .mobile-menu-btn{display:flex!important}
+  nav{max-width:100vw}
+  .contact-container,.services-wrapper,.about-container,.featured-card{width:100%;max-width:100%}
+}
+@media(max-width:700px){
+  .hero,.inner-hero{padding-left:20px!important;padding-right:20px!important}
+  .hero h1,.inner-hero h1{font-size:clamp(28px,8vw,40px)!important}
+  .article-content{font-size:16px!important}
+  .whatsapp-floating-btn,.whatsapp{right:16px!important;bottom:16px!important;width:54px!important;height:54px!important;font-size:29px!important}
+  .service-row,.service-row.reverse{width:100%;margin-left:0!important;margin-right:0!important}
+  .contact-container{padding:22px!important}
+}
+`;
+
+const GLOBAL_HTML_JS = `
+(function(){
+  'use strict';
+  function init(){
+    /* Prevent accidental double-submit handlers on the contact form. */
+    const form=document.getElementById('contactForm');
+    if(form) form.setAttribute('data-global-qa','1');
+
+    /* Mobile navigation works even if an older inline handler is missing. */
+    const nav=document.getElementById('navMenu');
+    const menuBtn=document.querySelector('.mobile-menu-btn');
+    if(nav && menuBtn && !menuBtn.dataset.qaBound){
+      menuBtn.dataset.qaBound='1';
+      menuBtn.addEventListener('click',function(){
+        nav.classList.toggle('active');
+        menuBtn.setAttribute('aria-expanded',nav.classList.contains('active')?'true':'false');
+      });
+    }
+
+    /* Keyboard-accessible language dropdown. */
+    document.querySelectorAll('.lang-btn,.langicon,.lang').forEach(function(btn){
+      if(btn.dataset.qaLangBound) return;
+      btn.dataset.qaLangBound='1';
+      btn.setAttribute('role','button');
+      btn.setAttribute('tabindex','0');
+      btn.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();if(window.toggleLangMenu)window.toggleLangMenu(e);}
+      });
+    });
+
+    /* External links should not retain opener access. */
+    document.querySelectorAll('a[target="_blank"]').forEach(function(a){
+      const rel=(a.getAttribute('rel')||'').split(/\\s+/).filter(Boolean);
+      if(rel.indexOf('noopener')<0) rel.push('noopener');
+      if(rel.indexOf('noreferrer')<0) rel.push('noreferrer');
+      a.setAttribute('rel',rel.join(' '));
+    });
+
+    /* Close mobile menu after navigation. */
+    document.querySelectorAll('#navMenu a').forEach(function(a){
+      a.addEventListener('click',function(){ if(nav) nav.classList.remove('active'); });
+    });
+
+    /* Images: avoid layout overflow and expose missing-alt issues. */
+    document.querySelectorAll('img').forEach(function(img){
+      if(!img.hasAttribute('alt')) img.setAttribute('alt','Doç. Dr. Erol Vural');
+      img.addEventListener('error',function(){img.classList.add('qa-image-error');});
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+})();
+`;
+
+function enhanceHtmlResponse(response){
+  const ct=(response.headers.get('content-type')||'').toLowerCase();
+  if(!ct.includes('text/html')) return response;
+  const headers=new Headers(response.headers);
+  headers.delete('content-length');
+  return new HTMLRewriter()
+    .on('head',{element(e){
+      e.append(`<style id="drerolvural-global-qa">${GLOBAL_HTML_CSS}</style>`,{html:true});
+    }})
+    .on('body',{element(e){
+      e.append(`<script id="drerolvural-global-qa-js">${GLOBAL_HTML_JS}</script>`,{html:true});
+    }})
+    .transform(new Response(response.body,{status:response.status,statusText:response.statusText,headers}));
+}
+
 function legacyNotFoundResponse(request, reason = 'legacy-url-not-found') {
   const h = new Headers({
     'Content-Type': 'text/html; charset=utf-8',
@@ -3218,10 +3328,10 @@ export default {
       h.set('X-Robots-Tag', 'noindex, nofollow');
       h.set('Cache-Control', 'no-store, max-age=0');
       h.delete('Content-Disposition');
-      return new Response(notFound.body, { status: 404, headers: h });
+      return enhanceHtmlResponse(new Response(notFound.body, { status: 404, headers: h }));
     }
 
-    return new Response(response.body, { status: response.status, statusText: response.statusText, headers: outHeaders });
+    return enhanceHtmlResponse(new Response(response.body, { status: response.status, statusText: response.statusText, headers: outHeaders }));
   }
 };
 
