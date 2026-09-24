@@ -280,6 +280,10 @@
     "press.read": "Xəbərə keç",
     "press.editorialTextLabel": "Redaksiya qeydi:",
     "press.editorialTextText": "Bu səhifə seçilmiş mətbuat arxivi kimi hazırlanıb. Xəbər başlıqları və tibbi və ya statistik ifadələr müvafiq nəşriyyatlara aiddir; burada yer alması tibbi nəticəyə zəmanət vermir və müstəqil təsdiq demək deyil.",
-    "press.viewProceedings": "Bildiriş kitabına bax"
+    "press.viewProceedings": "Bildiriş kitabına bax",
+    "press.story1Summary": "İHA-nın sağlamlıq xəbərində Dr. Erol Vuralın sleeve qastrektomiyanın icrası, üstünlükləri, məhdudiyyətləri və əməliyyatdan sonrakı çəki idarəetməsi barədə açıqlamaları təqdim olunur.",
+    "press.story2Summary": "Xəbərdə bariatrik cərrahiyyənin əhatə dairəsi, pasiyentin qiymətləndirilməsi, uyğunluq meyarları və əməliyyatdan əvvəl hazırlıq barədə Dr. Erol Vural ilə sual-cavab yer alır.",
+    "press.story3Summary": "Xəbərdə Dr. Erol Vuralın metabolik cərrahiyyə və 2-ci tip diabetlə bağlı cərrahi yanaşmalar barədə açıqlamaları təqdim olunur. Başlıqda 83% uğur göstəricisi qeyd edilir; bu rəqəm bu səhifədə müstəqil şəkildə qiymətləndirilmir.",
+    "press.editorialText": "Bu səhifə seçilmiş mətbuat arxivi kimi hazırlanıb. Xəbər başlıqları və tibbi və ya statistik ifadələr müvafiq nəşriyyatlara aiddir; burada yer alması tibbi nəticəyə zəmanət vermir və müstəqil təsdiq demək deyil."
   }
 }
