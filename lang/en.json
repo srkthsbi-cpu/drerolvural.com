@@ -277,12 +277,13 @@
     "press.story1Title": "What is not widely known about sleeve gastrectomy",
     "press.story2Title": "Who may be considered for bariatric surgery?",
     "press.story3Title": "Report on metabolic surgery for diabetes in Istanbul",
-    "press.story1Summary": "The İHA health report compiles statements by Dr. Erol Vural about sleeve gastrectomy, its potential benefits and limitations, and postoperative weight management.",
-    "press.story2Summary": "The report includes a Q&A with Dr. Erol Vural about bariatric surgery, patient assessment, eligibility criteria and preoperative preparation.",
-    "press.story3Summary": "The report presents statements by Dr. Erol Vural about metabolic surgery and approaches related to type 2 diabetes. Its headline mentions an 83% success rate; that figure is not independently evaluated on this page.",
+    "press.story1Summary": "The IHA health report compiles explanations by Dr. Erol Vural about how sleeve gastrectomy is performed, its advantages, limitations and postoperative weight management.",
+    "press.story2Summary": "The report includes a Q&A with Dr. Erol Vural about the scope of bariatric surgery, patient assessment, eligibility criteria and preoperative preparation.",
+    "press.story3Summary": "The report presents Dr. Erol Vural's comments on metabolic surgery and surgical approaches related to type 2 diabetes. The headline contains an 83% success-rate statement; this figure is not independently assessed on this page.",
     "press.read": "Read the report",
     "press.editorialTextLabel": "Editorial note:",
     "press.editorialTextText": "This page is a selected press archive. Headlines and medical or statistical statements belong to their respective publishers; inclusion here does not guarantee a medical outcome or constitute independent verification.",
-    "press.viewProceedings": "View the 2023 proceedings"
+    "press.viewProceedings": "View the 2023 proceedings",
+    "press.editorialText": "This page is a selected press archive. Headlines and medical or statistical statements belong to their respective publishers; inclusion here does not guarantee a medical outcome or constitute independent verification."
   }
 }
