@@ -280,6 +280,10 @@
     "press.read": "Zum Bericht",
     "press.editorialTextLabel": "Redaktioneller Hinweis:",
     "press.editorialTextText": "Diese Seite ist als ausgewähltes Pressearchiv zusammengestellt. Überschriften sowie medizinische oder statistische Angaben stammen von den jeweiligen Herausgebern; ihre Aufnahme stellt keine Garantie eines medizinischen Ergebnisses und keine unabhängige Bestätigung dar.",
-    "press.viewProceedings": "Tagungsband ansehen"
+    "press.viewProceedings": "Tagungsband ansehen",
+    "press.story1Summary": "Der IHA-Gesundheitsbericht fasst Erklärungen von Dr. Erol Vural zur Durchführung der Schlauchmagen-Operation, ihren Vorteilen, Grenzen und zur Gewichtskontrolle nach der Operation zusammen.",
+    "press.story2Summary": "Der Bericht enthält ein Gespräch mit Dr. Erol Vural über den Umfang der bariatrischen Chirurgie, die Patientenbeurteilung, Eignungskriterien und die Vorbereitung vor der Operation.",
+    "press.story3Summary": "Der Bericht gibt Aussagen von Dr. Erol Vural zur metabolischen Chirurgie und zu chirurgischen Ansätzen bei Typ-2-Diabetes wieder. Die Überschrift enthält eine Erfolgsrate von 83 %; diese Zahl wird auf dieser Seite nicht unabhängig bewertet.",
+    "press.editorialText": "Diese Seite ist als ausgewähltes Pressearchiv zusammengestellt. Überschriften sowie medizinische oder statistische Angaben stammen von den jeweiligen Herausgebern; ihre Aufnahme stellt keine Garantie eines medizinischen Ergebnisses und keine unabhängige Bestätigung dar."
   }
 }
