@@ -192,6 +192,19 @@
     });
   }
 
+  function bindMobileMenu() {
+    const nav = document.getElementById('navMenu');
+    if (!nav) return;
+    document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
+      if (btn.dataset.qaBound === '1') return;
+      btn.dataset.qaBound = '1';
+      btn.addEventListener('click', event => {
+        event.preventDefault();
+        toggleMenu();
+      });
+    });
+  }
+
   async function loadBanners() {
     const slider = document.getElementById('siteBannerSlider');
     if (!slider) return;
@@ -287,7 +300,7 @@
 
 })();
 (function globalQAFixes(){
-  const routeMap={'index.html':'/','./index.html':'/','/index.html':'/','hakkimizda.html':'/hakkimizda','./hakkimizda.html':'/hakkimizda','/hakkimizda.html':'/hakkimizda','hizmetler.html':'/hizmetler','./hizmetler.html':'/hizmetler','/hizmetler.html':'/hizmetler','blog.html':'/blog','./blog.html':'/blog','/blog.html':'/blog','iletisim.html':'/iletisim','./iletisim.html':'/iletisim','/iletisim.html':'/iletisim','saglik-turizmi.html':'/saglik-turizmi','./saglik-turizmi.html':'/saglik-turizmi','/saglik-turizmi.html':'/saglik-turizmi'};
+  const routeMap={'index.html':'/','./index.html':'/','/index.html':'/','hakkimizda.html':'/hakkimizda','./hakkimizda.html':'/hakkimizda','/hakkimizda.html':'/hakkimizda','hizmetler.html':'/hizmetler','./hizmetler.html':'/hizmetler','/hizmetler.html':'/hizmetler','blog.html':'/blog','./blog.html':'/blog','/blog.html':'/blog','iletisim.html':'/iletisim','./iletisim.html':'/iletisim','/iletisim.html':'/iletisim','basinda-biz.html':'/basinda-biz','./basinda-biz.html':'/basinda-biz','/basinda-biz.html':'/basinda-biz','saglik-turizmi.html':'/saglik-turizmi','./saglik-turizmi.html':'/saglik-turizmi','/saglik-turizmi.html':'/saglik-turizmi'};
   const langs=['tr','en','de','ar','ru','az','sq','nl','es'];
   function cleanInternalLink(raw){
     if(!raw || /^(?:https?:|mailto:|tel:|javascript:|data:|#)/i.test(raw)) return raw;
