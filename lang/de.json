@@ -224,6 +224,7 @@
       "press": "In der Presse"
     },
     "press": {
+      "ariaLabel": "Presseberichte",
       "eyebrow": "Pressearchiv",
       "title": "In der Presse",
       "intro": "Ausgewählte überprüfbare Interviews, Gesundheitsberichte und Aufzeichnungen zu Fachveranstaltungen über Assoc. Prof. Dr. Erol Vural aus früheren Jahren.",
