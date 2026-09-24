@@ -62,7 +62,7 @@
     "🇳🇱 Nederlands": "🇳🇱 Nederlands",
     "🇷🇺 Русский": "🇷🇺 Русский",
     "Doç. Dr. Erol Vural": "Doç. Dr. Erol Vural",
-    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", uzun yıllara dayanan cerrahi tecrübesiyle, başta",
+    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": "، مع خبرة جراحية طويلة، ومتخصص بشكل خاص في",
     "obezite cerrahisi": "جراحة السمنة",
     "ve": "و",
     "metabolik cerrahi": "جراحة الأيض",
@@ -250,6 +250,13 @@
     },
     "press.news1Summary": "يجمع تقرير IHA الصحي تصريحات الدكتور إيرول فورال حول كيفية إجراء تكميم المعدة ومزاياه وحدوده وإدارة الوزن بعد العملية.",
     "press.news2Summary": "يتضمن التقرير أسئلة وأجوبة مع الدكتور إيرول فورال حول نطاق جراحة السمنة وتقييم المريض ومعايير الأهلية والتحضير قبل العملية.",
-    "press.news3Summary": "يعرض التقرير تصريحات الدكتور إيرول فورال حول جراحة الأيض والأساليب الجراحية المرتبطة بالسكري من النوع الثاني. يتضمن العنوان نسبة نجاح قدرها 83٪؛ ولا تُقيّم هذه النسبة بشكل مستقل في هذه الصفحة."
+    "press.news3Summary": "يعرض التقرير تصريحات الدكتور إيرول فورال حول جراحة الأيض والأساليب الجراحية المرتبطة بالسكري من النوع الثاني. يتضمن العنوان نسبة نجاح قدرها 83٪؛ ولا تُقيّم هذه النسبة بشكل مستقل في هذه الصفحة.",
+    "olmak üzere, genel cerrahinin ileri laparoskopik prosedürlerinde uzmanlaşmış önde gelen hekimlerden biridir": {
+      " Modern tıbbın gerektirdiği güncel tedavi protokollerini titizlikle takip eden Dr": {
+        " Vural, hastalarının sağlıklı, konforlu ve sürdürülebilir bir yaşama adım atmalarına rehberlik etmektedir": {
+          "": "ويُعد من الأطباء البارزين المتخصصين في الإجراءات المتقدمة بالمنظار في الجراحة العامة. ويتابع د. فورال بروتوكولات العلاج الحديثة بدقة ويرشد مرضاه نحو حياة صحية ومريحة ومستدامة."
+        }
+      }
+    }
   }
 }
