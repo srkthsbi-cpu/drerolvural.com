@@ -270,6 +270,19 @@
     "press.sourceNote": "Sources: archives of the respective publishers",
     "press.editorialLabel": "Editorial note:",
     "press.scientificTitle": "Scientific event record",
-    "press.scientificText": "The 2023 proceedings of the Turkish Obesity Surgery Association include a scientific presentation by Erol Vural titled “Early results and complication risks of vertical clip gastroplasty.”"
+    "press.scientificText": "The 2023 proceedings of the Turkish Obesity Surgery Association include a scientific presentation by Erol Vural titled “Early results and complication risks of vertical clip gastroplasty.”",
+    "press.tagInterviewHealth": "Interview · Health",
+    "press.tagInterviewObesity": "Interview · Obesity",
+    "press.tagMetabolic": "Metabolic Surgery",
+    "press.story1Title": "What is not widely known about sleeve gastrectomy",
+    "press.story2Title": "Who may be considered for bariatric surgery?",
+    "press.story3Title": "Report on metabolic surgery for diabetes in Istanbul",
+    "press.story1Summary": "The İHA health report compiles statements by Dr. Erol Vural about sleeve gastrectomy, its potential benefits and limitations, and postoperative weight management.",
+    "press.story2Summary": "The report includes a Q&A with Dr. Erol Vural about bariatric surgery, patient assessment, eligibility criteria and preoperative preparation.",
+    "press.story3Summary": "The report presents statements by Dr. Erol Vural about metabolic surgery and approaches related to type 2 diabetes. Its headline mentions an 83% success rate; that figure is not independently evaluated on this page.",
+    "press.read": "Read the report",
+    "press.editorialTextLabel": "Editorial note:",
+    "press.editorialTextText": "This page is a selected press archive. Headlines and medical or statistical statements belong to their respective publishers; inclusion here does not guarantee a medical outcome or constitute independent verification.",
+    "press.viewProceedings": "View the 2023 proceedings"
   }
 }
