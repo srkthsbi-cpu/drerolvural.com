@@ -248,6 +248,9 @@
     },
     "about": {
       "pressIntro": "Puede consultar una selección de publicaciones de prensa y actividades científicas sobre el Prof. Asociado Dr. Erol Vural."
-    }
+    },
+    "press.news1Summary": "El informe de salud de IHA reúne las explicaciones del Dr. Erol Vural sobre cómo se realiza la gastrectomía en manga, sus ventajas, limitaciones y el control del peso después de la operación.",
+    "press.news2Summary": "El informe incluye preguntas y respuestas con el Dr. Erol Vural sobre la cirugía bariátrica, la evaluación del paciente, los criterios de idoneidad y la preparación preoperatoria.",
+    "press.news3Summary": "El informe recoge los comentarios del Dr. Erol Vural sobre la cirugía metabólica y los enfoques quirúrgicos relacionados con la diabetes tipo 2. El titular menciona una tasa de éxito del 83 %; esta cifra no se evalúa de forma independiente en esta página."
   }
 }
