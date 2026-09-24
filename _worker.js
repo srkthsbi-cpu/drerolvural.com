@@ -3461,8 +3461,9 @@ export default {
 
     // Some missing extensionless legacy paths can otherwise be exposed as
     // downloadable octet-streams by the asset layer. Never allow that.
-    const contentType = (response.headers.get('content-type') || '').toLowerCase();
+    let contentType = (response.headers.get('content-type') || '').toLowerCase();
     const contentDisposition = (response.headers.get('content-disposition') || '').toLowerCase();
+    const isHtmlPath = url.pathname.toLowerCase().endsWith('.html');
     const isExtensionlessPath = !url.pathname.split('/').pop()?.includes('.');
     const looksLikeAccidentalDownload =
       contentDisposition.includes('attachment') ||
@@ -3472,7 +3473,26 @@ export default {
       contentType.includes('application/download') ||
       (isExtensionlessPath && contentType === 'application/octet-stream');
 
-    if (response.status === 404 || looksLikeAccidentalDownload) {
+    /*
+     * Cloudflare Pages can expose some nested .html assets with a generic
+     * binary/attachment content type. These are real HTML documents and must
+     * render in the browser, not download. Preserve the body/status while
+     * forcing the correct media type and removing any download disposition.
+     */
+    if (response.ok && isHtmlPath && (contentDisposition.includes('attachment') || !contentType.includes('text/html'))) {
+      const htmlHeaders = new Headers(response.headers);
+      htmlHeaders.set('Content-Type', 'text/html; charset=utf-8');
+      htmlHeaders.delete('Content-Disposition');
+      htmlHeaders.delete('Content-Length');
+      response = new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: htmlHeaders
+      });
+      contentType = 'text/html; charset=utf-8';
+    }
+
+    if (response.status === 404 || (!isHtmlPath && looksLikeAccidentalDownload)) {
       const notFoundUrl = new URL('/404.html', request.url);
       const notFound = await env.ASSETS.fetch(new Request(notFoundUrl, request));
       const h = new Headers(notFound.headers);
