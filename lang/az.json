@@ -160,7 +160,7 @@
     "contact.phoneTitle": "Telefon",
     "contact.emailTitle": "E-poçt",
     "contact.formTitle": "Bizə mesaj göndərin",
-    "contact.namePlaceholder": "Adınız Soyadınız",
+    "contact.namePlaceholder": "Adınız və soyadınız",
     "contact.phonePlaceholder": "Telefon nömrəniz",
     "contact.messagePlaceholder": "Mesajınız və ya sualınız...",
     "contact.submit": "Mesajı göndər",
@@ -247,6 +247,9 @@
     },
     "about": {
       "pressIntro": "Dos. Dr. Erol Vural haqqında seçilmiş mətbuat və elmi tədbir materiallarına baxa bilərsiniz."
-    }
+    },
+    "press.news1Summary": "İHA-nın sağlamlıq xəbərində Dr. Erol Vuralın sleeve qastrektomiyanın icrası, üstünlükləri, məhdudiyyətləri və əməliyyatdan sonrakı çəki idarəetməsi barədə açıqlamaları təqdim olunur.",
+    "press.news2Summary": "Xəbərdə bariatrik cərrahiyyənin əhatə dairəsi, pasiyentin qiymətləndirilməsi, uyğunluq meyarları və əməliyyatdan əvvəl hazırlıq barədə Dr. Erol Vural ilə sual-cavab yer alır.",
+    "press.news3Summary": "Xəbərdə Dr. Erol Vuralın metabolik cərrahiyyə və 2-ci tip diabetlə bağlı cərrahi yanaşmalar barədə açıqlamaları təqdim olunur. Başlıqda 83% uğur göstəricisi qeyd edilir; bu rəqəm bu səhifədə müstəqil şəkildə qiymətləndirilmir."
   }
 }
