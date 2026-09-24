@@ -198,6 +198,10 @@
     document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
       if (btn.dataset.qaBound === '1') return;
       btn.dataset.qaBound = '1';
+      // Legacy HTML files may still contain onclick="toggleMenu()".
+      // Remove that inline handler before attaching the single shared listener
+      // so one tap cannot toggle the mobile menu twice.
+      if (btn.getAttribute('onclick')) btn.removeAttribute('onclick');
       btn.addEventListener('click', event => {
         event.preventDefault();
         toggleMenu();
