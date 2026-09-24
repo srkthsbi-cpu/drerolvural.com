@@ -2327,6 +2327,8 @@ async function getAdminUIHTML() {
    - Unknown legacy-looking URLs are never downloaded; they become real 404s.
    ===================================================== */
 const LEGACY_REDIRECTS = Object.freeze({
+  "/hakkimizda/basinda-biz": "/basinda-biz",
+  "/hakkimizda/basinda-biz/": "/basinda-biz",
   "/diyabet-ve-obezite": "/blog/metabolik-cerrahi-tip2-diyabet",
   "/diyabet-ve-obezite/": "/blog/metabolik-cerrahi-tip2-diyabet",
   "/10-maddede-obezite": "/blog/obezite-cerrahisi-rehberi",
