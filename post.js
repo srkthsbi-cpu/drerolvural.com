@@ -58,6 +58,18 @@
     document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr';
     document.title=(b.meta_title?.[lang]||title)+' | Doç. Dr. Erol Vural';
     const meta=document.querySelector('meta[name="description"]'); if(meta)meta.content=b.meta_description?.[lang]||desc;
+    const canonicalSlug = b.slug?.[lang] || b.slug?.tr || new URLSearchParams(location.search).get('slug') || '';
+    if (canonicalSlug) {
+      const canonical = new URL(location.href);
+      canonical.pathname = '/blog/' + encodeURIComponent(canonicalSlug).replace(/%2F/g,'/');
+      canonical.search = lang === 'tr' ? '' : '?lang=' + encodeURIComponent(lang);
+      canonical.hash = '';
+      let link = document.querySelector('link[rel="canonical"]');
+      if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+      link.href = canonical.href;
+      const og = document.querySelector('meta[property="og:url"]');
+      if (og) og.setAttribute('content', canonical.href);
+    }
     const content=formatContent(b.content[lang]);
     root.innerHTML=`<h1>${esc(title)}</h1><div class="meta">${esc(labels.expert)} · Doç. Dr. Erol Vural${category?' · '+esc(category):''}</div>${desc?`<div class="lead"><p>${esc(desc)}</p></div>`:''}<div class="content">${content}</div>`;
     const back=document.querySelector('[data-blog-back]'); if(back)back.textContent=labels.back;
