@@ -224,6 +224,7 @@
       "press": "Mətbuatda Biz"
     },
     "press": {
+      "ariaLabel": "Mətbuat xəbərləri",
       "eyebrow": "Mətbuat arxivi",
       "title": "Mətbuatda Biz",
       "intro": "Dos. Dr. Erol Vural haqqında əvvəlki illərdə dərc edilmiş seçilmiş, yoxlanıla bilən müsahibələr, sağlamlıq xəbərləri və peşəkar tədbir qeydləri.",
