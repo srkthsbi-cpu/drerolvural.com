@@ -222,6 +222,7 @@
       "pressIntro": "Doç. Dr. Erol Vural hakkında basında ve bilimsel etkinliklerde yer alan seçilmiş içeriklere göz atabilirsiniz."
     },
     "press": {
+      "ariaLabel": "Basın haberleri",
       "eyebrow": "Basın Arşivi",
       "title": "Basında Biz",
       "intro": "Doç. Dr. Erol Vural hakkında geçmiş yıllarda yayımlanmış, doğrulanabilen seçilmiş röportaj, sağlık haberi ve mesleki etkinlik kayıtları.",
