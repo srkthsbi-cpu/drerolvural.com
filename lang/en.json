@@ -262,6 +262,14 @@
     "menu.press": "In the Press",
     "about.pressIntro": "Explore selected media and scientific-event coverage featuring Assoc. Prof. Dr. Erol Vural.",
     "menu.international": "International Patients",
-    "Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.": "It is one of the most widely used surgical methods for obesity treatment worldwide. With a laparoscopic approach, approximately 80% of the stomach is removed vertically, reducing stomach volume and portions; removal of the stomach segment that produces ghrelin, the hunger hormone, also reduces appetite."
+    "Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.": "It is one of the most widely used surgical methods for obesity treatment worldwide. With a laparoscopic approach, approximately 80% of the stomach is removed vertically, reducing stomach volume and portions; removal of the stomach segment that produces ghrelin, the hunger hormone, also reduces appetite.",
+    "press.eyebrow": "Press Archive",
+    "press.title": "In the Press",
+    "press.intro": "Selected verifiable interviews, health reports and professional event records featuring Assoc. Prof. Dr. Erol Vural from previous years.",
+    "press.selected": "Selected Coverage",
+    "press.sourceNote": "Sources: archives of the respective publishers",
+    "press.editorialLabel": "Editorial note:",
+    "press.scientificTitle": "Scientific event record",
+    "press.scientificText": "The 2023 proceedings of the Turkish Obesity Surgery Association include a scientific presentation by Erol Vural titled “Early results and complication risks of vertical clip gastroplasty.”"
   }
 }
