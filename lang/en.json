@@ -247,6 +247,9 @@
     },
     "about": {
       "pressIntro": "You can explore selected press and scientific event coverage about Assoc. Prof. Dr. Erol Vural."
-    }
+    },
+    "press.news1Summary": "The IHA health report compiles explanations by Dr. Erol Vural about how sleeve gastrectomy is performed, its advantages, limitations and postoperative weight management.",
+    "press.news2Summary": "The report includes a Q&A with Dr. Erol Vural about the scope of bariatric surgery, patient assessment, eligibility criteria and preoperative preparation.",
+    "press.news3Summary": "The report presents Dr. Erol Vural's comments on metabolic surgery and surgical approaches related to type 2 diabetes. The headline contains an 83% success-rate statement; this figure is not independently assessed on this page."
   }
 }
