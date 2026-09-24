@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS admin_users (username TEXT PRIMARY KEY, password_hash TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, username TEXT NOT NULL, csrf TEXT NOT NULL, expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);
+CREATE TABLE IF NOT EXISTS login_attempts (ip TEXT PRIMARY KEY, attempts INTEGER NOT NULL DEFAULT 0, window_started_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS audit_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, action TEXT NOT NULL, target TEXT, ip TEXT, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS banners (position INTEGER PRIMARY KEY, desktop_file TEXT NOT NULL, mobile_file TEXT, alt_json TEXT NOT NULL DEFAULT '{}', title_json TEXT NOT NULL DEFAULT '{}', description_json TEXT NOT NULL DEFAULT '{}', button_text_json TEXT NOT NULL DEFAULT '{}', button_url TEXT NOT NULL DEFAULT '', enabled INTEGER NOT NULL DEFAULT 1, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS posts (id TEXT PRIMARY KEY, published INTEGER NOT NULL DEFAULT 0, featured INTEGER NOT NULL DEFAULT 0, icon TEXT NOT NULL DEFAULT 'fa-file-medical', category_json TEXT NOT NULL DEFAULT '{}', title_json TEXT NOT NULL DEFAULT '{}', description_json TEXT NOT NULL DEFAULT '{}', content_json TEXT NOT NULL DEFAULT '{}', slug_json TEXT NOT NULL DEFAULT '{}', meta_title_json TEXT NOT NULL DEFAULT '{}', meta_description_json TEXT NOT NULL DEFAULT '{}', keywords_json TEXT NOT NULL DEFAULT '{}', cover_file TEXT, published_at TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_posts_published ON posts(published, featured, published_at);
+CREATE TABLE IF NOT EXISTS site_settings (key TEXT PRIMARY KEY, value_json TEXT NOT NULL DEFAULT '{}', updated_at TEXT NOT NULL);

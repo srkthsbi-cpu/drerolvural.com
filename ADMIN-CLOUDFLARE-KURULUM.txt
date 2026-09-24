@@ -1,0 +1,57 @@
+EROL VURAL - ADMIN PANEL / CLOUDFLARE PAGES
+
+Bu paket Cloudflare Pages Advanced Mode (_worker.js) kullanır.
+Dashboard drag-and-drop ile _worker.js desteklenir; /functions klasörü kullanılmaz.
+
+1) D1 DATABASE
+Cloudflare Dashboard > Workers & Pages > ilgili Pages projesi > Storage / D1
+Yeni bir D1 database oluşturun. Önerilen ad: erolvural-db
+Database oluşturulduktan sonra Settings > Bindings > Add > D1 database
+Variable name: DB
+Database: erolvural-db
+
+2) R2 BUCKET
+Workers & Pages > R2 > yeni bucket oluşturun. Önerilen ad: erolvural-media
+Pages projesi > Settings > Bindings > Add > R2 bucket
+Variable name: MEDIA
+Bucket: erolvural-media
+
+3) ADMIN ŞİFRESİ
+Pages projesi > Settings > Variables and Secrets > Production > Add secret
+Name: ADMIN_INITIAL_PASSWORD
+Value: güçlü ve benzersiz bir şifre
+Örnek format: 16+ karakter, büyük/küçük harf + rakam + sembol.
+Bu örnek şifreyi aynen kullanmayın.
+İsterseniz ADMIN_USERNAME secret'ı da ekleyin; eklemezseniz kullanıcı adı admin olur.
+
+4) YENİ DEPLOY
+D1/R2 binding ve secret ekledikten sonra yeni deployment yapın. Binding değişikliklerinin etkili olması için redeploy gerekir.
+
+5) ADMIN
+https://alanadiniz.com/erol_admin/
+İlk girişte kullanıcı adı: admin (veya ADMIN_USERNAME)
+Şifre: ADMIN_INITIAL_PASSWORD secret'ında belirlediğiniz değer.
+İlk başarılı girişte kullanıcı D1'e hashlenmiş olarak kaydedilir.
+
+6) PANELDE NELER VAR?
+- Dashboard ve sistem sağlık kontrolü
+- 3 banner yönetimi
+- Desktop/mobile görsel yükleme (R2)
+- Bannerların 8 dilde alt text, başlık, açıklama ve buton metni
+- 8 dilde blog/makale yönetimi
+- Taslak / yayın / öne çıkan
+- Kapak görseli yükleme
+- Slug, meta title, meta description, keywords
+- 8 dil SEO kontrolü
+- Site iletişim ayarları
+- Şifre değiştirme
+- CSRF, HttpOnly/Secure/SameSite oturum çerezi
+- Giriş deneme limiti
+- Audit log
+- JSON yedek
+
+7) ÖNEMLİ
+Bu paneli yalnızca HTTPS altında kullanın.
+Admin URL'sini ayrıca Cloudflare Access ile korumak isterseniz /erol_admin/* için Access policy ekleyebilirsiniz.
+
+Cloudflare dokümanı: Pages > Settings > Bindings üzerinden D1 ve R2 bağlanabilir.
