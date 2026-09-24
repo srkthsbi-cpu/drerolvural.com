@@ -270,6 +270,16 @@
     "press.sourceNote": "المصادر: أرشيفات الجهات الناشرة المعنية",
     "press.editorialLabel": "ملاحظة تحريرية:",
     "press.scientificTitle": "سجل فعالية علمية",
-    "press.scientificText": "يتضمن كتاب وقائع عام 2023 للجمعية التركية لجراحة السمنة عرضاً علمياً باسم Erol Vural."
+    "press.scientificText": "يتضمن كتاب وقائع عام 2023 للجمعية التركية لجراحة السمنة عرضاً علمياً باسم Erol Vural.",
+    "press.tagInterviewHealth": "مقابلة · صحة",
+    "press.tagInterviewObesity": "مقابلة · سمنة",
+    "press.tagMetabolic": "جراحة الأيض",
+    "press.story1Title": "ما لا يُعرف على نطاق واسع عن تكميم المعدة",
+    "press.story2Title": "من يمكن أن يخضع لجراحة السمنة؟",
+    "press.story3Title": "تقرير عن جراحة الأيض لمرض السكري في إسطنبول",
+    "press.read": "اقرأ التقرير",
+    "press.editorialTextLabel": "ملاحظة تحريرية:",
+    "press.editorialTextText": "أُعدت هذه الصفحة كأرشيف صحفي مختار. العناوين والعبارات الطبية أو الإحصائية تعود إلى الجهات الناشرة؛ وإدراجها هنا لا يضمن نتيجة طبية ولا يعني التحقق المستقل منها.",
+    "press.viewProceedings": "عرض كتاب الوقائع"
   }
 }
