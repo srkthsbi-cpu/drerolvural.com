@@ -3376,6 +3376,52 @@ export default {
     }
 
     /* =====================================================
+       INTERNATIONAL HEALTH-TOURISM HTML ROUTING
+       =====================================================
+       Serve these nested documents explicitly as HTML. Cloudflare Pages can
+       otherwise expose nested .html assets as downloadable files on some
+       clients (notably iOS Safari). Both the clean path and the .html path
+       are normalized here before the generic asset layer.
+       ===================================================== */
+    const healthTourismPages = {
+      '/saglik-turizmi': '/saglik-turizmi.html',
+      '/en/health-tourism': '/en/health-tourism.html',
+      '/de/gesundheitstourismus': '/de/gesundheitstourismus.html',
+      '/ar/alsiyaaha-alssihiyya': '/ar/alsiyaaha-alssihiyya.html',
+      '/ru/medturizm': '/ru/medturizm.html',
+      '/az/saglamliq-turizmi': '/az/saglamliq-turizmi.html',
+      '/sq/turizmi-shendetesor': '/sq/turizmi-shendetesor.html',
+      '/nl/medisch-toerisme': '/nl/medisch-toerisme.html',
+      '/es/turismo-sanitario': '/es/turismo-sanitario.html'
+    };
+
+    const healthAssetPath =
+      healthTourismPages[cleanPathname] ||
+      healthTourismPages[cleanPathname.replace(/\.html$/, '')];
+
+    if (healthAssetPath) {
+      const assetUrl = new URL(healthAssetPath, request.url);
+      const assetResponse = await env.ASSETS.fetch(
+        new Request(assetUrl, request)
+      );
+      if (assetResponse.ok) {
+        const h = new Headers(assetResponse.headers);
+        h.set('Content-Type', 'text/html; charset=utf-8');
+        h.delete('Content-Disposition');
+        h.delete('Content-Length');
+        h.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        h.set('Pragma', 'no-cache');
+        h.set('X-Content-Type-Options', 'nosniff');
+        return enhanceHtmlResponse(
+          new Response(assetResponse.body, {
+            status: 200,
+            headers: h
+          })
+        );
+      }
+    }
+
+    /* =====================================================
        STATIC / EXTENSIONLESS HTML ROUTING
        =====================================================
        IMPORTANT: Do not fetch `/article.html` here. Cloudflare Pages
