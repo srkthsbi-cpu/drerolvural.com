@@ -48,7 +48,7 @@
   }
   function renderFilters(lang){
     const el=document.getElementById('blogFilters'); if(!el)return;
-    const allLabel = ({tr:'Tümü',en:'All',de:'Alle',ar:'الكل',ru:'Все',az:'Hamısı',sq:'Të gjitha',nl:'Alles'})[lang] || 'All';
+    const allLabel = ({tr:'Tümü',en:'All',de:'Alle',ar:'الكل',ru:'Все',az:'Hamısı',sq:'Të gjitha',nl:'Alles',es:'Todos'})[lang] || 'All';
     el.innerHTML='<button class="filter active" data-cat="all">'+esc(allLabel)+'</button>'+categories(lang).map(([key,label])=>`<button class="filter" data-cat="${esc(key)}">${esc(label)}</button>`).join('');
     el.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{activeCategory=btn.dataset.cat;el.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b===btn));render(lang);}));
   }
