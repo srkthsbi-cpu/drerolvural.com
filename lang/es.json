@@ -271,6 +271,16 @@
     "press.sourceNote": "Fuentes: archivos de los respectivos medios",
     "press.editorialLabel": "Nota editorial:",
     "press.scientificTitle": "Registro de actividad científica",
-    "press.scientificText": "El libro de actas de 2023 de la Asociación Turca de Cirugía de la Obesidad incluye una presentación científica de Erol Vural."
+    "press.scientificText": "El libro de actas de 2023 de la Asociación Turca de Cirugía de la Obesidad incluye una presentación científica de Erol Vural.",
+    "press.tagInterviewHealth": "Entrevista · Salud",
+    "press.tagInterviewObesity": "Entrevista · Obesidad",
+    "press.tagMetabolic": "Cirugía metabólica",
+    "press.story1Title": "Lo que no se conoce ampliamente sobre la gastrectomía en manga",
+    "press.story2Title": "¿Quién puede ser considerado para una cirugía bariátrica?",
+    "press.story3Title": "Reportaje sobre cirugía metabólica para la diabetes en Estambul",
+    "press.read": "Ver el reportaje",
+    "press.editorialTextLabel": "Nota editorial:",
+    "press.editorialTextText": "Esta página se ha preparado como un archivo de prensa seleccionado. Los titulares y las afirmaciones médicas o estadísticas pertenecen a sus respectivos medios; su inclusión aquí no garantiza un resultado médico ni implica una verificación independiente.",
+    "press.viewProceedings": "Consultar el libro de actas"
   }
 }
