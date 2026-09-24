@@ -262,6 +262,14 @@
     "menu.press": "В прессе",
     "about.pressIntro": "Здесь представлены избранные публикации в СМИ и сведения о научных мероприятиях с участием Doç. Dr. Erol Vural.",
     "menu.international": "Иностранные пациенты",
-    "Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.": "Это один из наиболее широко применяемых хирургических методов лечения ожирения в мире. При лапароскопическом подходе удаляется около 80% желудка по вертикали, что уменьшает его объём и размеры порций; удаление участка, вырабатывающего грелин, также способствует снижению аппетита."
+    "Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.": "Это один из наиболее широко применяемых хирургических методов лечения ожирения в мире. При лапароскопическом подходе удаляется около 80% желудка по вертикали, что уменьшает его объём и размеры порций; удаление участка, вырабатывающего грелин, также способствует снижению аппетита.",
+    "press.eyebrow": "Архив прессы",
+    "press.title": "В прессе",
+    "press.intro": "Избранные проверяемые интервью, медицинские публикации и сведения о профессиональных мероприятиях с участием Doç. Dr. Erol Vural за предыдущие годы.",
+    "press.selected": "Избранные публикации",
+    "press.sourceNote": "Источники: архивы соответствующих издателей",
+    "press.editorialLabel": "Редакционная заметка:",
+    "press.scientificTitle": "Научное мероприятие",
+    "press.scientificText": "В сборнике материалов Турецкой ассоциации бариатрической хирургии за 2023 год указано научное выступление Erol Vural."
   }
 }
