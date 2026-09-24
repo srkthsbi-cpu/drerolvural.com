@@ -2232,10 +2232,10 @@ async function handleSitemap(
           ) {
 
             if (v) {
-              urls.push(
-                '/blog-post?slug=' +
-                encodeURIComponent(v)
-              );
+              // The query-string renderer is an implementation detail.
+              // The public sitemap must advertise the same clean canonical URL
+              // used by the Worker and post.js.
+              urls.push('/blog/' + encodeURIComponent(v).replace(/%2F/g, '/'));
             }
           }
         }
@@ -3121,6 +3121,9 @@ const GLOBAL_HTML_JS = `
     const menuBtn=document.querySelector('.mobile-menu-btn');
     if(nav && menuBtn && !menuBtn.dataset.qaBound){
       menuBtn.dataset.qaBound='1';
+      // Remove any legacy inline onclick handler before adding the fallback
+      // listener; otherwise a single tap can open and immediately close the menu.
+      if(menuBtn.getAttribute('onclick')) menuBtn.removeAttribute('onclick');
       menuBtn.addEventListener('click',function(){
         nav.classList.toggle('active');
         menuBtn.setAttribute('aria-expanded',nav.classList.contains('active')?'true':'false');
