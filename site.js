@@ -92,6 +92,9 @@
       if (value !== null && value !== undefined) el.setAttribute('title', String(value));
     });
 
+    document.querySelectorAll('[data-i18n-meta]').forEach(el => { const value = getPath(translations, el.getAttribute('data-i18n-meta')); if (value !== null && value !== undefined) el.setAttribute('content', String(value)); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { const value = getPath(translations, el.getAttribute('data-i18n-aria')); if (value !== null && value !== undefined) el.setAttribute('aria-label', String(value)); });
+
     document.querySelectorAll('[data-i18n-alt]').forEach(el => {
       const value = getPath(translations, el.getAttribute('data-i18n-alt'));
       if (value !== null && value !== undefined) el.setAttribute('alt', String(value));
