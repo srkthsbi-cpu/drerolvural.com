@@ -298,6 +298,10 @@
   window.siteTranslation = getPath;
 
   document.addEventListener('DOMContentLoaded', async () => {
+    // Bind the mobile menu from the shared script as well as the Worker
+    // fallback. The binder removes legacy inline handlers, preventing
+    // double-toggle behavior on older HTML files.
+    bindMobileMenu();
     setupForms();
     await applyLanguage(currentLang);
   });
