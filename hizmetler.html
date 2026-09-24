@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+<meta content="2026-09-01-v2" name="site-build"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hizmetlerimiz | Tüp Mide, Bypass ve Metabolik Cerrahi | Doç. Dr. Erol Vural</title>
+<meta content="Doç. Dr. Erol Vural'ın uzmanlık alanları: Tüp mide ameliyatı, Gastrik Bypass, Metabolik Cerrahi, Mide Balonu, Mide Botoksu ve Revizyon Cerrahisi hakkında detaylı bilgiler." name="description"/>
+<meta content="tüp mide ameliyatı, gastrik bypass, metabolik cerrahi, mide balonu, mide botoksu, revizyon ameliyatı, obezite cerrahisi detayları, genel cerrahi, Doç. Dr. Erol Vural" name="keywords"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        :root {
+            --primary-blue: #005082;
+            --secondary-teal: #009bb4;
+            --accent-green: #82bc00;
+            --bg-light: #f8fcfd;
+            --text-dark: #333333;
+            --text-gray: #555555;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { color: var(--text-dark); background-color: var(--white); line-height: 1.8; overflow-x: hidden; }
+        a { text-decoration: none; }
+
+        #google_translate_element { display: none !important; visibility: hidden !important; }
+        
+        body { top: 0 !important; }
+        .skiptranslate { display: none !important; }
+
+        header {
+            position: fixed; top: 0; width: 100%; background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;
+            padding: 10px 5%; display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo img { max-height: 65px; width: auto; }
+        
+        .header-right { display: flex; align-items: center; gap: 15px; }
+
+        .lang-dropdown { position: relative; display: inline-block; }
+        .lang-btn {
+            background-color: var(--bg-light); border: 1px solid #ddd; padding: 7px 14px;
+            border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 14px;
+            color: var(--primary-blue); display: flex; align-items: center; gap: 6px; transition: 0.3s;
+        }
+        .lang-btn:hover { border-color: var(--secondary-teal); }
+        .lang-content {
+            visibility: hidden; opacity: 0; position: absolute; right: 0;
+            background-color: var(--white); min-width: 170px;
+            max-height: 60vh;
+            overflow-y: auto; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-radius: 10px; overflow: hidden; z-index: 1001; margin-top: 8px;
+            transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+        }
+        .lang-content.show { visibility: visible; opacity: 1; transform: translateY(0); }
+        .lang-content a {
+            color: var(--text-dark); padding: 11px 15px; text-decoration: none; display: block;
+            font-size: 14px; font-weight: 500; transition: background 0.2s, padding-left 0.2s; cursor: pointer;
+        }
+        .lang-content a:hover { background-color: var(--bg-light); color: var(--secondary-teal); padding-left: 20px; }
+
+        nav ul { list-style: none; display: flex; gap: 20px; align-items: center; }
+        nav ul li a { color: var(--primary-blue); font-weight: 600; font-size: 15px; transition: 0.3s; }
+        nav ul li a:hover, nav ul li a.active { color: var(--secondary-teal); }
+        .mobile-menu-btn { display: none; font-size: 24px; color: var(--primary-blue); cursor: pointer; background: none; border: none; }
+
+        .inner-hero {
+            margin-top: 85px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-teal) 100%);
+            padding: 60px 5%;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        .inner-hero h1 { font-size: 38px; margin-bottom: 10px; font-weight: 700; animation: fadeInDown 1s ease; }
+        .inner-hero p { font-size: 18px; opacity: 0.9; max-width: 800px; margin: 0 auto; animation: fadeInUp 1s ease; }
+
+        .services-wrapper { padding: 60px 5%; max-width: 1200px; margin: 0 auto; }
+        
+        .service-row {
+            display: flex; align-items: center; gap: 40px; margin-bottom: 80px;
+            padding: 40px; background: var(--white); border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border-left: 6px solid var(--secondary-teal);
+        }
+        .service-row:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .service-row.reverse { flex-direction: row-reverse; border-left: none; border-right: 6px solid var(--accent-green); }
+
+        .service-visual {
+            flex: 1; display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2f7 100%);
+            border-radius: 50%; min-width: 250px; height: 250px;
+            box-shadow: inset 0 0 20px rgba(0,155,180,0.1);
+            animation: float 4s ease-in-out infinite;
+        }
+        .service-visual i { font-size: 88px; color: var(--secondary-teal); text-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+        .service-row.reverse .service-visual i { color: var(--accent-green); }
+
+        .service-content { flex: 2; }
+        .service-content h2 { color: var(--primary-blue); font-size: 28px; margin-bottom: 15px; }
+        .service-content p { color: var(--text-gray); font-size: 16px; margin-bottom: 15px; text-align: justify; }
+        
+        .service-details-list { list-style: none; margin-top: 15px; }
+        .service-details-list li {
+            position: relative; padding-left: 25px; margin-bottom: 10px; font-size: 15px; color: var(--text-dark); font-weight: 600;
+        }
+        .service-details-list li::before {
+            content: '\f00c'; font-family: 'Font Awesome 5 Free'; font-weight: 900;
+            position: absolute; left: 0; color: var(--accent-green); font-size: 16px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .cta-section { text-align: center; margin: 60px 0; padding: 50px; background: var(--bg-light); border-radius: 15px; border: 1px dashed var(--secondary-teal); }
+        .cta-section h3 { color: var(--primary-blue); font-size: 24px; margin-bottom: 20px; }
+        .btn-primary {
+            background-color: var(--secondary-teal); color: var(--white); padding: 15px 35px;
+            border-radius: 30px; font-weight: 600; font-size: 18px; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 155, 180, 0.3); display: inline-block; border: none; cursor: pointer;
+        }
+        .btn-primary:hover { background-color: var(--primary-blue); transform: translateY(-3px); }
+
+        footer { background-color: var(--primary-blue); color: var(--white); text-align: center; padding: 40px 20px; }
+        .footer-logo img { max-height: 70px; width: auto; margin-bottom: 15px; filter: brightness(0) invert(1); }
+        footer p { font-size: 14px; opacity: 0.9; }
+
+        .whatsapp-floating-btn {
+            position: fixed; bottom: 25px; right: 25px; background-color: #25D366; color: white;
+            width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center;
+            align-items: center; font-size: 34px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 1000; animation: pulse-whatsapp 2s infinite;
+        }
+        @keyframes pulse-whatsapp {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1.08); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        @media (max-width: 992px) {
+            .service-row, .service-row.reverse { flex-direction: column; text-align: center; padding: 30px 20px; gap: 20px; }
+            .service-visual { width: 150px; height: 150px; min-width: 150px; margin: 0 auto; }
+            .service-visual i { font-size: 60px; }
+            .service-details-list li { text-align: left; }
+        }
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; }
+            nav {
+                position: absolute; top: 80px; left: -100%; width: 100%;
+                background-color: var(--white); box-shadow: 0 10px 15px rgba(0,0,0,0.1); transition: 0.3s;
+            }
+            nav.active { left: 0; }
+            nav ul { flex-direction: column; padding: 20px 0; gap: 15px; text-align: center; }
+            .inner-hero h1 { font-size: 28px; }
+        }
+    <style>html[dir="rtl"] body{text-align:right}.site-banner-slider{position:relative;width:100%;overflow:hidden;background:#000}.site-slide{display:none}.site-slide.active{display:block;animation:siteFade .5s ease}.site-slide img{width:100%;height:auto;display:block;max-height:550px;object-fit:cover}@keyframes siteFade{from{opacity:.4}to{opacity:1}.lang-content button{width:100%;border:0;background:#fff;text-align:left;padding:11px 15px;cursor:pointer;font:inherit}.lang-content button[aria-current="true"]{background:#f0f9eb;color:#005082}</style>
+<style>html[dir="rtl"] .lang-content{right:auto;left:0}html[dir="rtl"] .lang-content button{text-align:right}</style>
+<style id="unified-language-menu">
+/* Unified compact language control — same size on every page */
+.lang-btn,.langicon,.lang{
+  height:38px !important;
+  min-width:82px !important;
+  width:82px !important;
+  box-sizing:border-box !important;
+  padding:0 9px !important;
+  border:1px solid #009bb4 !important;
+  border-radius:999px !important;
+  background:#fff !important;
+  color:#005082 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important;
+  font-size:14px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+}
+.lang-btn:hover,.langicon:hover,.lang:hover{background:#fbfeff !important;border-color:#009bb4 !important}
+.lang-btn i:first-child,.langicon:first-child,.lang:first-child{font-size:16px !important}
+.langicon:after,.lang:after{content:'⌄';font-size:14px;font-weight:700;line-height:1;margin-left:0}
+.langicon span,.lang span,#currentLangText{display:inline-block !important;font-size:14px !important;font-weight:700 !important;max-width:32px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang-content,.language-menu,.langmenu{
+  position:absolute !important;
+  top:46px !important;
+  right:0 !important;
+  z-index:9999 !important;
+  width:170px !important;
+  min-width:170px !important;
+  max-width:calc(100vw - 28px) !important;
+  box-sizing:border-box !important;
+  background:#fff !important;
+  border:1px solid #e2e8ec !important;
+  border-radius:20px !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.14) !important;
+  padding:8px !important;
+}
+.lang-content button,.language-menu a,.langmenu button{
+  display:flex !important;
+  align-items:center !important;
+  width:100% !important;
+  min-height:44px !important;
+  box-sizing:border-box !important;
+  padding:8px 12px !important;
+  border:0 !important;
+  border-radius:12px !important;
+  background:#fff !important;
+  color:#254f77 !important;
+  font-size:16px !important;
+  font-weight:700 !important;
+  line-height:1.2 !important;
+  text-align:left !important;
+  cursor:pointer !important;
+}
+.lang-content button:hover,.language-menu a:hover,.langmenu button:hover{background:#f5f8fa !important}
+.lang-content button[aria-current="true"],.lang-content button.active,.language-menu a[aria-current="true"],.language-menu a.active,.langmenu button[aria-current="true"]{background:#f0f9eb !important;color:#005082 !important}
+html[dir="rtl"] .lang-content,html[dir="rtl"] .language-menu,html[dir="rtl"] .langmenu{right:auto !important;left:0 !important}
+html[dir="rtl"] .lang-content button,html[dir="rtl"] .language-menu a,html[dir="rtl"] .langmenu button{text-align:right !important}
+@media(max-width:600px){
+  .lang-btn,.langicon,.lang{height:38px !important;min-width:82px !important;width:82px !important;padding:0 9px !important;font-size:14px !important}
+  .langicon span,.lang span,#currentLangText{font-size:14px !important;max-width:32px}
+  .lang-content,.language-menu,.langmenu{top:46px !important;width:170px !important;min-width:170px !important;max-width:calc(100vw - 20px) !important;border-radius:14px !important;padding:5px !important}
+  .lang-content button,.language-menu a,.langmenu button{min-height:34px !important;font-size:14px !important;padding:6px 9px !important}
+}
+</style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1385038830425787');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" src="https://www.facebook.com/tr?id=1385038830425787&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
+<!-- End Meta Pixel Code -->
+</head>
+<body data-page="services">
+<header>
+<div class="logo">
+<a href="index.html"><img alt="Doç. Dr. Erol Vural Logo" src="logo1.png"/></a>
+</div>
+<div class="header-right">
+<div class="lang-dropdown">
+<div class="lang-btn" onclick="toggleLangMenu(event)">
+<i class="fas fa-globe"></i> <span id="currentLangText"><span data-i18n="TR">TR</span></span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i>
+</div>
+<div class="lang-content" id="langMenuContent">
+<button data-lang="tr" onclick="setLanguage('tr')" type="button"><span data-i18n="🇹🇷 Türkçe">🇹🇷 Türkçe</span></button>
+<button data-lang="az" onclick="setLanguage('az')" type="button"><span data-i18n="🇦🇿 Azərbaycanca">🇦🇿 Azərbaycanca</span></button>
+<button data-lang="en" onclick="setLanguage('en')" type="button"><span data-i18n="🇬🇧 English">🇬🇧 English</span></button>
+<button data-lang="de" onclick="setLanguage('de')" type="button"><span data-i18n="🇩🇪 Deutsch">🇩🇪 Deutsch</span></button>
+<button data-lang="ar" onclick="setLanguage('ar')" type="button"><span data-i18n="🇸🇦 العربية">🇸🇦 العربية</span></button>
+<button data-lang="sq" onclick="setLanguage('sq')" type="button"><span data-i18n="🇦🇱 Shqip">🇦🇱 Shqip</span></button>
+<button data-lang="nl" onclick="setLanguage('nl')" type="button"><span data-i18n="🇳🇱 Nederlands">🇳🇱 Nederlands</span></button>
+<button data-lang="ru" onclick="setLanguage('ru')" type="button"><span data-i18n="🇷🇺 Русский">🇷🇺 Русский</span></button>
+</div>
+</div>
+<button class="mobile-menu-btn" onclick="toggleMenu()" type="button">
+<i class="fas fa-bars"></i>
+</button>
+</div>
+<nav id="navMenu">
+<ul>
+<li><a data-menu-key="home" href="index.html"><span data-i18n="Anasayfa">Anasayfa</span></a></li>
+<li><a data-menu-key="about" href="hakkimizda.html"><span data-i18n="Hakkımda">Hakkımda</span></a></li>
+<li><a class="active" data-menu-key="services" href="hizmetler.html"><span data-i18n="Hizmetler">Hizmetler</span></a></li>
+<li><a data-menu-key="blog" href="blog.html"><span data-i18n="Uzman'ından Bilgiler">Uzman'ından Bilgiler</span></a></li>
+<li><a data-menu-key="contact" href="iletisim.html"><span data-i18n="İletişim">İletişim</span></a></li>
+<li><a data-international-link="" data-menu-key="international" href="saglik-turizmi.html"><span data-i18n="menu.international">Uluslararası Hastalar</span></a></li></ul>
+</nav>
+</header>
+<section class="inner-hero">
+<h1><span data-i18n="Tıbbi Hizmetlerimiz ve Operasyonlar">Tıbbi Hizmetlerimiz ve Operasyonlar</span></h1>
+<p><span data-i18n="Sağlığınıza kavuşmanız için modern tıbbın sunduğu en güncel cerrahi ve endoskopik yöntemleri, uluslararası standartlarda ve üst düzey güvenlik protokolleriyle uyguluyoruz.">Sağlığınıza kavuşmanız için modern tıbbın sunduğu en güncel cerrahi ve endoskopik yöntemleri, uluslararası standartlarda ve üst düzey güvenlik protokolleriyle uyguluyoruz.</span></p>
+</section>
+<section class="services-wrapper">
+<div class="service-row">
+<div class="service-visual">
+<i class="fas fa-cut"></i>
+</div>
+<div class="service-content">
+<h2><span data-i18n="Tüp Mide Ameliyatı (Sleeve Gastrektomi)">Tüp Mide Ameliyatı (Sleeve Gastrektomi)</span></h2>
+<p><span data-i18n="Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.">Obezite tedavisinde dünya genelinde en çok tercih edilen "Altın Standart" cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan "Ghrelin" (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.</span></p>
+<ul class="service-details-list">
+<li><span data-i18n="İştah hormonunu (Ghrelin) düşürerek tokluk hissini artırır.">İştah hormonunu (Ghrelin) düşürerek tokluk hissini artırır.</span></li>
+<li><span data-i18n="Midenin doğal sindirim anatomisi korunur, emilim bozukluğu yaratmaz.">Midenin doğal sindirim anatomisi korunur, emilim bozukluğu yaratmaz.</span></li>
+<li><span data-i18n="Ameliyat süresi ortalama 45-60 dakika, hastanede kalış süresi 3 gündür.">Ameliyat süresi ortalama 45-60 dakika, hastanede kalış süresi 3 gündür.</span></li>
+<li><span data-i18n="1 yıl içinde fazla kilonun %70-80'inin kalıcı olarak verilmesi hedeflenir.">1 yıl içinde fazla kilonun %70-80'inin kalıcı olarak verilmesi hedeflenir.</span></li>
+</ul>
+</div>
+</div>
+<div class="service-row reverse">
+<div class="service-visual">
+<i class="fas fa-heartbeat"></i>
+</div>
+<div class="service-content">
+<h2><span data-i18n="Metabolik Cerrahi (Tip 2 Diyabet Cerrahisi)">Metabolik Cerrahi (Tip 2 Diyabet Cerrahisi)</span></h2>
+<p><span data-i18n="Özellikle Tip 2 Diyabet (şeker hastalığı), hipertansiyon, uyku apnesi ve yüksek kolesterol gibi metabolik sendromları tedavi etmek amacıyla geliştirilmiş ileri düzey cerrahi müdahalelerdir. Transit Bipartisyon veya İleal İnterpozisyon gibi teknikler kullanılarak sindirim sistemindeki hormonların (İnkretinler) insülin direncini kırması sağlanır.">Özellikle Tip 2 Diyabet (şeker hastalığı), hipertansiyon, uyku apnesi ve yüksek kolesterol gibi metabolik sendromları tedavi etmek amacıyla geliştirilmiş ileri düzey cerrahi müdahalelerdir. Transit Bipartisyon veya İleal İnterpozisyon gibi teknikler kullanılarak sindirim sistemindeki hormonların (İnkretinler) insülin direncini kırması sağlanır.</span></p>
+<ul class="service-details-list">
+<li><span data-i18n="Tip 2 diyabet hastalarında insülin ve ilaç kullanımını sonlandırmayı veya büyük oranda azaltmayı hedefler.">Tip 2 diyabet hastalarında insülin ve ilaç kullanımını sonlandırmayı veya büyük oranda azaltmayı hedefler.</span></li>
+<li><span data-i18n="Organ hasarlarını (göz, böbrek, damar) önlemede en etkili yöntemdir.">Organ hasarlarını (göz, böbrek, damar) önlemede en etkili yöntemdir.</span></li>
+<li><span data-i18n="Vücudun kendi ürettiği ancak kullanamadığı insülini aktif hale getirir.">Vücudun kendi ürettiği ancak kullanamadığı insülini aktif hale getirir.</span></li>
+</ul>
+</div>
+</div>
+<div class="service-row">
+<div class="service-visual">
+<i class="fas fa-route"></i>
+</div>
+<div class="service-content">
+<h2><span data-i18n="Gastrik Bypass (Roux-en-Y / Mini Bypass)">Gastrik Bypass (Roux-en-Y / Mini Bypass)</span></h2>
+<p><span data-i18n="Hem kısıtlayıcı (mide hacmini küçülten) hem de emilimi azaltan kombine bir cerrahi prosedürdür. Midenin üst kısmında küçük bir kese oluşturulur ve ince bağırsağın bir kısmı atlanarak doğrudan bu keseye bağlanır. Özellikle şiddetli reflüsü olan obezite hastaları ve tatlı bağımlılığı yüksek bireyler için mükemmel sonuçlar verir.">Hem kısıtlayıcı (mide hacmini küçülten) hem de emilimi azaltan kombine bir cerrahi prosedürdür. Midenin üst kısmında küçük bir kese oluşturulur ve ince bağırsağın bir kısmı atlanarak doğrudan bu keseye bağlanır. Özellikle şiddetli reflüsü olan obezite hastaları ve tatlı bağımlılığı yüksek bireyler için mükemmel sonuçlar verir.</span></p>
+<ul class="service-details-list">
+<li><span data-i18n="Gıdaların emilim yolu kısaltılarak kalori alımı sınırlandırılır.">Gıdaların emilim yolu kısaltılarak kalori alımı sınırlandırılır.</span></li>
+<li><span data-i18n="Obeziteye bağlı Tip 2 diyabetin çözümünde çok güçlü bir mekanizmaya sahiptir.">Obeziteye bağlı Tip 2 diyabetin çözümünde çok güçlü bir mekanizmaya sahiptir.</span></li>
+<li><span data-i18n="Uzun vadeli kilo kontrolünde en köklü ve kanıtlanmış cerrahi yöntemdir.">Uzun vadeli kilo kontrolünde en köklü ve kanıtlanmış cerrahi yöntemdir.</span></li>
+</ul>
+</div>
+</div>
+<div class="service-row reverse">
+<div class="service-visual">
+<i class="fas fa-circle-notch"></i>
+</div>
+<div class="service-content">
+<h2><span data-i18n="Mide Balonu Uygulaması">Mide Balonu Uygulaması</span></h2>
+<p><span data-i18n="Ameliyatsız ve kesisiz bir kilo verme yöntemidir. Endoskopi ünitesinde hafif bir uyku hali (sedasyon) altında mide içerisine sönük halde bir silikon balon yerleştirilir ve sıvı ile şişirilir. Midede sürekli bir dolgunluk hissi yaratarak porsiyonların küçülmesini ve hastanın diyete uyum sağlamasını kolaylaştırır.">Ameliyatsız ve kesisiz bir kilo verme yöntemidir. Endoskopi ünitesinde hafif bir uyku hali (sedasyon) altında mide içerisine sönük halde bir silikon balon yerleştirilir ve sıvı ile şişirilir. Midede sürekli bir dolgunluk hissi yaratarak porsiyonların küçülmesini ve hastanın diyete uyum sağlamasını kolaylaştırır.</span></p>
+<ul class="service-details-list">
+<li><span data-i18n="İşlem sadece 15-20 dakika sürer, hasta aynı gün normal hayatına döner.">İşlem sadece 15-20 dakika sürer, hasta aynı gün normal hayatına döner.</span></li>
+<li><span data-i18n="Cerrahiye uygun olmayan (Vücut Kitle İndeksi 27-35 arası) hafif obez hastalar için idealdir.">Cerrahiye uygun olmayan (Vücut Kitle İndeksi 27-35 arası) hafif obez hastalar için idealdir.</span></li>
+<li><span data-i18n="Balon çeşidine göre midede 6 ile 12 ay arasında kalır ve sonrasında tekrar endoskopik olarak çıkarılır.">Balon çeşidine göre midede 6 ile 12 ay arasında kalır ve sonrasında tekrar endoskopik olarak çıkarılır.</span></li>
+</ul>
+</div>
+</div>
+<div class="service-row">
+<div class="service-visual">
+<i class="fas fa-syringe"></i>
+</div>
+<div class="service-content">
+<h2><span data-i18n="Mide Botoksu (Gastrik Botulinum Toksin)">Mide Botoksu (Gastrik Botulinum Toksin)</span></h2>
+<p><span data-i18n='Diyet ve egzersizle kilo veremeyen, hafif fazla kilolu (10-15 kilo fazlası olan) bireyler için uygulanan yenilikçi ve ameliyatsız bir yöntemdir. Endoskopik olarak midenin belirli noktalarına "Botulinum Toksini" enjekte edilir. Bu sayede mide kaslarının kasılması yavaşlatılır, mideden gıda boşalımı gecikir ve hasta uzun süre tokluk hisseder.'>Diyet ve egzersizle kilo veremeyen, hafif fazla kilolu (10-15 kilo fazlası olan) bireyler için uygulanan yenilikçi ve ameliyatsız bir yöntemdir. Endoskopik olarak midenin belirli noktalarına "Botulinum Toksini" enjekte edilir. Bu sayede mide kaslarının kasılması yavaşlatılır, mideden gıda boşalımı gecikir ve hasta uzun süre tokluk hisseder.</span></p>
+<ul class="service-details-list">
+<li><span data-i18n="Tamamen endoskopik bir işlemdir, genel anestezi (narkoz) gerektirmez.">Tamamen endoskopik bir işlemdir, genel anestezi (narkoz) gerektirmez.</span></li>
+<li><span data-i18n="Mide asit salgısını da azaltarak açlık krizlerini önlemeye yardımcı olur.">Mide asit salgısını da azaltarak açlık krizlerini önlemeye yardımcı olur.</span></li>
+<li><span data-i18n="Etkisi ortalama 4-6 ay sürer, bu süreçte beslenme uzmanı eşliğinde 10-15 kg verilmesi hedeflenir.">Etkisi ortalama 4-6 ay sürer, bu süreçte beslenme uzmanı eşliğinde 10-15 kg verilmesi hedeflenir.</span></li>
+</ul>
+</div>
+</div>
+<div class="service-row reverse">
+<div class="service-visual">
+<i class="fas fa-sync-alt"></i>
+</div>
+<div class="service-content">
+<h2><span data-i18n="Revizyon (Düzeltme) Cerrahisi">Revizyon (Düzeltme) Cerrahisi</span></h2>
+<p><span data-i18n="Geçmişte bariatrik cerrahi (mide kelepçesi, tüp mide vb.) geçirmiş ancak zamanla tekrar kilo almış (kilo geri kazanımı) veya şiddetli reflü, yetersiz beslenme gibi teknik komplikasyonlar yaşamış hastalar için uygulanan kurtarıcı operasyonlardır. İlk ameliyata göre daha yüksek cerrahi tecrübe gerektirir.">Geçmişte bariatrik cerrahi (mide kelepçesi, tüp mide vb.) geçirmiş ancak zamanla tekrar kilo almış (kilo geri kazanımı) veya şiddetli reflü, yetersiz beslenme gibi teknik komplikasyonlar yaşamış hastalar için uygulanan kurtarıcı operasyonlardır. İlk ameliyata göre daha yüksek cerrahi tecrübe gerektirir.</span></p>
+<ul class="service-details-list">
+<li><span data-i18n="Tüp midenin Gastrik Bypass'a çevrilmesi gibi yöntemleri içerir.">Tüp midenin Gastrik Bypass'a çevrilmesi gibi yöntemleri içerir.</span></li>
+<li><span data-i18n="Kilo veriminin durduğu veya kilonun geri alındığı durumlarda süreci yeniden başlatır.">Kilo veriminin durduğu veya kilonun geri alındığı durumlarda süreci yeniden başlatır.</span></li>
+<li><span data-i18n="Sadece obezite cerrahisinde ileri düzey (Master Surgeon) deneyime sahip cerrahlar tarafından yapılmalıdır.">Sadece obezite cerrahisinde ileri düzey (Master Surgeon) deneyime sahip cerrahlar tarafından yapılmalıdır.</span></li>
+</ul>
+</div>
+</div>
+<div class="service-row">
+<div class="service-visual">
+<i class="fas fa-notes-medical"></i>
+</div>
+<div class="service-content">
+<h2><span data-i18n="Diğer Genel Cerrahi Ameliyatları">Diğer Genel Cerrahi Ameliyatları</span></h2>
+<p><span data-i18n="Doç. Dr. Erol Vural, obezite cerrahisinin yanı sıra genel cerrahinin diğer temel alanlarında da kapalı (Laparoskopik) cerrahi teknikleriyle hizmet vermektedir. Hastanın en az ağrıyla ve en kısa sürede ayağa kalkması hedeflenir.">Doç. Dr. Erol Vural, obezite cerrahisinin yanı sıra genel cerrahinin diğer temel alanlarında da kapalı (Laparoskopik) cerrahi teknikleriyle hizmet vermektedir. Hastanın en az ağrıyla ve en kısa sürede ayağa kalkması hedeflenir.</span></p>
+<ul class="service-details-list">
+<li><span data-i18n="services.general1">Laparoskopik Safra Kesesi Cerrahisi: Safra taşı ve polip tedavileri.</span></li>
+<li><span data-i18n="services.general2">Fıtık (Herni) Cerrahisi: Kasık, göbek ve ameliyat yeri fıtıklarının kapalı yöntemle yama kullanılarak onarımı.</span></li>
+<li><span data-i18n="services.general3">Tiroid ve Endokrin Cerrahisi: Guatr ve tiroid nodüllerine yönelik cerrahi müdahaleler.</span></li>
+<li><span data-i18n="services.general4">Mide ve Bağırsak Cerrahisi: İyi ve kötü huylu tümör cerrahileri.</span></li>
+</ul>
+</div>
+</div>
+<div class="cta-section">
+<h3><span data-i18n="Hangi Tedavinin Sizin İçin Uygun Olduğunu Öğrenmek İster Misiniz?">Hangi Tedavinin Sizin İçin Uygun Olduğunu Öğrenmek İster Misiniz?</span></h3>
+<p style="margin-bottom:20px; color:var(--text-gray);"><span data-i18n="Tıbbi geçmişiniz, kilonuz ve hastalıklarınıza göre en doğru kararı uzman ekibimizle birlikte verelim.">Tıbbi geçmişiniz, kilonuz ve hastalıklarınıza göre en doğru kararı uzman ekibimizle birlikte verelim.</span></p>
+<a class="btn-primary" href="https://wa.me/905414569367" target="_blank"><i class="fab fa-whatsapp"></i> <span data-i18n="Hemen Ücretsiz Danışın">Hemen Ücretsiz Danışın</span></a>
+</div>
+</section>
+<footer>
+<div class="footer-logo">
+<a href="index.html"><img alt="Doç. Dr. Erol Vural Beyaz Logo" src="logo2.png"/></a>
+</div>
+<p><span data-i18n="© 2026 Doç. Dr. Erol VURAL | Metabolik ve Bariatrik Cerrahi. Tüm hakları saklıdır."><span data-i18n="footer.copyright">© 2026 Doç. Dr. Erol VURAL | Metabolik ve Bariatrik Cerrahi. Tüm hakları saklıdır.</span></span></p>
+</footer>
+<a class="whatsapp-floating-btn" data-i18n-title="WhatsApp ile İletişime Geçin" href="https://wa.me/905414569367" target="_blank" title="WhatsApp ile İletişime Geçin">
+<i class="fab fa-whatsapp"></i>
+</a>
+<script>
+        function toggleLangMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('langMenuContent');
+            menu.classList.toggle('show');
+        }
+
+        window.addEventListener('click', function() {
+            const menu = document.getElementById('langMenuContent');
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+            }
+        });
+
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
+<script defer="" src="site.js?v=20260901-2"></script>
+</body>
+</html>
