@@ -69,6 +69,42 @@ main{margin:0!important;padding:0!important}
  .hero-inner,.heroIn{padding:54px 18px!important}
 }
 [dir=rtl] .language-menu{right:auto!important;left:-47px!important}
+
+/* FINAL SHARED HEADER — identical behavior on every health-tourism language page */
+.top{position:sticky!important;top:0!important;z-index:100!important;background:rgba(255,255,255,.98)!important;backdrop-filter:blur(14px)!important;border-bottom:1px solid var(--line)!important;margin:0!important}
+.nav{max-width:1240px!important;margin:auto!important;min-height:78px!important;padding:10px 22px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:18px!important}
+.navlinks{display:flex!important;align-items:center!important;gap:15px!important;font-size:13px!important;font-weight:850!important;color:var(--blue)!important}
+.navlinks>a:hover{color:var(--teal)!important}
+.header-tools{display:flex!important;align-items:center!important;gap:10px!important}
+.language-switcher{position:relative!important}
+.langicon,.menubtn{height:44px!important;border:1px solid var(--teal)!important;background:#fff!important;border-radius:999px!important;padding:0 13px!important;color:var(--blue)!important;font-weight:900!important;cursor:pointer!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;white-space:nowrap!important}
+.langicon{min-width:106px!important}
+.menubtn{display:none!important;border-color:var(--line)!important;min-width:44px!important}
+.language-menu{display:none!important;position:absolute!important;right:0!important;top:52px!important;width:235px!important;background:#fff!important;border:1px solid var(--line)!important;box-shadow:var(--shadow)!important;border-radius:18px!important;padding:8px!important;z-index:200!important}
+.language-switcher.open .language-menu{display:block!important}
+.language-menu a{display:flex!important;align-items:center!important;gap:9px!important;padding:9px 11px!important;border-radius:11px!important;color:var(--blue)!important;font-weight:800!important;font-size:15px!important}
+.language-menu a:hover,.language-menu a[aria-current=true]{background:#eff8e8!important}
+.mobilemenu{display:none!important}
+@media(max-width:980px){
+  .nav{min-height:78px!important;padding:10px 16px!important}
+  .logo img{height:43px!important}
+  .navlinks{display:none!important}
+  .header-tools{display:flex!important;align-items:center!important;gap:7px!important}
+  .menubtn{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:44px!important;min-width:44px!important}
+  .langicon{display:inline-flex!important;min-width:104px!important;height:44px!important}
+  .language-menu{top:51px!important;right:-47px!important;width:235px!important}
+  .mobilemenu{display:none!important;position:absolute!important;top:78px!important;left:12px!important;right:12px!important;background:#fff!important;border:1px solid var(--line)!important;border-radius:18px!important;box-shadow:var(--shadow)!important;padding:10px!important;z-index:101!important}
+  .mobilemenu.open{display:block!important}
+  .mobilemenu a{display:block!important;padding:11px!important;border-radius:10px!important;color:var(--blue)!important;font-weight:850!important}
+  .mobilemenu a:hover{background:var(--bg)!important}
+}
+@media(max-width:620px){
+  .nav{height:78px!important;min-height:0!important;padding:10px 16px!important}
+  .logo img{height:43px!important}
+  .header-tools{gap:7px!important}
+  .langicon{min-width:104px!important;height:44px!important}
+  .menubtn{height:44px!important;min-width:44px!important}
+}
 </style></head><body>
 <header class="top"><div class="nav"><a class="logo" href="/ar/alsiyaaha-alssihiyya.html"><img alt="Doç. Dr. Erol Vural" src="../logo1.png"/></a><nav class="navlinks"><a href="/ar/alsiyaaha-alssihiyya.html">الرئيسية</a><a href="/ar/hakkimizda.html">نبذة عن الطبيب</a><a href="/ar/hizmetler.html">الخدمات</a><a href="/ar/blog.html">معلومات من الطبيب</a><a href="/ar/iletisim.html">اتصل بنا</a></nav><div class="header-tools"><div class="language-switcher"><button aria-controls="language-menu" aria-expanded="false" class="langicon" type="button"><i aria-hidden="true" class="fas fa-globe"></i><span>AR</span><i aria-hidden="true" class="fas fa-chevron-down"></i></button><div class="language-menu" id="language-menu" role="menu"><a href="/saglik-turizmi.html" lang="tr">TR · Türkçe</a><a href="/en/health-tourism.html" lang="en">EN · English</a><a href="/de/gesundheitstourismus.html" lang="de">DE · Deutsch</a><a href="/ar/alsiyaaha-alssihiyya.html" lang="ar" aria-current="true">AR · العربية</a><a href="/ru/medturizm.html" lang="ru">RU · Русский</a><a href="/az/saglamliq-turizmi.html" lang="az">AZ · Azərbaycan</a><a href="/sq/turizmi-shendetesor.html" lang="sq">SQ · Shqip</a><a href="/nl/medisch-toerisme.html" lang="nl">NL · Nederlands</a><a href="/es/turismo-sanitario.html" lang="es">ES · Español</a></div></div><button aria-controls="mobilemenu" aria-expanded="false" aria-label="Menu" class="menubtn" type="button"><span aria-hidden="true" class="hamburger-lines"></span></button></div></div><div class="mobilemenu" id="mobilemenu"><a href="/ar/alsiyaaha-alssihiyya.html">الرئيسية</a><a href="/ar/hakkimizda.html">نبذة عن الطبيب</a><a href="/ar/hizmetler.html">الخدمات</a><a href="/ar/blog.html">معلومات من الطبيب</a><a href="/ar/iletisim.html">اتصل بنا</a><a href="/ar/alsiyaaha-alssihiyya.html">المرضى الدوليون</a></div></header>
 <main>
