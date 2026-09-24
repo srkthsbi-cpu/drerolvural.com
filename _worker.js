@@ -2329,6 +2329,8 @@ async function getAdminUIHTML() {
 const LEGACY_REDIRECTS = Object.freeze({
   "/hakkimizda/basinda-biz": "/basinda-biz",
   "/hakkimizda/basinda-biz/": "/basinda-biz",
+  "/dt_benefits/basari": "/basinda-biz",
+  "/dt_benefits/basari/": "/basinda-biz",
   "/diyabet-ve-obezite": "/blog/metabolik-cerrahi-tip2-diyabet",
   "/diyabet-ve-obezite/": "/blog/metabolik-cerrahi-tip2-diyabet",
   "/10-maddede-obezite": "/blog/obezite-cerrahisi-rehberi",
