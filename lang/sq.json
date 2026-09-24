@@ -62,7 +62,7 @@
     "🇳🇱 Nederlands": "🇳🇱 Nederlands",
     "🇷🇺 Русский": "🇷🇺 Русский",
     "Doç. Dr. Erol Vural": "Doç. Dr. Erol Vural",
-    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", uzun yıllara dayanan cerrahi tecrübesiyle, başta",
+    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", me përvojë shumëvjeçare kirurgjikale, i specializuar veçanërisht",
     "obezite cerrahisi": "kirurgji bariatrike",
     "ve": "dhe",
     "metabolik cerrahi": "kirurgji metabolike",
@@ -250,6 +250,13 @@
     },
     "press.news1Summary": "Raporti shëndetësor i IHA përmbledh shpjegimet e Dr. Erol Vural për mënyrën e kryerjes së gastrektomisë sleeve, përparësitë, kufizimet dhe menaxhimin e peshës pas operacionit.",
     "press.news2Summary": "Raporti përfshin pyetje dhe përgjigje me Dr. Erol Vural rreth kirurgjisë bariatrike, vlerësimit të pacientit, kritereve të përshtatshmërisë dhe përgatitjes para operacionit.",
-    "press.news3Summary": "Raporti paraqet komentet e Dr. Erol Vural mbi kirurgjinë metabolike dhe qasjet kirurgjikale për diabetin e tipit 2. Titulli përmban një shifër suksesi prej 83%; kjo shifër nuk vlerësohet në mënyrë të pavarur në këtë faqe."
+    "press.news3Summary": "Raporti paraqet komentet e Dr. Erol Vural mbi kirurgjinë metabolike dhe qasjet kirurgjikale për diabetin e tipit 2. Titulli përmban një shifër suksesi prej 83%; kjo shifër nuk vlerësohet në mënyrë të pavarur në këtë faqe.",
+    "olmak üzere, genel cerrahinin ileri laparoskopik prosedürlerinde uzmanlaşmış önde gelen hekimlerden biridir": {
+      " Modern tıbbın gerektirdiği güncel tedavi protokollerini titizlikle takip eden Dr": {
+        " Vural, hastalarının sağlıklı, konforlu ve sürdürülebilir bir yaşama adım atmalarına rehberlik etmektedir": {
+          "": "dhe është ndër mjekët kryesorë të specializuar në procedurat e avancuara laparoskopike të kirurgjisë së përgjithshme. Dr. Vural ndjek me kujdes protokollet bashkëkohore të trajtimit dhe i udhëheq pacientët drejt një jete të shëndetshme, komode dhe të qëndrueshme."
+        }
+      }
+    }
   }
 }
