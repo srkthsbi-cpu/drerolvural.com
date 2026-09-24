@@ -98,7 +98,7 @@
     });
 
     // Menü: hem yeni data-i18n hem eski data-menu-key yapısını destekler.
-    const menuKeys = { home: 'menu.home', about: 'menu.about', services: 'menu.services', blog: 'menu.blog', contact: 'menu.contact' };
+    const menuKeys = { home: 'menu.home', about: 'menu.about', services: 'menu.services', blog: 'menu.blog', press: 'menu.press', contact: 'menu.contact' };
     document.querySelectorAll('[data-menu-key]').forEach(el => {
       const value = getPath(translations, menuKeys[el.dataset.menuKey]);
       if (value !== null && value !== undefined) setText(el, value);
@@ -175,11 +175,21 @@
   }
 
   function toggleMenu() {
-    document.getElementById('navMenu')?.classList.toggle('active');
+    const nav = document.getElementById('navMenu');
+    if (!nav) return;
+    const open = nav.classList.toggle('active');
+    document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    });
   }
 
   function closeMenu() {
     document.getElementById('navMenu')?.classList.remove('active');
+    document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Menüyü aç');
+    });
   }
 
   async function loadBanners() {
