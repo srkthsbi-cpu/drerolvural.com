@@ -270,6 +270,16 @@
     "press.sourceNote": "Mənbələr: müvafiq nəşriyyatların arxivləri",
     "press.editorialLabel": "Redaksiya qeydi:",
     "press.scientificTitle": "Elmi tədbir qeydi",
-    "press.scientificText": "Türkiyə Piylənmə Cərrahiyyəsi Assosiasiyasının 2023-cü il bildiriş kitabında Erol Vuralın elmi təqdimatı qeyd olunur."
+    "press.scientificText": "Türkiyə Piylənmə Cərrahiyyəsi Assosiasiyasının 2023-cü il bildiriş kitabında Erol Vuralın elmi təqdimatı qeyd olunur.",
+    "press.tagInterviewHealth": "Müsahibə · Səhiyyə",
+    "press.tagInterviewObesity": "Müsahibə · Piylənmə",
+    "press.tagMetabolic": "Metabolik cərrahiyyə",
+    "press.story1Title": "Mədə kiçiltmə əməliyyatı haqqında az bilinənlər",
+    "press.story2Title": "Piylənmə cərrahiyyəsi kimlər üçün nəzərdən keçirilə bilər?",
+    "press.story3Title": "İstanbulda diabet üçün metabolik cərrahiyyə haqqında xəbər",
+    "press.read": "Xəbərə keç",
+    "press.editorialTextLabel": "Redaksiya qeydi:",
+    "press.editorialTextText": "Bu səhifə seçilmiş mətbuat arxivi kimi hazırlanıb. Xəbər başlıqları və tibbi və ya statistik ifadələr müvafiq nəşriyyatlara aiddir; burada yer alması tibbi nəticəyə zəmanət vermir və müstəqil təsdiq demək deyil.",
+    "press.viewProceedings": "Bildiriş kitabına bax"
   }
 }
