@@ -262,6 +262,14 @@
     "menu.press": "In der Presse",
     "about.pressIntro": "Hier finden Sie eine Auswahl von Presseberichten und wissenschaftlichen Veranstaltungsnachweisen über Doç. Dr. Erol Vural.",
     "menu.international": "Internationale Patienten",
-    "Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.": "Es handelt sich weltweit um ein häufig angewandtes chirurgisches Verfahren zur Behandlung von Adipositas. Bei der laparoskopischen Methode werden etwa 80 % des Magens vertikal entfernt, wodurch sich das Magenvolumen und die Portionsgrößen verringern; zugleich sinkt durch die Entfernung des ghrelinhaltigen Magenabschnitts der Appetit."
+    "Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.": "Es handelt sich weltweit um ein häufig angewandtes chirurgisches Verfahren zur Behandlung von Adipositas. Bei der laparoskopischen Methode werden etwa 80 % des Magens vertikal entfernt, wodurch sich das Magenvolumen und die Portionsgrößen verringern; zugleich sinkt durch die Entfernung des ghrelinhaltigen Magenabschnitts der Appetit.",
+    "press.eyebrow": "Pressearchiv",
+    "press.title": "In der Presse",
+    "press.intro": "Ausgewählte überprüfbare Interviews, Gesundheitsberichte und berufliche Veranstaltungsnachweise über Doç. Dr. Erol Vural aus früheren Jahren.",
+    "press.selected": "Ausgewählte Berichte",
+    "press.sourceNote": "Quellen: Archive der jeweiligen Herausgeber",
+    "press.editorialLabel": "Redaktioneller Hinweis:",
+    "press.scientificTitle": "Wissenschaftlicher Veranstaltungsnachweis",
+    "press.scientificText": "Im Tagungsband 2023 der Türkischen Gesellschaft für Adipositaschirurgie ist ein wissenschaftlicher Vortrag von Erol Vural verzeichnet."
   }
 }
