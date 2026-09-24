@@ -270,6 +270,16 @@
     "press.sourceNote": "Quellen: Archive der jeweiligen Herausgeber",
     "press.editorialLabel": "Redaktioneller Hinweis:",
     "press.scientificTitle": "Wissenschaftlicher Veranstaltungsnachweis",
-    "press.scientificText": "Im Tagungsband 2023 der Türkischen Gesellschaft für Adipositaschirurgie ist ein wissenschaftlicher Vortrag von Erol Vural verzeichnet."
+    "press.scientificText": "Im Tagungsband 2023 der Türkischen Gesellschaft für Adipositaschirurgie ist ein wissenschaftlicher Vortrag von Erol Vural verzeichnet.",
+    "press.tagInterviewHealth": "Interview · Gesundheit",
+    "press.tagInterviewObesity": "Interview · Adipositas",
+    "press.tagMetabolic": "Metabolische Chirurgie",
+    "press.story1Title": "Was über die Schlauchmagen-Operation weniger bekannt ist",
+    "press.story2Title": "Für wen kommt eine bariatrische Operation infrage?",
+    "press.story3Title": "Bericht über metabolische Chirurgie bei Diabetes in Istanbul",
+    "press.read": "Zum Bericht",
+    "press.editorialTextLabel": "Redaktioneller Hinweis:",
+    "press.editorialTextText": "Diese Seite ist als ausgewähltes Pressearchiv zusammengestellt. Überschriften sowie medizinische oder statistische Angaben stammen von den jeweiligen Herausgebern; ihre Aufnahme stellt keine Garantie eines medizinischen Ergebnisses und keine unabhängige Bestätigung dar.",
+    "press.viewProceedings": "Tagungsband ansehen"
   }
 }
