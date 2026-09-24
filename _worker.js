@@ -2179,6 +2179,31 @@ async function handleSitemap(
       '/es/turismo-sanitario.html'
     ];
 
+    // Include the repository's static sitemap inventory as the canonical
+    // source for the large set of static article pages. This file is fetched
+    // through ASSETS so it bypasses this Worker and cannot recurse.
+    try {
+      const staticMapUrl = new URL('/sitemap.xml', request.url);
+      const staticMap = await env.ASSETS.fetch(new Request(staticMapUrl, request));
+      if (staticMap.ok) {
+        const xml = await staticMap.text();
+        const matches = [...xml.matchAll(/<loc>([^<]+)<\/loc>/gi)];
+        for (const m of matches) {
+          try {
+            const u = new URL(m[1], base);
+            if (u.origin !== base) continue;
+            // Sitemap must contain canonical clean URLs, not legacy .html forms.
+            u.pathname = u.pathname.replace(/\.html$/i, '') || '/';
+            // Language redirect stubs are intentionally noindex and must not be
+            // advertised in the sitemap.
+            if (/^\/(?:tr|en|de|ar|ru|az|sq|nl|es)\/index$/i.test(u.pathname)) continue;
+            if (/^\/(?:tr|en|de|ar|ru|az|sq|nl|es)\/(?:blog|hakkimizda|hizmetler|iletisim)$/i.test(u.pathname)) continue;
+            urls.push(u.pathname + (u.search || ''));
+          } catch (_) {}
+        }
+      }
+    } catch (_) {}
+
     if (env.DB) {
       try {
 
