@@ -1,0 +1,1712 @@
+[
+  {
+    "id": "recovered-alkol-diyet-kilo-yonetimi",
+    "slug": {
+      "tr": "alkol-diyet-kilo-yonetimi"
+    },
+    "title": {
+      "tr": "Alkol ve Diyet: Kilo Yönetimi ve Metabolik Sağlık Açısından Nelere Dikkat Edilmeli?"
+    },
+    "description": {
+      "tr": "Alkol tüketimi ile kilo yönetimi arasındaki ilişki yalnızca içeceğin kalori miktarı üzerinden değerlendirilmemelidir. Alkol enerji içerir; ayrıca bazı alkollü içeceklerde şeker ve karbonhidrat bulunabilir. Bunun yanında alkol iştahı, öğün s…"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-alkol-ve-beslenme",
+    "slug": {
+      "tr": "alkol-ve-beslenme"
+    },
+    "title": {
+      "tr": "Alkol ve Beslenme: Kilo ve Metabolik Sağlık Açısından Değerlendirme"
+    },
+    "description": {
+      "tr": "Alkol beslenmeyi nasıl etkiler?"
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-bariatrik-cerrahi-sonrasi-aclik-ve-yeme-istegi",
+    "slug": {
+      "tr": "bariatrik-cerrahi-sonrasi-aclik-ve-yeme-istegi"
+    },
+    "title": {
+      "tr": "Ameliyat Sonrası Olmamış Gibi Açlık Hissi ve Yeme İsteği"
+    },
+    "description": {
+      "tr": "Ameliyattan sonra neden açlık hissedilebilir?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-bariatrik-cerrahi-sonrasi-yeme-davranisi-ve-beslenme",
+    "slug": {
+      "tr": "bariatrik-cerrahi-sonrasi-yeme-davranisi-ve-beslenme"
+    },
+    "title": {
+      "tr": "Ameliyat Sonrası Oluşabilecek Yeme Bozuklukları"
+    },
+    "description": {
+      "tr": "Obezite cerrahisi sonrasında midenin anatomik ve işlevsel özellikleri değiştiği için kişinin yeme biçiminin de değişmesi beklenir. Bununla birlikte bazı kişilerde kontrolsüz yeme, hızlı yeme, duygusal yeme, tıkınırcasına yeme davranışları v…"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-bebeklerde-yeme-beslenme-sorunlari",
+    "slug": {
+      "tr": "bebeklerde-yeme-beslenme-sorunlari"
+    },
+    "title": {
+      "tr": "Bebeklerde Yeme Bozukluğu"
+    },
+    "description": {
+      "tr": "Bebeklerde beslenme sorunları; emme, yutma, besinleri kabul etme veya beslenme sırasında davranışsal güçlükler şeklinde ortaya çıkabilir. Bebeklik döneminde normal gelişim ile sorun düşündüren durumları ayırmak için çocuk hekimi değerlendir…"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-beslenme-destegi-ve-klinik-beslenme",
+    "slug": {
+      "tr": "beslenme-destegi-ve-klinik-beslenme"
+    },
+    "title": {
+      "tr": "Beslenme Desteği Kimlere Verilir, Nasıl Uygulanır?"
+    },
+    "description": {
+      "tr": "Beslenme desteği, normal yoldan yeterli enerji ve besin öğesi alınamadığında veya gereksinim arttığında klinik değerlendirme sonucunda gündeme gelebilir."
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-beslenme-ve-ruh-sagligi",
+    "slug": {
+      "tr": "beslenme-ve-ruh-sagligi"
+    },
+    "title": {
+      "tr": "Tükettiğimiz Besinler ve Ruhsal Dengemiz Üzerindeki Etkileri"
+    },
+    "description": {
+      "tr": "Beslenme yalnızca vücudun enerji ve besin öğesi ihtiyacını karşılayan bir süreç değildir. Günlük yeme düzeni, kişinin yaşam biçimi, stres düzeyi ve yeme davranışlarıyla birlikte değerlendirilir. Bu nedenle beslenme ile ruhsal iyilik hali ar…"
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-cocuklarda-ve-genclerde-vucut-kitle-indeksi-bmi",
+    "slug": {
+      "tr": "cocuklarda-ve-genclerde-vucut-kitle-indeksi-bmi"
+    },
+    "title": {
+      "tr": "Yetişkinler, Çocuklar ve Gençler İçin BMI Ölçümü"
+    },
+    "description": {
+      "tr": "Vücut kitle indeksi (VKİ/BMI), boy ve kilo kullanılarak hesaplanan bir ölçümdür. Ancak çocuklar ve gençlerde değerlendirme yetişkinlerden farklıdır; yaş ve cinsiyet gibi değişkenler dikkate alınır."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-cocuklarda-yeme-davranislari",
+    "slug": {
+      "tr": "cocuklarda-yeme-davranislari"
+    },
+    "title": {
+      "tr": "Çocuklarda Yeme Davranışları"
+    },
+    "description": {
+      "tr": "Çocukların yeme davranışı büyüme ve gelişim dönemlerine göre değişebilir. İştahın günler arasında farklılık göstermesi tek başına hastalık anlamına gelmez. Ancak kalıcı veya belirgin değişiklikler değerlendirme gerektirebilir."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-belirtileri",
+    "slug": {
+      "tr": "diyabet-belirtileri"
+    },
+    "title": {
+      "tr": "Şeker Hastalığı Belirtileri: Diyabetin Erken İşaretleri Nelerdir?"
+    },
+    "description": {
+      "tr": "Diyabet hangi belirtilere yol açabilir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-beslenmesi-kan-sekeri-kontrolu",
+    "slug": {
+      "tr": "diyabet-beslenmesi-kan-sekeri-kontrolu"
+    },
+    "title": {
+      "tr": "Diyabeti Kontrol Etmek İçin En İyi 15 Yiyecek Var mı?"
+    },
+    "description": {
+      "tr": "Diyabet yönetiminde tek bir yiyeceğin mucizevi biçimde kan şekerini düzeltmesi beklenmemelidir. Buna karşılık beslenme düzeninin tamamı, karbonhidratların niteliği ve miktarı, lif tüketimi, porsiyonlar, fiziksel aktivite, uyku ve kullanılan…"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-genetik-mi",
+    "slug": {
+      "tr": "diyabet-genetik-mi"
+    },
+    "title": {
+      "tr": "Şeker Hastalığı Genetik mi? Tip 1 ve Tip 2 Diyabette Kalıtımın Rolü"
+    },
+    "description": {
+      "tr": "Diyabet tamamen genetik midir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-hakkinda-bilinmesi-gerekenler",
+    "slug": {
+      "tr": "diyabet-hakkinda-bilinmesi-gerekenler"
+    },
+    "title": {
+      "tr": "Diyabet Hakkında Bilinmesi Gerekenler"
+    },
+    "description": {
+      "tr": "Diyabet, kan glukoz düzeylerinin düzenlenmesini etkileyen kronik bir metabolik hastalık grubudur. Tip 1, tip 2 ve gebelik diyabeti farklı özelliklere sahiptir."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-hakkinda-dogru-bilinen-yanlislar",
+    "slug": {
+      "tr": "diyabet-hakkinda-dogru-bilinen-yanlislar"
+    },
+    "title": {
+      "tr": "Şeker Hastalığı ile İlgili Yanlış Algılar"
+    },
+    "description": {
+      "tr": "Diyabet hakkında toplumda yaygın ancak her durumda doğru olmayan birçok inanış bulunur."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-komplikasyonlari",
+    "slug": {
+      "tr": "diyabet-komplikasyonlari"
+    },
+    "title": {
+      "tr": "Şeker Hastalığında Görülen Komplikasyonlar"
+    },
+    "description": {
+      "tr": "Diyabet komplikasyonları nelerdir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-kuru-uzum-tuketimi",
+    "slug": {
+      "tr": "diyabet-kuru-uzum-tuketimi"
+    },
+    "title": {
+      "tr": "Diyabetli İnsanlar Kuru Üzüm Yiyebilir mi?"
+    },
+    "description": {
+      "tr": "Diyabet tanısı alan kişilerde en sık sorulan sorulardan biri hangi meyvelerin ve kuru meyvelerin tüketilebileceğidir. Kuru üzüm bu sorunun sık gündeme gelen örneklerinden biridir. Kuru üzüm tamamen yasaklanması gereken bir yiyecek olarak el…"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-tedavisi-egzersiz-ve-metabolik-cerrahi",
+    "slug": {
+      "tr": "diyabet-tedavisi-egzersiz-ve-metabolik-cerrahi"
+    },
+    "title": {
+      "tr": "Şeker Hastalığı Tedavisinde Egzersiz ve Cerrahi Müdahaleler"
+    },
+    "description": {
+      "tr": "Diyabet tedavisi; diyabet tipine, kan şekeri kontrolüne, eşlik eden hastalıklara ve kişinin genel durumuna göre planlanır."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-tipleri",
+    "slug": {
+      "tr": "diyabet-tipleri"
+    },
+    "title": {
+      "tr": "Şeker Hastalığı Tipleri"
+    },
+    "description": {
+      "tr": "Diyabetin başlıca tipleri tip 1, tip 2 ve gebelik diyabetidir. Ayrıca bazı özel diyabet türleri de bulunur."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-ve-agiz-dis-sagligi",
+    "slug": {
+      "tr": "diyabet-ve-agiz-dis-sagligi"
+    },
+    "title": {
+      "tr": "Şeker Hastalarında Diş Problemleri Görülmesi"
+    },
+    "description": {
+      "tr": "Diyabet ile ağız ve diş sağlığı arasında ilişki bulunabilir. Kan şekeri kontrolünün bozulması ve ağız bakımındaki sorunlar diş eti ve ağız dokularındaki problemlerin yönetimini zorlaştırabilir."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-ve-ayak-sagligi",
+    "slug": {
+      "tr": "diyabet-ve-ayak-sagligi"
+    },
+    "title": {
+      "tr": "Diyabet ve Ayak Sağlığı"
+    },
+    "description": {
+      "tr": "Diyabette ayak sağlığı, özellikle uzun süreli hastalık ve sinir/damar etkilenmesi bulunan kişilerde önemlidir."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-ve-bas-agrisi",
+    "slug": {
+      "tr": "diyabet-ve-bas-agrisi"
+    },
+    "title": {
+      "tr": "Diyabet Baş Ağrısına Sebep Olur mu? Kan Şekeri ve Baş Ağrısı İlişkisi"
+    },
+    "description": {
+      "tr": "Diyabet baş ağrısına neden olabilir mi?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-ve-cinsel-saglik",
+    "slug": {
+      "tr": "diyabet-ve-cinsel-saglik"
+    },
+    "title": {
+      "tr": "Şeker Hastalığının Cinsellik Üzerine Etkileri"
+    },
+    "description": {
+      "tr": "Diyabet cinsel sağlığı etkileyebilir mi?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-ve-depresyon",
+    "slug": {
+      "tr": "diyabet-ve-depresyon"
+    },
+    "title": {
+      "tr": "Diyabet ve Depresyon Etkileşimi"
+    },
+    "description": {
+      "tr": "Diyabet ve ruh sağlığı arasında nasıl bir ilişki vardır?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-ve-kalp-damar-hastaligi",
+    "slug": {
+      "tr": "diyabet-ve-kalp-damar-hastaligi"
+    },
+    "title": {
+      "tr": "Diyabet ve Kalp Hastalığı Arasındaki Bağlantı"
+    },
+    "description": {
+      "tr": "Diyabet kalp hastalığı riskini etkiler mi?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-ve-kasinti",
+    "slug": {
+      "tr": "diyabet-ve-kasinti"
+    },
+    "title": {
+      "tr": "Diyabet Kaşıntıya Sebep Olur mu?"
+    },
+    "description": {
+      "tr": "Diyabet ile kaşıntı arasında ilişki var mı?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-ve-yara-iyilesmesi",
+    "slug": {
+      "tr": "diyabet-ve-yara-iyilesmesi"
+    },
+    "title": {
+      "tr": "Diyabet ve Yara İyileşmesi: Yaralar Neden Geç İyileşebilir?"
+    },
+    "description": {
+      "tr": "Diyabet yaraların iyileşmesini etkileyebilir mi?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabet-yasam-suresi-ve-komplikasyonlar",
+    "slug": {
+      "tr": "diyabet-yasam-suresi-ve-komplikasyonlar"
+    },
+    "title": {
+      "tr": "Şeker Hastaları Uzun mu Yaşıyor? Diyabet Yaşam Süresini Nasıl Etkiler?"
+    },
+    "description": {
+      "tr": "Diyabet yaşam süresini etkiler mi?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabete-bagli-ayak-sisligi",
+    "slug": {
+      "tr": "diyabete-bagli-ayak-sisligi"
+    },
+    "title": {
+      "tr": "Diyabete Bağlı Şişen Ayaklar: Neden Olur, Ne Zaman Doktora Başvurulmalı?"
+    },
+    "description": {
+      "tr": "Diyabette ayak şişmesi neden olabilir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabetin-bedensel-ve-ruhsal-etkileri",
+    "slug": {
+      "tr": "diyabetin-bedensel-ve-ruhsal-etkileri"
+    },
+    "title": {
+      "tr": "Şeker Hastalığının Oluşturabileceği Bedensel ve Ruhsal Sorunlar"
+    },
+    "description": {
+      "tr": "Diyabet yalnızca kan şekeri hastalığı mıdır?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabetin-organlara-etkileri-ve-komplikasyonlari",
+    "slug": {
+      "tr": "diyabetin-organlara-etkileri-ve-komplikasyonlari"
+    },
+    "title": {
+      "tr": "Şeker Hastalığının Zarar Verebildiği Organlar ve Komplikasyonlar"
+    },
+    "description": {
+      "tr": "Diyabet hangi organları etkileyebilir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabetin-vucut-uzerindeki-etkileri",
+    "slug": {
+      "tr": "diyabetin-vucut-uzerindeki-etkileri"
+    },
+    "title": {
+      "tr": "Diyabetin Vücut Üzerindeki Etkileri"
+    },
+    "description": {
+      "tr": "Diyabet vücudu nasıl etkiler?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabetli-cocuklarda-okulda-beslenme",
+    "slug": {
+      "tr": "diyabetli-cocuklarda-okulda-beslenme"
+    },
+    "title": {
+      "tr": "Diyabetli Çocuklar İçin Okulda Sağlıklı Beslenme Rehberi"
+    },
+    "description": {
+      "tr": "Diyabetli çocuk okulda nasıl beslenmeli?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabette-bitkisel-urunler-ve-beslenme",
+    "slug": {
+      "tr": "diyabette-bitkisel-urunler-ve-beslenme"
+    },
+    "title": {
+      "tr": "Şeker Hastalığı İçin Bitki Önerileri: Bitkisel Ürünler Gerçekten Faydalı mı?"
+    },
+    "description": {
+      "tr": "Diyabette bitkisel ürünlere yaklaşım nasıl olmalı?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabette-kan-sekeri-degerleri",
+    "slug": {
+      "tr": "diyabette-kan-sekeri-degerleri"
+    },
+    "title": {
+      "tr": "Diyabette Kan Şekeri Değerleri"
+    },
+    "description": {
+      "tr": "Diyabette kan şekeri hedefleri kişinin yaşı, diyabet tipi, tedavisi, gebelik durumu ve diğer sağlık özelliklerine göre değişebilir."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-diyabette-saglikli-beslenme",
+    "slug": {
+      "tr": "diyabette-saglikli-beslenme"
+    },
+    "title": {
+      "tr": "Diyabette İyi ve Kötü Beslenme Türleri: Günlük Beslenme Nasıl Düzenlenir?"
+    },
+    "description": {
+      "tr": "Diyabette beslenmenin amacı yalnızca şekeri tamamen hayatımızdan çıkarmak değildir. Toplam beslenme düzeninin kan şekeri kontrolüne, vücut ağırlığına, kalp-damar risklerine ve kişinin yaşam tarzına uygun olması hedeflenir."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-fazla-seker-tuketimi-ve-diyabet-riski",
+    "slug": {
+      "tr": "fazla-seker-tuketimi-ve-diyabet-riski"
+    },
+    "title": {
+      "tr": "Çok Fazla Şeker Tüketmek Diyabet Yapar mı?"
+    },
+    "description": {
+      "tr": "Çok şeker yemek doğrudan diyabet yapar mı?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-fazla-tuz-insulin-direnci-ve-beslenme",
+    "slug": {
+      "tr": "fazla-tuz-insulin-direnci-ve-beslenme"
+    },
+    "title": {
+      "tr": "Fazla Tuz İnsülin Direncini Artırır mı?"
+    },
+    "description": {
+      "tr": "Tuz ve insülin direnci arasında ilişki var mı?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-gastrik-bypass-sonrasi-beslenme",
+    "slug": {
+      "tr": "gastrik-bypass-sonrasi-beslenme"
+    },
+    "title": {
+      "tr": "Gastrik Bypass Sonrası Püre ve Katı Beslenme"
+    },
+    "description": {
+      "tr": "Gastrik bypass sonrası beslenme neden aşamalıdır?"
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-gebelikte-diyabet-beslenmesi",
+    "slug": {
+      "tr": "gebelikte-diyabet-beslenmesi"
+    },
+    "title": {
+      "tr": "Gestasyonel Diyabette Ne Yiyebilirim?"
+    },
+    "description": {
+      "tr": "Gebelik diyabetinde beslenme, anne ve bebeğin gereksinimleri gözetilerek planlanmalıdır."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-gebelikte-diyabet-ve-bebek-sagligi",
+    "slug": {
+      "tr": "gebelikte-diyabet-ve-bebek-sagligi"
+    },
+    "title": {
+      "tr": "Gebelikte Diyabetin Bebeğe Etkileri"
+    },
+    "description": {
+      "tr": "Gebelik diyabeti nedir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-gizli-yeme-ve-kontrolsuz-yeme-davranisi",
+    "slug": {
+      "tr": "gizli-yeme-ve-kontrolsuz-yeme-davranisi"
+    },
+    "title": {
+      "tr": "Gizli Yeme Bağımlılığı"
+    },
+    "description": {
+      "tr": "Kontrolsüz yeme veya gizli yeme davranışı, kişinin yeme davranışını çevresinden saklamasına ve yoğun suçluluk yaşamasına neden olabilir."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-hashimoto-hipotiroidi-ve-obezite",
+    "slug": {
+      "tr": "hashimoto-hipotiroidi-ve-obezite"
+    },
+    "title": {
+      "tr": "Hashimoto Hastalığı, Hipotiroidi ve Obezite"
+    },
+    "description": {
+      "tr": "Hashimoto hastalığı nedir?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-insulin-direnci",
+    "slug": {
+      "tr": "insulin-direnci"
+    },
+    "title": {
+      "tr": "İnsülin Direnci Nedir? Belirtileri, Nedenleri ve Değerlendirme"
+    },
+    "description": {
+      "tr": "İnsülin direnci nedir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-insulin-direnci-beslenme-ve-diyet",
+    "slug": {
+      "tr": "insulin-direnci-beslenme-ve-diyet"
+    },
+    "title": {
+      "tr": "İnsülin Direnci İçin Diyet: Beslenme ile Metabolik Sağlık Nasıl Desteklenir?"
+    },
+    "description": {
+      "tr": "İnsülin direnci nedir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-insulin-nedir-ve-ne-ise-yarar",
+    "slug": {
+      "tr": "insulin-nedir-ve-ne-ise-yarar"
+    },
+    "title": {
+      "tr": "İnsülin Nedir, Neden Önemlidir?"
+    },
+    "description": {
+      "tr": "İnsülin, pankreasın beta hücrelerinden salgılanan ve kan glukozunun hücreler tarafından kullanılmasına yardımcı olan temel bir hormondur."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-insulin-seviyesi-ve-insulin-direnci",
+    "slug": {
+      "tr": "insulin-seviyesi-ve-insulin-direnci"
+    },
+    "title": {
+      "tr": "İnsülin Seviyesini Düşürmenin Yolları: İnsülin Direnci Nasıl Yönetilir?"
+    },
+    "description": {
+      "tr": "İnsülin nedir ve neden önemlidir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-kabizlik-ve-beslenme",
+    "slug": {
+      "tr": "kabizlik-ve-beslenme"
+    },
+    "title": {
+      "tr": "Kabızlık ve Beslenme: Kabızlığı Etkileyebilen Beslenme Alışkanlıkları"
+    },
+    "description": {
+      "tr": "Kabızlık nedir?"
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-kan-sekeri-kontrolu-beslenme",
+    "slug": {
+      "tr": "kan-sekeri-kontrolu-beslenme"
+    },
+    "title": {
+      "tr": "Kan Şekerini Kontrol Altına Almaya Yardımcı Olabilecek Besinler"
+    },
+    "description": {
+      "tr": "Kan şekerini tek başına düşüren mucizevi besin var mı?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-kan-sekerini-yukselten-besinler",
+    "slug": {
+      "tr": "kan-sekerini-yukselten-besinler"
+    },
+    "title": {
+      "tr": "Kan Şekerini Yükselten Besinler Nelerdir?"
+    },
+    "description": {
+      "tr": "Kan şekerini hangi besinler etkiler?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-kilo-alma-davranisi-ve-beslenme",
+    "slug": {
+      "tr": "kilo-alma-davranisi-ve-beslenme"
+    },
+    "title": {
+      "tr": "Bireylerde Kilo Alma Davranışı"
+    },
+    "description": {
+      "tr": "Kilo değişimi birçok faktörün birlikte etkisiyle ortaya çıkabilir. Yeme davranışı, fiziksel aktivite, uyku, stres, çevresel koşullar, kullanılan bazı ilaçlar ve bazı sağlık sorunları kilo artışına katkıda bulunabilir."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-kilo-alma-ve-obezitenin-nedenleri",
+    "slug": {
+      "tr": "kilo-alma-ve-obezitenin-nedenleri"
+    },
+    "title": {
+      "tr": "Kilo Alma ve Obezitenin Önde Gelen 10 Nedeni"
+    },
+    "description": {
+      "tr": "Obezite neden yalnızca fazla yemekle açıklanamaz?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-kilo-kaybi-sonrasi-yeme-ataklari-ve-duygusal-yeme",
+    "slug": {
+      "tr": "kilo-kaybi-sonrasi-yeme-ataklari-ve-duygusal-yeme"
+    },
+    "title": {
+      "tr": "Kilo Kaybı Sonrasında Yeme Atakları ve Suçluluk Duygusu"
+    },
+    "description": {
+      "tr": "Kilo verdikten sonra yeme atakları neden yaşanabilir?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-kilo-kaybi-ve-psikolojik-sosyal-degisiklikler",
+    "slug": {
+      "tr": "kilo-kaybi-ve-psikolojik-sosyal-degisiklikler"
+    },
+    "title": {
+      "tr": "Kilo Kaybının Sosyal ve Psikolojik Etkileri"
+    },
+    "description": {
+      "tr": "Kilo kaybı kişinin hareketliliği, beden algısı, kıyafet seçimi ve sosyal yaşamı üzerinde değişiklikler oluşturabilir. Bu değişiklikler herkes tarafından aynı şekilde deneyimlenmez."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-kolesterol-yuksekligi-ve-beslenme",
+    "slug": {
+      "tr": "kolesterol-yuksekligi-ve-beslenme"
+    },
+    "title": {
+      "tr": "Hiperlipidemi ve Kolesterol Yüksekliğinde Beslenme"
+    },
+    "description": {
+      "tr": "Hiperlipidemi, kandaki belirli yağların, özellikle LDL kolesterol veya trigliseridlerin yüksekliği gibi durumları ifade eder. Beslenme, fiziksel aktivite, genetik özellikler ve bazı hastalıklar lipid düzeylerini etkileyebilir."
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-laktoz-intoleransi-ve-beslenme",
+    "slug": {
+      "tr": "laktoz-intoleransi-ve-beslenme"
+    },
+    "title": {
+      "tr": "Laktoz İntoleransı ve Beslenme"
+    },
+    "description": {
+      "tr": "Laktoz intoleransı nedir?"
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-menopoz-doneminde-beslenme",
+    "slug": {
+      "tr": "menopoz-doneminde-beslenme"
+    },
+    "title": {
+      "tr": "Menopoz Döneminde Beslenme"
+    },
+    "description": {
+      "tr": "Menopoz döneminde hormonal değişiklikler, yaşla ilişkili metabolik değişimler ve vücut kompozisyonundaki değişiklikler kilo yönetimini etkileyebilir."
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-metabolik-cerrahi-riskleri-ve-hasta-degerlendirmesi",
+    "slug": {
+      "tr": "metabolik-cerrahi-riskleri-ve-hasta-degerlendirmesi"
+    },
+    "title": {
+      "tr": "Şeker Hastalığı Ameliyatı Riskleri: Metabolik Cerrahi Öncesi Neler Değerlendirilir?"
+    },
+    "description": {
+      "tr": "Metabolik cerrahi nedir?"
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-mide-botoksu-kimler-icin-uygun-degildir",
+    "slug": {
+      "tr": "mide-botoksu-kimler-icin-uygun-degildir"
+    },
+    "title": {
+      "tr": "Mide Botoksu Kimler İçin Uygun Değildir?"
+    },
+    "description": {
+      "tr": "Mide botoksu, endoskopik yolla mide bölgesine botulinum toksini uygulanması esasına dayanan bir işlemdir. Her kilo verme arayışında veya her hasta grubunda aynı şekilde değerlendirilmemelidir."
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-morbid-obezite-nedir",
+    "slug": {
+      "tr": "morbid-obezite-nedir"
+    },
+    "title": {
+      "tr": "Morbid Obezite Nedir, Kimlere Morbid Obez Denir?"
+    },
+    "description": {
+      "tr": "Morbid obezite, ileri derecede obeziteyi ifade etmek için kullanılan bir klinik terimdir. Günümüzde değerlendirme yalnızca bir etiket üzerinden değil, kişinin vücut ölçümleri, eşlik eden hastalıkları ve genel sağlık durumu ile birlikte yapı…"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-ameliyati-sonrasi-uzun-donem-takip",
+    "slug": {
+      "tr": "obezite-ameliyati-sonrasi-uzun-donem-takip"
+    },
+    "title": {
+      "tr": "Obezite Ameliyatı Sonrası Başarı Sağlanmasının Adımları"
+    },
+    "description": {
+      "tr": "Bariatrik cerrahide uzun dönem sonuç yalnızca ameliyat tekniğine bağlı değildir. Beslenme, hareket, takip ve davranış değişiklikleri birlikte önem taşır."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-cerrahisi-sonrasi-depresyon-ve-psikolojik-destek",
+    "slug": {
+      "tr": "obezite-cerrahisi-sonrasi-depresyon-ve-psikolojik-destek"
+    },
+    "title": {
+      "tr": "Mide Küçültme Ameliyatı Sonrası Depresyon ve Duygusal Değişimler"
+    },
+    "description": {
+      "tr": "Ameliyat sonrası ruh hali neden değişebilir?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-cerrahisi-sonrasi-kabizlik",
+    "slug": {
+      "tr": "obezite-cerrahisi-sonrasi-kabizlik"
+    },
+    "title": {
+      "tr": "Obezite Cerrahisi Sonrası Kabızlık ve Alınacak Önlemler"
+    },
+    "description": {
+      "tr": "Ameliyat sonrası beslenme değişiklikleri, düşük sıvı alımı, hareket azalması veya kullanılan bazı ilaçlar kabızlığa katkıda bulunabilir."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-cerrahisi-sonrasi-takip-ve-olasi-sorunlar",
+    "slug": {
+      "tr": "obezite-cerrahisi-sonrasi-takip-ve-olasi-sorunlar"
+    },
+    "title": {
+      "tr": "Obezite Cerrahisi Sonrası Yaşanabilecek Sorunlar ve Takip"
+    },
+    "description": {
+      "tr": "Ameliyat sonrası takip neden önemlidir?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-cerrahisi-sonrasi-vitamin-mineral-takibi",
+    "slug": {
+      "tr": "obezite-cerrahisi-sonrasi-vitamin-mineral-takibi"
+    },
+    "title": {
+      "tr": "Obezite Ameliyatından Sonra Vitamin İhtiyacı"
+    },
+    "description": {
+      "tr": "Bariatrik cerrahi sonrasında daha küçük porsiyonlarla beslenme ve ameliyat türüne bağlı değişiklikler nedeniyle bazı vitamin ve minerallerin takibi önem kazanabilir. Bu nedenle ameliyat sonrası süreç yalnızca kilo kaybının izlenmesinden iba…"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-genetik-mi-yasam-tarzi-mi",
+    "slug": {
+      "tr": "obezite-genetik-mi-yasam-tarzi-mi"
+    },
+    "title": {
+      "tr": "Şişmanlık Genetik mi, Yaşam Tarzı mı?"
+    },
+    "description": {
+      "tr": "Obezite tek bir nedene indirgenemez. Genetik yatkınlık, çevresel koşullar, beslenme, fiziksel aktivite, uyku ve bazı tıbbi durumlar birlikte rol oynayabilir."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-hesaplama-bmi-vucut-kitle-indeksi",
+    "slug": {
+      "tr": "obezite-hesaplama-bmi-vucut-kitle-indeksi"
+    },
+    "title": {
+      "tr": "Obezite Hesaplama"
+    },
+    "description": {
+      "tr": "Obezite değerlendirmesinde vücut kitle indeksi (VKİ/BMI), boy ve kilo kullanılarak hesaplanan pratik bir tarama ölçümüdür."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-tedavisinde-ilaclar",
+    "slug": {
+      "tr": "obezite-tedavisinde-ilaclar"
+    },
+    "title": {
+      "tr": "Obezite ile Mücadelede İlaç Tedavisi"
+    },
+    "description": {
+      "tr": "Obezitede ilaç tedavisi ne zaman düşünülür?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-ve-cinsel-saglik",
+    "slug": {
+      "tr": "obezite-ve-cinsel-saglik"
+    },
+    "title": {
+      "tr": "Obezite ve Cinsellik İlişkisi: Kilo Fazlalığı Cinsel Sağlığı Etkiler mi?"
+    },
+    "description": {
+      "tr": "Obezite cinsel sağlığı etkileyebilir mi?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezite-ve-hipertansiyon",
+    "slug": {
+      "tr": "obezite-ve-hipertansiyon"
+    },
+    "title": {
+      "tr": "Obezite ve Hipertansiyon Riskinizi Nasıl Artırabilir?"
+    },
+    "description": {
+      "tr": "Obezite ile hipertansiyon arasında klinik bir ilişki bulunur. Fazla yağ dokusu, metabolik değişiklikler ve yaşam tarzı faktörleri kan basıncını etkileyebilir."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-obezitenin-psikolojik-etkenleri-ve-yeme-davranisi",
+    "slug": {
+      "tr": "obezitenin-psikolojik-etkenleri-ve-yeme-davranisi"
+    },
+    "title": {
+      "tr": "Obezitenin Psikolojik Nedenleri ve Yeme Davranışı"
+    },
+    "description": {
+      "tr": "Obezite yalnızca beslenmeyle açıklanabilir mi?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-seker-hastaligi-nedenleri",
+    "slug": {
+      "tr": "seker-hastaligi-nedenleri"
+    },
+    "title": {
+      "tr": "Şeker Hastalığı Neden Olur? Tip 1, Tip 2 ve Diğer Diyabet Türleri"
+    },
+    "description": {
+      "tr": "Diyabet neden ortaya çıkar?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-stres-ve-kilo-yonetimi",
+    "slug": {
+      "tr": "stres-ve-kilo-yonetimi"
+    },
+    "title": {
+      "tr": "Stresli Dönemlerde Kilo Verme Mücadelesi"
+    },
+    "description": {
+      "tr": "Stres, uyku ve yeme davranışlarını etkileyerek kilo yönetimini zorlaştırabilir."
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-1-diyabet-tedavi-yaklasimlari",
+    "slug": {
+      "tr": "tip-1-diyabet-tedavi-yaklasimlari"
+    },
+    "title": {
+      "tr": "Tip 1 Diyabet Hastaları İçin Yeni Tedavi Yöntemi"
+    },
+    "description": {
+      "tr": "Tip 1 diyabet tedavisi bilimsel gelişmelerle birlikte değişen ve gelişen bir alandır. Ancak yeni bir yöntemin uygunluğu kişinin klinik durumuna göre değerlendirilmelidir."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-1-diyabet-ve-metabolik-cerrahi",
+    "slug": {
+      "tr": "tip-1-diyabet-ve-metabolik-cerrahi"
+    },
+    "title": {
+      "tr": "Tip 1 Diyabet Hastalarına Diyabet Ameliyatı Uygulanabilir mi?"
+    },
+    "description": {
+      "tr": "Tip 1 diyabet ile tip 2 diyabet aynı mekanizmaya sahip değildir. Metabolik cerrahinin temel kullanım alanı tip 2 diyabet ve obezite birlikteliğidir; tip 1 diyabette yaklaşım farklıdır."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-1-ve-tip-2-diyabet-ayrimi",
+    "slug": {
+      "tr": "tip-1-ve-tip-2-diyabet-ayrimi"
+    },
+    "title": {
+      "tr": "Tip 2 Diyabet Tip 1 Diyabete Dönüşür mü?"
+    },
+    "description": {
+      "tr": "Tip 2 diyabet tip 1 diyabete dönüşür mü?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-1-ve-tip-2-diyabet-farklari",
+    "slug": {
+      "tr": "tip-1-ve-tip-2-diyabet-farklari"
+    },
+    "title": {
+      "tr": "Tip 1 ve Tip 2 Diyabet Arasındaki Farklar Nelerdir?"
+    },
+    "description": {
+      "tr": "Tip 1 ve tip 2 diyabet aynı hastalık mıdır?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-2-diyabet-bobrek-ve-idrar-yollari-sagligi",
+    "slug": {
+      "tr": "tip-2-diyabet-bobrek-ve-idrar-yollari-sagligi"
+    },
+    "title": {
+      "tr": "Tip 2 Diyabette Mesane ve Böbrekler"
+    },
+    "description": {
+      "tr": "Tip 2 diyabet uzun vadede böbrek ve idrar yolları sağlığıyla ilişkili sorunların riskini artırabilir."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-2-diyabet-cinsel-saglik",
+    "slug": {
+      "tr": "tip-2-diyabet-cinsel-saglik"
+    },
+    "title": {
+      "tr": "Tip 2 Diyabet ve Cinsel Sağlık"
+    },
+    "description": {
+      "tr": "Tip 2 diyabet cinsel sağlığı neden etkileyebilir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-2-diyabet-remisyonu-ve-metabolik-saglik",
+    "slug": {
+      "tr": "tip-2-diyabet-remisyonu-ve-metabolik-saglik"
+    },
+    "title": {
+      "tr": "Tip 2 Diyabet Tersine Çevrilebilir mi? Remisyon Kavramı"
+    },
+    "description": {
+      "tr": "Tip 2 diyabet tamamen ortadan kalkar mı?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-2-diyabet-riskini-azaltma",
+    "slug": {
+      "tr": "tip-2-diyabet-riskini-azaltma"
+    },
+    "title": {
+      "tr": "Tip 2 Diyabeti Önlemenin 13 Yolu"
+    },
+    "description": {
+      "tr": "Tip 2 diyabet riski; genetik yatkınlık, fazla kilo, fiziksel hareketsizlik ve bazı yaşam tarzı faktörleriyle ilişkilidir."
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-2-diyabette-ketojenik-diyet",
+    "slug": {
+      "tr": "tip-2-diyabette-ketojenik-diyet"
+    },
+    "title": {
+      "tr": "Tip 2 Diyabette Ketojenik Diyet Nasıl Değerlendirilmelidir?"
+    },
+    "description": {
+      "tr": "Ketojenik diyet nedir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-2-diyabette-kilo-kaybi-ve-metabolik-saglik",
+    "slug": {
+      "tr": "tip-2-diyabette-kilo-kaybi-ve-metabolik-saglik"
+    },
+    "title": {
+      "tr": "Tip 2 Diyabet Yönetiminde Kilo Kaybı Ne Kadar Önemlidir?"
+    },
+    "description": {
+      "tr": "Kilo kaybı tip 2 diyabeti nasıl etkileyebilir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tip-2-diyabetten-korunma-ve-risk-azaltma",
+    "slug": {
+      "tr": "tip-2-diyabetten-korunma-ve-risk-azaltma"
+    },
+    "title": {
+      "tr": "Şeker Hastalığından Korunmanın Yolları"
+    },
+    "description": {
+      "tr": "Tip 2 diyabetten korunmak mümkün mü?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tiroid-hastaliklarinda-beslenme",
+    "slug": {
+      "tr": "tiroid-hastaliklarinda-beslenme"
+    },
+    "title": {
+      "tr": "Tiroid Hastalıklarında Beslenme: Hangi Noktalara Dikkat Edilmeli?"
+    },
+    "description": {
+      "tr": "Tiroid hastalıklarında beslenme neden önemlidir?"
+    },
+    "category": {
+      "tr": "Sağlıklı Yaşam ve Beslenme"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tup-mide-ameliyati-olasi-riskler-ve-komplikasyonlar",
+    "slug": {
+      "tr": "tup-mide-ameliyati-olasi-riskler-ve-komplikasyonlar"
+    },
+    "title": {
+      "tr": "Sleeve Gastrektomi Komplikasyonları"
+    },
+    "description": {
+      "tr": "Tüp mide ameliyatı cerrahi bir işlemdir ve her cerrahi işlem gibi erken ve geç dönemde bazı riskler taşıyabilir."
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tup-mide-ameliyati-sonrasi-beslenme",
+    "slug": {
+      "tr": "tup-mide-ameliyati-sonrasi-beslenme"
+    },
+    "title": {
+      "tr": "Tüp Mide Sonrası Diyette Neler Yenir ve Nelerden Kaçınılır?"
+    },
+    "description": {
+      "tr": "Tüp mide ameliyatından sonra beslenme düzeni ameliyat öncesindeki alışkanlıklardan farklılaşır. Midenin yeni kapasitesine uyum sağlamak ve yeterli sıvı-besin alımını sürdürebilmek için beslenme aşamalı biçimde ilerletilir."
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tup-mide-ameliyati-sonrasi-gunluk-yasama-donus",
+    "slug": {
+      "tr": "tup-mide-ameliyati-sonrasi-gunluk-yasama-donus"
+    },
+    "title": {
+      "tr": "Tüp Mide Ameliyatı Sonrasında Günlük Yaşama Dönme Süresi"
+    },
+    "description": {
+      "tr": "Tüp mide ameliyatı (sleeve gastrektomi) sonrasında günlük yaşama dönüş, yalnızca ameliyatın kendisine değil; kişinin genel sağlık durumuna, ameliyatın seyri, yapılan kontroller, beslenme toleransı ve işin fiziksel yüküne göre değişir. Bu ne…"
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tup-mide-ameliyati-sonrasi-hamilelik",
+    "slug": {
+      "tr": "tup-mide-ameliyati-sonrasi-hamilelik"
+    },
+    "title": {
+      "tr": "Tüp Mide Ameliyatı Sonrası Hamilelik"
+    },
+    "description": {
+      "tr": "Tüp mide ameliyatı geçiren ve ileride gebelik planlayan kişilerin gebelik öncesinde cerrahi ekip ve kadın hastalıkları-doğum uzmanı ile birlikte değerlendirilmesi önemlidir."
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tup-mide-ameliyati-sonrasi-iyilesme",
+    "slug": {
+      "tr": "tup-mide-ameliyati-sonrasi-iyilesme"
+    },
+    "title": {
+      "tr": "Tüp Mide Ameliyatında İyileşme Dönemi"
+    },
+    "description": {
+      "tr": "İyileşme süresi kişiden kişiye değişir. Ameliyatın seyri, genel sağlık ve günlük işin fiziksel yükü dönüş zamanını etkileyebilir."
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tup-mide-ameliyati-sonrasi-surec",
+    "slug": {
+      "tr": "tup-mide-ameliyati-sonrasi-surec"
+    },
+    "title": {
+      "tr": "Tüp Mide Ameliyatı ve Ameliyattan Sonraki Süreçler"
+    },
+    "description": {
+      "tr": "Tüp mide sonrası süreç ameliyatın bitmesiyle tamamlanmaz; beslenme, hareket, kontroller ve uzun dönem kilo/metabolik takip devam eder."
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tup-mide-ameliyatinda-yas-ve-kilo-siniri",
+    "slug": {
+      "tr": "tup-mide-ameliyatinda-yas-ve-kilo-siniri"
+    },
+    "title": {
+      "tr": "Tüp Mide Ameliyatında Yaş ve Kilo Sınırı Var mı?"
+    },
+    "description": {
+      "tr": "Tüp mide ameliyatı için yalnızca kilo yeterli mi?"
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-tup-mide-ve-gastrik-bypass-farklari",
+    "slug": {
+      "tr": "tup-mide-ve-gastrik-bypass-farklari"
+    },
+    "title": {
+      "tr": "Gastrik Sleeve ve Gastrik Bypass Ameliyatları Nasıl Farklılık Gösterir?"
+    },
+    "description": {
+      "tr": "Tüp mide (sleeve gastrektomi) ve gastrik bypass, obezite cerrahisinde kullanılan iki farklı cerrahi yaklaşımdır. Her iki yöntemin anatomik etkileri ve takip gereksinimleri aynı değildir."
+    },
+    "category": {
+      "tr": "Obezite ve Bariatrik Cerrahi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-vucut-yag-dagilimi-ve-obezite",
+    "slug": {
+      "tr": "vucut-yag-dagilimi-ve-obezite"
+    },
+    "title": {
+      "tr": "Vücut Yağ Dağılımı ve Obezitenin Sınıflandırılması"
+    },
+    "description": {
+      "tr": "Obezite yalnızca tartıdaki kilo üzerinden değerlendirilmez. Vücut yağının miktarı kadar vücutta nerede dağıldığı da metabolik risklerin değerlendirilmesinde dikkate alınabilir. Bu nedenle obezite değerlendirmesi, kişinin genel sağlık durumu…"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-yeme-problemleri-ve-aile-yaklasimi",
+    "slug": {
+      "tr": "yeme-problemleri-ve-aile-yaklasimi"
+    },
+    "title": {
+      "tr": "Yeme Problemi Olan Yakınınıza Nasıl Davranmalısınız?"
+    },
+    "description": {
+      "tr": "Yeme problemi nedir?"
+    },
+    "category": {
+      "tr": "Obezite ve Kilo Yönetimi"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  },
+  {
+    "id": "recovered-yuksek-kan-sekeri-hiperglisemi-belirtileri",
+    "slug": {
+      "tr": "yuksek-kan-sekeri-hiperglisemi-belirtileri"
+    },
+    "title": {
+      "tr": "Yüksek Kan Şekeri (Hiperglisemi) Nasıl Hissedilir? Belirtiler ve Ne Zaman Değerlendirilmelidir?"
+    },
+    "description": {
+      "tr": "Hiperglisemi nedir?"
+    },
+    "category": {
+      "tr": "Diyabet ve Metabolik Sağlık"
+    },
+    "published": true,
+    "recovered": true,
+    "icon": "fa-file-medical"
+  }
+]
