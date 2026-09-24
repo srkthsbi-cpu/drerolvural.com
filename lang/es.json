@@ -62,7 +62,7 @@
     "🇳🇱 Nederlands": "🇳🇱 Neerlandés",
     "🇷🇺 Русский": "🇷🇺 Ruso",
     "Doç. Dr. Erol Vural": "Doç. Dr. Erol Vural",
-    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", uzun yıllara dayanan cerrahi tecrübesiyle, başta",
+    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", con muchos años de experiencia quirúrgica, especializado especialmente en",
     "obezite cerrahisi": "cirugía bariátrica",
     "ve": "y",
     "metabolik cerrahi": "cirugía metabólica",
@@ -251,6 +251,13 @@
     },
     "press.news1Summary": "El informe de salud de IHA reúne las explicaciones del Dr. Erol Vural sobre cómo se realiza la gastrectomía en manga, sus ventajas, limitaciones y el control del peso después de la operación.",
     "press.news2Summary": "El informe incluye preguntas y respuestas con el Dr. Erol Vural sobre la cirugía bariátrica, la evaluación del paciente, los criterios de idoneidad y la preparación preoperatoria.",
-    "press.news3Summary": "El informe recoge los comentarios del Dr. Erol Vural sobre la cirugía metabólica y los enfoques quirúrgicos relacionados con la diabetes tipo 2. El titular menciona una tasa de éxito del 83 %; esta cifra no se evalúa de forma independiente en esta página."
+    "press.news3Summary": "El informe recoge los comentarios del Dr. Erol Vural sobre la cirugía metabólica y los enfoques quirúrgicos relacionados con la diabetes tipo 2. El titular menciona una tasa de éxito del 83 %; esta cifra no se evalúa de forma independiente en esta página.",
+    "olmak üzere, genel cerrahinin ileri laparoskopik prosedürlerinde uzmanlaşmış önde gelen hekimlerden biridir": {
+      " Modern tıbbın gerektirdiği güncel tedavi protokollerini titizlikle takip eden Dr": {
+        " Vural, hastalarının sağlıklı, konforlu ve sürdürülebilir bir yaşama adım atmalarına rehberlik etmektedir": {
+          "": "y es uno de los cirujanos destacados especializados en procedimientos laparoscópicos avanzados de cirugía general. El Dr. Vural sigue cuidadosamente los protocolos actuales y guía a sus pacientes hacia una vida saludable, cómoda y sostenible."
+        }
+      }
+    }
   }
 }
