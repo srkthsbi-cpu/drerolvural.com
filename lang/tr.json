@@ -243,6 +243,30 @@
       "scientificTitle": "Bilimsel etkinlik kaydı",
       "scientificText": "Türk Obezite Cerrahisi Derneği'nin 2023 bildiri kitabında Erol Vural adına \"Vertikal klip gastroplastinin erken sonuçları ve komplikasyon riskleri\" başlıklı bir bilimsel sunum kaydı yer alıyor.",
       "viewProceedings": "2023 bildiri kitabını incele"
-    }
+    },
+    "menu.press": "Basında Biz",
+    "about.pressIntro": "Doç. Dr. Erol Vural hakkında basında ve bilimsel etkinliklerde yer alan seçilmiş içeriklere göz atabilirsiniz.",
+    "menu.international": "Uluslararası Hastalar",
+    "Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.": "Obezite tedavisinde dünya genelinde en çok tercih edilen &quot;Altın Standart&quot; cerrahi yöntemdir. Laparoskopik (kapalı) yöntemle midenin yaklaşık %80'lik kısmının dikey olarak çıkarılması işlemidir. Mide hacmi küçüldüğü için porsiyonlar ufalır, ayrıca çıkarılan mide bölümünden salgılanan &quot;Ghrelin&quot; (açlık hormonu) seviyesi düştüğü için hastanın iştahı ciddi oranda azalır.",
+    "press.eyebrow": "Basın Arşivi",
+    "press.title": "Basında Biz",
+    "press.intro": "Doç. Dr. Erol Vural hakkında geçmiş yıllarda yayımlanmış röportaj, sağlık haberi ve mesleki etkinlik kayıtlarından doğrulanabilen seçilmiş içerikler.",
+    "press.selected": "Seçilmiş Haberler",
+    "press.sourceNote": "Kaynak: ilgili haber kuruluşlarının arşivleri",
+    "press.tagInterviewHealth": "Röportaj · Sağlık",
+    "press.tagInterviewObesity": "Röportaj · Obezite",
+    "press.tagMetabolic": "Metabolik Cerrahi",
+    "press.read": "Habere git",
+    "press.story1Title": "Tüp mide ameliyatı hakkında bilinmeyenler",
+    "press.story1Summary": "İHA'nın sağlık haberinde Op. Dr. Erol Vural'ın tüp mide ameliyatının nasıl uygulandığı, avantajları, sınırlılıkları ve ameliyat sonrası kilo yönetimi hakkında yaptığı açıklamalar derleniyor.",
+    "press.story2Title": "Obezite cerrahisi kimlere uygulanır?",
+    "press.story2Summary": "Haberde Op. Dr. Erol Vural ile obezite cerrahisinin kapsamı, hasta değerlendirmesi, uygunluk ölçütleri ve ameliyat öncesi hazırlık hakkında yapılan soru-cevap yer alıyor.",
+    "press.story3Title": "İstanbul'da şeker hastalığı cerrahisi üzerine haber",
+    "press.story3Summary": "Haberde Op. Dr. Erol Vural'ın metabolik cerrahi ve Tip 2 diyabetle ilişkili cerrahi yaklaşımlar üzerine açıklamaları aktarılıyor. Haberin başlığında yüzde 83'lük bir başarı oranı ifadesi yer alıyor; bu oran bu sayfanın bağımsız bir değerlendirmesi değildir.",
+    "press.editorialLabel": "Editoryal not:",
+    "press.editorialText": "Bu sayfa “seçilmiş basın arşivi” olarak hazırlanmıştır. Haber başlıkları ve haberlerdeki tıbbi/istatistiksel ifadeler kaynak kuruluşlara aittir; burada yer verilmesi, belirli bir tıbbi sonucu garanti ettiği veya bağımsız olarak doğrulandığı anlamına gelmez.",
+    "press.scientificTitle": "Bilimsel etkinlik kaydı",
+    "press.scientificText": "Türk Obezite Cerrahisi Derneği'nin 2023 bildiri kitabında Erol Vural adına “Vertikal klip gastroplastinin erken sonuçları ve komplikasyon riskleri” başlıklı bir bilimsel sunum kaydı yer alıyor.",
+    "press.viewProceedings": "2023 bildiri kitabını incele"
   }
 }
