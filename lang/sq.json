@@ -279,6 +279,10 @@
     "press.read": "Lexo raportin",
     "press.editorialTextLabel": "Shënim editorial:",
     "press.editorialTextText": "Kjo faqe është përgatitur si një arkiv i përzgjedhur i medias. Titujt dhe deklaratat mjekësore ose statistikore u përkasin botuesve përkatës; përfshirja këtu nuk garanton rezultat mjekësor dhe nuk nënkupton verifikim të pavarur.",
-    "press.viewProceedings": "Shiko librin e abstrakteve"
+    "press.viewProceedings": "Shiko librin e abstrakteve",
+    "press.story1Summary": "Raporti shëndetësor i IHA përmbledh shpjegimet e Dr. Erol Vural për mënyrën e kryerjes së gastrektomisë sleeve, përparësitë, kufizimet dhe menaxhimin e peshës pas operacionit.",
+    "press.story2Summary": "Raporti përfshin pyetje dhe përgjigje me Dr. Erol Vural rreth kirurgjisë bariatrike, vlerësimit të pacientit, kritereve të përshtatshmërisë dhe përgatitjes para operacionit.",
+    "press.story3Summary": "Raporti paraqet komentet e Dr. Erol Vural mbi kirurgjinë metabolike dhe qasjet kirurgjikale për diabetin e tipit 2. Titulli përmban një shifër suksesi prej 83%; kjo shifër nuk vlerësohet në mënyrë të pavarur në këtë faqe.",
+    "press.editorialText": "Kjo faqe është përgatitur si një arkiv i përzgjedhur i medias. Titujt dhe deklaratat mjekësore ose statistikore u përkasin botuesve përkatës; përfshirja këtu nuk garanton rezultat mjekësor dhe nuk nënkupton verifikim të pavarur."
   }
 }
