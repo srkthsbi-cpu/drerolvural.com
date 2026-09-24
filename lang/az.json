@@ -62,7 +62,7 @@
     "🇳🇱 Nederlands": "🇳🇱 Nederlands",
     "🇷🇺 Русский": "🇷🇺 Русский",
     "Doç. Dr. Erol Vural": "Doç. Dr. Erol Vural",
-    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", uzun yıllara dayanan cerrahi tecrübesiyle, başta",
+    ", uzun yıllara dayanan cerrahi tecrübesiyle, başta": ", uzun illik cərrahi təcrübəyə malik, xüsusilə",
     "obezite cerrahisi": "bariatrik cərrahiyyə",
     "ve": "və",
     "metabolik cerrahi": "metabolik cərrahiyyə",
@@ -250,6 +250,13 @@
     },
     "press.news1Summary": "İHA-nın sağlamlıq xəbərində Dr. Erol Vuralın sleeve qastrektomiyanın icrası, üstünlükləri, məhdudiyyətləri və əməliyyatdan sonrakı çəki idarəetməsi barədə açıqlamaları təqdim olunur.",
     "press.news2Summary": "Xəbərdə bariatrik cərrahiyyənin əhatə dairəsi, pasiyentin qiymətləndirilməsi, uyğunluq meyarları və əməliyyatdan əvvəl hazırlıq barədə Dr. Erol Vural ilə sual-cavab yer alır.",
-    "press.news3Summary": "Xəbərdə Dr. Erol Vuralın metabolik cərrahiyyə və 2-ci tip diabetlə bağlı cərrahi yanaşmalar barədə açıqlamaları təqdim olunur. Başlıqda 83% uğur göstəricisi qeyd edilir; bu rəqəm bu səhifədə müstəqil şəkildə qiymətləndirilmir."
+    "press.news3Summary": "Xəbərdə Dr. Erol Vuralın metabolik cərrahiyyə və 2-ci tip diabetlə bağlı cərrahi yanaşmalar barədə açıqlamaları təqdim olunur. Başlıqda 83% uğur göstəricisi qeyd edilir; bu rəqəm bu səhifədə müstəqil şəkildə qiymətləndirilmir.",
+    "olmak üzere, genel cerrahinin ileri laparoskopik prosedürlerinde uzmanlaşmış önde gelen hekimlerden biridir": {
+      " Modern tıbbın gerektirdiği güncel tedavi protokollerini titizlikle takip eden Dr": {
+        " Vural, hastalarının sağlıklı, konforlu ve sürdürülebilir bir yaşama adım atmalarına rehberlik etmektedir": {
+          "": "və ümumi cərrahiyyənin qabaqcıl laparoskopik prosedurları üzrə ixtisaslaşmış aparıcı həkimlərdəndir. Dr. Vural müasir tibbin aktual müalicə protokollarını diqqətlə izləyir və pasiyentlərini sağlam, rahat və davamlı həyata doğru istiqamətləndirir."
+        }
+      }
+    }
   }
 }
