@@ -3191,25 +3191,35 @@ const GLOBAL_HTML_JS = `
       });
     });
 
-    /* Remove internal production/SEO notes from ALL public article pages.
-       These are editorial workflow notes, not patient-facing content.
-       Remove the complete section until the next H2 so no Search Console,
-       keyword-planning, migration or internal source-note text leaks publicly. */
-    document.querySelectorAll('.article-content h2').forEach(function(h){
-      const t=(h.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
-      if(/seo.*(içerik|kullanım).*not|part\s*2.*(kaynak|doğrulama).*not|search console|kaynak metrik/.test(t)){
+    /* Remove internal production/SEO notes from public article content.
+       Keep genuine medical references, but never expose workflow notes such as
+       SEO keyword instructions, Search Console metrics, migration notes or
+       internal verification instructions. */
+    const articleRoots=document.querySelectorAll('article,.article-content,main');
+    articleRoots.forEach(function(root){
+      root.querySelectorAll('h2,h3,h4').forEach(function(h){
+        const t=(h.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+        const internal=/seo\s*(ve|&)?\s*içerik.*(kullanım|kullanimi).*not|seo.*notu|part\s*2.*(kaynak|doğrulama).*not|kaynak.*doğrulama.*not|search\s*console.*(kaynak|metrik|performans)/.test(t);
+        if(!internal) return;
+        const level=Number(h.tagName.slice(1));
         let n=h.nextElementSibling;
         h.remove();
-        while(n && n.tagName!=='H2'){
+        while(n){
           const next=n.nextElementSibling;
+          const tag=(n.tagName||'').toUpperCase();
+          const nextLevel=/^H[1-6]$/.test(tag)?Number(tag.slice(1)):99;
+          if(nextLevel<=level) break;
           n.remove();
           n=next;
         }
-      }
-    });
-    document.querySelectorAll('.article-content p').forEach(function(p){
-      const t=(p.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
-      if(/search console kaynak metrik|eski url.*301 yönlendirmesi|anahtar kelime doldurma|tıbbi doğrulamada kullanılan dış kaynaklar/.test(t)) p.remove();
+      });
+      root.querySelectorAll('p,li,div').forEach(function(el){
+        const t=(el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+        if(!t || el.children.length>3) return;
+        if(/search\s*console.*(kaynak metrik|performans|sayfa sayısı)|drerolvural\.com.*performance.*sayfa|\d{2}\.\d{2}\.\d{4}.*dışa aktar|eski url.*301 yönlendirmesi|anahtar kelime doldurma|tıbbi doğrulamada kullanılan dış kaynaklar|içerik kullanım notu|keyword.*stuffing|search console.*metrics/.test(t)){
+          el.remove();
+        }
+      });
     });
 
     /* External links should not retain opener access. */
