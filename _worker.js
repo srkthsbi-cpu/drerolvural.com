@@ -3193,15 +3193,15 @@ const GLOBAL_HTML_JS = `
 
     /* Hide internal production/SEO notes from public article pages. */
     document.querySelectorAll('.article-content h2').forEach(function(h){
-      const t=(h.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();
-      if(/seo.*(içerik|kullanım).*not|part\\s*2.*(kaynak|doğrulama).*not|search console|kaynak metrik/.test(t)){
+      const t=(h.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+      if(/seo.*(içerik|kullanım).*not|part\s*2.*(kaynak|doğrulama).*not|search console|kaynak metrik/.test(t)){
         const next=h.nextElementSibling;
         h.remove();
         if(next && next.tagName==='P') next.remove();
       }
     });
     document.querySelectorAll('.article-content p').forEach(function(p){
-      const t=(p.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();
+      const t=(p.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
       if(/search console kaynak metrik|eski url.*301 yönlendirmesi|anahtar kelime doldurma/.test(t)) p.remove();
     });
 
