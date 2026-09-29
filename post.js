@@ -22,10 +22,18 @@
   function apiUrl(path){ return new URL(String(path).replace(/^\//,''),siteBase()).href; }
   async function loadPost(slug){
     const candidates=[slug, decodeURIComponent(slug||'')].filter(Boolean);
-    try { const x=await readJSON(apiUrl('api/public?type=blog&slug='+encodeURIComponent(candidates[0]))); if(x && !x.error) return x; } catch(_) {}
-    const data=await readJSON(assetUrl('data/blogs.json'));
-    const found=data.find(p=>candidates.includes(String(p.id)) || candidates.some(s=>Object.values(p.slug||{}).map(String).includes(s)));
-    if(found) return found;
+    // Static content is the reliable first render path. This prevents a
+    // temporary D1/API problem from producing a blank article on mobile.
+    try {
+      const data=await readJSON(assetUrl('data/blogs.json'));
+      const found=data.find(p=>candidates.includes(String(p.id)) || candidates.some(s=>Object.values(p.slug||{}).map(String).includes(s)));
+      if(found) return found;
+    } catch(_) {}
+    // If the static inventory is unavailable, fall back to the live API.
+    try {
+      const x=await readJSON(apiUrl('api/public?type=blog&slug='+encodeURIComponent(candidates[0])));
+      if(x && !x.error) return x;
+    } catch(_) {}
     try {
       const recovered=await readJSON(assetUrl('data/recovered-articles.json'));
       const rp=recovered.find(p=>candidates.includes(String(p.id)) || candidates.some(s=>Object.values(p.slug||{}).map(String).includes(s)));
