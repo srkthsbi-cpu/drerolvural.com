@@ -3288,7 +3288,7 @@ export default {
       new URL(request.url);
 
     // Normalize trailing slashes before every legacy/GSC route decision.
-    const cleanPathname = url.pathname.replace(/\\+$/, '') || '/';
+    const cleanPathname = url.pathname.replace(/\/+$/, '') || '/';
 
     // Prevent iOS Safari/Cloudflare Pages from treating language root folders
     // and the old "yeni-sitemiz" path as downloadable files.
