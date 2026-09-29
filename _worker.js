@@ -3288,7 +3288,27 @@ export default {
       new URL(request.url);
 
     // Normalize trailing slashes before every legacy/GSC route decision.
-    const cleanPathname = url.pathname.replace(/\/+$/, '') || '/';
+    const cleanPathname = url.pathname.replace(/\\+$/, '') || '/';
+
+    // Prevent iOS Safari/Cloudflare Pages from treating language root folders
+    // and the old "yeni-sitemiz" path as downloadable files.
+    const languageHome = {
+      '/en': '/?lang=en',
+      '/de': '/?lang=de',
+      '/ar': '/?lang=ar',
+      '/ru': '/?lang=ru',
+      '/az': '/?lang=az',
+      '/sq': '/?lang=sq',
+      '/nl': '/?lang=nl',
+      '/es': '/?lang=es',
+      '/tr': '/?lang=tr'
+    };
+    if (languageHome[cleanPathname]) {
+      return redirectResponse(request, languageHome[cleanPathname]);
+    }
+    if (cleanPathname === '/yeni-sitemiz') {
+      return redirectResponse(request, '/');
+    }
 
     // Handle known legacy WordPress URLs before asset routing.
     const legacyTarget = legacyDestination(cleanPathname);
@@ -3482,7 +3502,15 @@ export default {
         const articleResponse = await env.ASSETS.fetch(new Request(articleUrl, request));
         const articleType = (articleResponse.headers.get('content-type') || '').toLowerCase();
         if (articleResponse.ok && articleType.includes('text/html')) {
-          response = articleResponse;
+          const articleHeaders = new Headers(articleResponse.headers);
+          articleHeaders.set('Content-Type', 'text/html; charset=utf-8');
+          articleHeaders.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+          articleHeaders.delete('Content-Disposition');
+          articleHeaders.delete('Content-Length');
+          response = new Response(articleResponse.body, {
+            status: 200,
+            headers: articleHeaders
+          });
         } else {
           const notFoundUrl = new URL('/404.html', request.url);
           const notFound = await env.ASSETS.fetch(new Request(notFoundUrl, request));
