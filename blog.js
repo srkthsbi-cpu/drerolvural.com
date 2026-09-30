@@ -36,7 +36,7 @@
   function articleUrl(post,lang){
     if(post.recovered) return `/${encodeURIComponent(post.slug.tr).replace(/%2F/g,'/')}`;
     const slug = post.slug?.[lang] || post.id || '';
-    return `blog-post.html?slug=${encodeURIComponent(slug)}&lang=${encodeURIComponent(lang)}`;
+    return `/blog/${encodeURIComponent(slug).replace(/%2F/g,'/')}${lang === 'tr' ? '' : `?lang=${encodeURIComponent(lang)}`}`;
   }
   function localText(post,key,lang,fallback=''){
     if(post?.recovered) return textFor(post[key],lang,post[key]?.tr || fallback);
