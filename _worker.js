@@ -822,7 +822,7 @@ async function handleAdmin(context) {
           .prepare(
             `SELECT COUNT(*) AS c
              FROM contact_messages
-             WHERE ip_hash=? AND created_at >= datetime('now','-10 minutes')`
+             WHERE ip_hash=? AND julianday(created_at) >= julianday('now','-10 minutes')`
           )
           .bind(ipHash)
           .first();
