@@ -417,6 +417,16 @@
     // double-toggle behavior on older HTML files.
     bindMobileMenu();
     setupForms();
+    const contactParams = new URLSearchParams(location.search);
+    if (contactParams.get('contact') === 'sent') {
+      const contactForm = document.getElementById('contactForm');
+      const contactSuccess = document.getElementById('successMessage');
+      if (contactForm) contactForm.style.display = 'none';
+      if (contactSuccess) contactSuccess.style.display = 'block';
+      contactParams.delete('contact');
+      const cleanQuery = contactParams.toString();
+      history.replaceState({}, document.title, location.pathname + (cleanQuery ? '?' + cleanQuery : '') + location.hash);
+    }
     await applyLanguage(currentLang);
   });
 
