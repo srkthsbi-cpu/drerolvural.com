@@ -78,7 +78,7 @@ function buildLayeredCharacter(){
   // Inline fetch/fallback yok: böylece eski bozuk fallback karakteri asla gösterilmez.
   var img=document.createElement('img');
   img.className='evo-svg evo-claude';
-  img.src='/assets/evo-user.png?v=20260930-31';
+  img.src='/assets/evo-user.png?v=20260930-32';
   img.alt='EVO sağlık asistanı';
   img.draggable=false;
   root.appendChild(img);
@@ -288,7 +288,7 @@ function appendStyles(){
 @keyframes evoBrowL{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(-14deg) translateY(-2px)}}
 @keyframes evoBrowR{0%,100%{transform:rotate(8deg) translateY(0)}50%{transform:rotate(14deg) translateY(-2px)}}
 #evo-fixed .evo-lid-l,#evo-fixed .evo-lid-r{animation:evoBlink 4.8s ease-in-out infinite}
-#evo-fixed .label{position:absolute;right:2px;top:-34px;background:rgba(255,255,255,.96);padding:6px 10px;border-radius:999px;color:#005082;font:600 10px Poppins,sans-serif;white-space:nowrap;box-shadow:0 6px 20px rgba(0,80,130,.16);pointer-events:none}
+#evo-fixed .label{position:absolute;right:-8px;top:-2px;z-index:20;background:rgba(255,255,255,.96);padding:6px 10px;border-radius:999px;color:#005082;font:600 10px Poppins,sans-serif;white-space:nowrap;box-shadow:0 6px 20px rgba(0,80,130,.16);pointer-events:none}
 .evo-heart{position:absolute;left:50%;top:15%;font-size:20px;line-height:1;pointer-events:none;z-index:4;opacity:0;animation:evoHeartFloat 1.45s cubic-bezier(.18,.72,.28,1) forwards;filter:drop-shadow(0 4px 8px rgba(220,50,100,.22))}
 @keyframes evoHeartFloat{0%{opacity:0;transform:translate(-50%,8px) scale(.35) rotate(-10deg)}12%{opacity:1;transform:translate(-50%,0) scale(1.05) rotate(0)}100%{opacity:0;transform:translate(calc(-50% + var(--heart-x)), -78px) scale(.78) rotate(var(--heart-r))}}
 @keyframes evoFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}
@@ -311,7 +311,7 @@ function appendStyles(){
 #evo-panel textarea{flex:1;min-width:0;border:1px solid #cfe1e5;border-radius:14px;padding:10px;resize:none;font:16px/1.35 Poppins,sans-serif;-webkit-text-size-adjust:100%;touch-action:manipulation;outline:none;box-sizing:border-box;max-height:120px}
 #evo-panel .send{width:42px;border:0;border-radius:14px;background:#005082;color:#fff;cursor:pointer}
 #evo-hide{margin:0 10px 5px;border:0;background:transparent;color:#557;font:10px Poppins;cursor:pointer}
-@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:8px;bottom:158px;width:118px;height:96px}#evo-fixed .evo-svg{width:118px;height:auto;max-height:96px}.evo-label-placeholder{}#evo-fixed .label{top:-29px;right:0;padding:5px 8px;font-size:9px}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
+@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:8px;bottom:158px;width:118px;height:96px}#evo-fixed .evo-svg{width:118px;height:auto;max-height:96px}.evo-label-placeholder{}#evo-fixed .label{top:-2px;right:-8px;padding:5px 8px;font-size:9px;z-index:20}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
 `;
   document.head.appendChild(s);
 }
