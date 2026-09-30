@@ -2205,7 +2205,7 @@ async function handleSitemap(
       }
     } catch (_) {}
 
-    if (env.DB && !sensitiveHealth) {
+    if (env.DB) {
       try {
 
         const r =
@@ -3257,12 +3257,10 @@ function enhanceHtmlResponse(response){
     .on('head',{element(e){
       e.append(`<style id="drerolvural-global-qa">${GLOBAL_HTML_CSS}</style>`,{html:true});
     }})
+    .on('#healthy-cookie-banner',{element(e){ e.remove(); }})
     .on('body',{element(e){
-      e.on?null:null;
       e.append(`<script id="drerolvural-global-qa-js">${GLOBAL_HTML_JS}</script>`,{html:true});
-      e.remove?null:null;
       e.append(`<script id="drerolvural-evo-js" src="/evo.js?v=20260930-4" defer></script>`,{html:true});
-      e.on?null:null;
     }})
     .transform(new Response(response.body,{status:response.status,statusText:response.statusText,headers}));
 }
