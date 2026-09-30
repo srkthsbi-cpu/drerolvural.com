@@ -1067,9 +1067,24 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
   pointer-events:auto!important;
 }
 #healthy-cookie-accept{
-  background:#005f8f;
+  background:rgba(0,95,143,.78);
   color:#fff;
-  box-shadow:0 6px 15px rgba(0,80,130,.2);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 6px 15px rgba(0,80,130,.16),inset 0 1px 0 rgba(255,255,255,.24);
+  backdrop-filter:blur(12px) saturate(125%);
+  -webkit-backdrop-filter:blur(12px) saturate(125%);
+}
+#healthy-cookie-banner.cookie-leaving{
+  opacity:0!important;
+  transform:translateX(-50%) translateY(22px) scale(.96)!important;
+  filter:blur(3px);
+  transition:opacity .42s ease,transform .42s cubic-bezier(.22,.61,.36,1),filter .42s ease!important;
+  pointer-events:none!important;
+}
+@media(max-width:650px){
+  #healthy-cookie-banner.cookie-leaving{
+    transform:translateY(22px) scale(.96)!important;
+  }
 }
 #healthy-cookie-settings{
   background:rgba(255,255,255,.76);
@@ -1105,20 +1120,28 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
 }
 </style>
 <script>
-window.__acceptSiteCookies=function(e){try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(x){}var b=document.getElementById('healthy-cookie-banner');if(b)b.remove();if(e){e.preventDefault();e.stopPropagation();}};
-window.__openCookieSettings=function(e){if(e){e.preventDefault();e.stopPropagation();}alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. İsterseniz tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');};
 (function(){
   var b=document.getElementById('healthy-cookie-banner');
-  if(!b)return;
-  try{if(localStorage.getItem('healthy_cookie_choice'))return}catch(e){}
-  b.hidden=false;
-  document.getElementById('healthy-cookie-accept').onclick=function(){
-    try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){}
-    b.remove();
+  var a=document.getElementById('healthy-cookie-accept');
+  var s=document.getElementById('healthy-cookie-settings');
+  function saved(){try{return localStorage.getItem('healthy_cookie_choice')==='accepted'}catch(e){return false}}
+  function save(){try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){}}
+  window.__acceptSiteCookies=function(e){
+    if(e){e.preventDefault();e.stopPropagation();}
+    if(!b)return;
+    save();
+    b.classList.add('cookie-leaving');
+    setTimeout(function(){if(b&&b.parentNode)b.remove();},430);
+    var evo=document.getElementById('evo-fixed');
+    if(evo&&!evo.dataset.dragged)evo.style.bottom='128px';
   };
-  document.getElementById('healthy-cookie-settings').onclick=function(){
+  window.__openCookieSettings=function(e){
+    if(e){e.preventDefault();e.stopPropagation();}
     alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. İsterseniz tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');
   };
+  if(!b)return;
+  if(saved()){b.remove();return;}
+  b.hidden=false;
 })();
 </script>
 <!-- =========================
@@ -1312,55 +1335,122 @@ window.__openCookieSettings=function(e){if(e){e.preventDefault();e.stopPropagati
 </g>
 </svg></div>
 <section id="evo-panel" aria-label="EVO sağlık asistanı"><div class="eh"><div><strong>EVO</strong><span>Erol Vural Sağlık Asistanı</span></div><button class="ex" aria-label="Kapat">×</button></div><div id="evo-msgs"></div><div class="ed">Genel sağlık bilgilendirmesi içindir; tanı ve kişiye özel tedavi önerisinin yerine geçmez.</div><button id="evo-hide">EVO'yu gizle</button><form><textarea rows="1" maxlength="1200" placeholder="EVO'ya sorunuzu yazın…"></textarea><button class="send">➤</button></form></section>
-<script>(function(){window.__EVO_LOADED__=true;var key='drerolvural_evo_hidden',choice='healthy_cookie_choice';function get(k){try{return localStorage.getItem(k)}catch(e){return null}}function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}var evo=document.getElementById('evo-fixed'),panel=document.getElementById('evo-panel'),msgs=document.getElementById('evo-msgs'),ta=panel.querySelector('textarea'),face=evo.querySelector('.evo-svg');if(get(key)==='1')evo.classList.add('evo-off');function msg(t,w){var d=document.createElement('div');d.className='em '+w;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}function open(){panel.classList.add('open');if(!msgs.children.length)msg('Merhaba, ben EVO. Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?','bot');ta.focus()}function hide(){set(key,'1');evo.classList.add('evo-off');panel.classList.remove('open')}evo.addEventListener('pointerup',function(e){if(e.button!==undefined&&e.button!==0)return;if(e.target.closest&&e.target.closest('.label'))return;e.preventDefault();e.stopPropagation();open()},{passive:false});evo.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.label'))return;e.preventDefault();e.stopPropagation();open()});evo.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}panel.querySelector('.ex').onclick=function(){panel.classList.remove('open')};document.getElementById('evo-hide').onclick=hide;ta.addEventListener('focus',function(){face.classList.add('is-attention')});ta.addEventListener('blur',function(){face.classList.remove('is-attention')});panel.querySelector('form').onsubmit=async function(e){e.preventDefault();var q=ta.value.trim();if(!q)return;ta.value='';msg(q,'user');if(/evo[’']?yu\s+(gizle|kapat|sakla)|evo\s*(yu)\s*(sil|kaldır)/i.test(q)){msg('Tamam. EVO bu cihazda gizleniyor.','bot');setTimeout(hide,500);return}face.classList.remove('is-attention');face.classList.add('is-thinking');var w=document.createElement('div');w.className='em bot';w.textContent='Düşünüyorum…';msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;try{var r=await fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q})});var d=await r.json();w.textContent=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';face.classList.remove('is-thinking');face.classList.add('is-talking');setTimeout(function(){face.classList.remove('is-talking')},1800)}catch(x){face.classList.remove('is-thinking');w.textContent='Şu anda bağlantı kurulamadı. Genel sağlık bilgileri için sorunuzu tekrar deneyebilirsiniz.'}};var cb=document.getElementById('healthy-cookie-banner'),ab=document.getElementById('healthy-cookie-accept');if(cb&&ab){if(get(choice)==='accepted'){cb.remove()}else{cb.hidden=false}var acceptCookie=function(e){if(e){e.preventDefault();e.stopPropagation();}set(choice,'accepted');cb.hidden=true;cb.style.display='none';setTimeout(function(){if(cb&&cb.parentNode)cb.remove()},0)};ab.addEventListener('pointerup',acceptCookie,{passive:false});ab.addEventListener('click',acceptCookie)}})();</script><script>
+<script>
 (function(){
 'use strict';
-var state={drag:false,moved:false,sx:0,sy:0,ox:0,oy:0};
-function el(id){return document.getElementById(id)}
-function inside(node,x,y){if(!node)return false;var r=node.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom}
-function openEvo(){var p=el('evo-panel');if(!p)return;p.classList.add('open');var m=el('evo-msgs');if(m&&!m.children.length){var d=document.createElement('div');d.className='em bot';d.textContent='Merhaba, ben EVO. Size nasıl yardımcı olabilirim?';m.appendChild(d)}}
-function placeEvo(){var evo=el('evo-fixed'),b=el('healthy-cookie-banner');if(!evo||evo.dataset.dragged==='1')return;if(b&&b.getBoundingClientRect().height>0){var r=b.getBoundingClientRect();evo.style.bottom=Math.max(130,Math.round(innerHeight-r.top+12))+'px';}else{evo.style.bottom='128px';}}
-function accept(){var b=el('healthy-cookie-banner');try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){}if(b)b.remove();var evo=el('evo-fixed');if(evo){evo.style.bottom='128px';evo.dataset.dragged='0';}placeEvo()}
-function settings(){alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.')}
+window.__EVO_LOADED__=true;
+var hiddenKey='drerolvural_evo_hidden';
+var cookieKey='healthy_cookie_choice';
+var evo=document.getElementById('evo-fixed');
+var panel=document.getElementById('evo-panel');
+var msgs=document.getElementById('evo-msgs');
+var ta=panel&&panel.querySelector('textarea');
+var face=evo&&evo.querySelector('.evo-svg');
+if(!evo||!panel)return;
+
+function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function addMsg(t,w){if(!msgs)return;var d=document.createElement('div');d.className='em '+w;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+function openEvo(){panel.classList.add('open');if(!msgs.children.length)addMsg('Merhaba, ben EVO. Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?','bot');if(ta)ta.focus()}
+function hideEvo(){set(hiddenKey,'1');evo.classList.add('evo-off');panel.classList.remove('open')}
+function placeEvo(){
+  if(evo.dataset.dragged==='1')return;
+  var b=document.getElementById('healthy-cookie-banner');
+  if(b&&b.getBoundingClientRect().height>0){
+    var r=b.getBoundingClientRect();
+    evo.style.left='';evo.style.top='';evo.style.right='';
+    evo.style.bottom=Math.max(130,Math.round(innerHeight-r.top+12))+'px';
+  }else{
+    evo.style.left='';evo.style.top='';evo.style.right='';
+    evo.style.bottom='128px';
+  }
+}
+if(get(hiddenKey)==='1')evo.classList.add('evo-off');
+if(get(cookieKey)==='accepted'){var oldCookie=document.getElementById('healthy-cookie-banner');if(oldCookie)oldCookie.remove();}
+
+var drag={active:false,moved:false,pointerId:null,startX:0,startY:0,originX:0,originY:0};
+
+function hit(node,x,y){if(!node)return false;var r=node.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom}
+
 document.addEventListener('pointerdown',function(e){
- var evo=el('evo-fixed'),a=el('healthy-cookie-accept'),s=el('healthy-cookie-settings');
- if(inside(a,e.clientX,e.clientY)){e.preventDefault();e.stopImmediatePropagation();accept();return}
- if(inside(s,e.clientX,e.clientY)){e.preventDefault();e.stopImmediatePropagation();settings();return}
- if(inside(evo,e.clientX,e.clientY)){
-   if(e.pointerType==='mouse'&&e.button!==0)return;
-   state.drag=true;state.moved=false;state.sx=e.clientX;state.sy=e.clientY;
-   var r=evo.getBoundingClientRect();state.ox=r.left;state.oy=r.top;
-   evo.classList.add('evo-dragging');try{evo.setPointerCapture(e.pointerId)}catch(x){}
-   e.preventDefault();e.stopImmediatePropagation();
- }
+  var accept=document.getElementById('healthy-cookie-accept');
+  var settings=document.getElementById('healthy-cookie-settings');
+  if(hit(accept,e.clientX,e.clientY)){
+    e.preventDefault();e.stopImmediatePropagation();
+    window.__acceptSiteCookies(e);return;
+  }
+  if(hit(settings,e.clientX,e.clientY)){
+    e.preventDefault();e.stopImmediatePropagation();
+    window.__openCookieSettings(e);return;
+  }
+  if(evo.classList.contains('evo-off')||!hit(evo,e.clientX,e.clientY))return;
+  if(e.pointerType==='mouse'&&e.button!==0)return;
+  drag.active=true;drag.moved=false;drag.pointerId=e.pointerId;drag.startX=e.clientX;drag.startY=e.clientY;
+  var r=evo.getBoundingClientRect();drag.originX=r.left;drag.originY=r.top;
+  evo.classList.add('evo-dragging');
+  try{evo.setPointerCapture(e.pointerId)}catch(x){}
+  e.preventDefault();e.stopImmediatePropagation();
 },true);
+
 document.addEventListener('pointermove',function(e){
- if(!state.drag)return;
- var evo=el('evo-fixed');if(!evo)return;
- var dx=e.clientX-state.sx,dy=e.clientY-state.sy;
- if(Math.abs(dx)>5||Math.abs(dy)>5)state.moved=true;
- if(state.moved){
-   var x=Math.max(4,Math.min(innerWidth-evo.offsetWidth-4,state.ox+dx));
-   var y=Math.max(4,Math.min(innerHeight-evo.offsetHeight-4,state.oy+dy));
-   evo.style.left=x+'px';evo.style.top=y+'px';evo.style.right='auto';evo.style.bottom='auto';evo.dataset.dragged='1';
- }
- e.preventDefault();e.stopImmediatePropagation();
+  if(!drag.active||e.pointerId!==drag.pointerId)return;
+  var dx=e.clientX-drag.startX,dy=e.clientY-drag.startY;
+  if(Math.abs(dx)>6||Math.abs(dy)>6)drag.moved=true;
+  if(drag.moved){
+    var x=Math.max(4,Math.min(innerWidth-evo.offsetWidth-4,drag.originX+dx));
+    var y=Math.max(4,Math.min(innerHeight-evo.offsetHeight-4,drag.originY+dy));
+    evo.style.left=x+'px';evo.style.top=y+'px';evo.style.right='auto';evo.style.bottom='auto';evo.dataset.dragged='1';
+  }
+  e.preventDefault();e.stopImmediatePropagation();
 },true);
+
 document.addEventListener('pointerup',function(e){
- if(!state.drag)return;
- var evo=el('evo-fixed');state.drag=false;
- if(evo){evo.classList.remove('evo-dragging');try{evo.releasePointerCapture(e.pointerId)}catch(x){}}
- if(!state.moved)openEvo();
- e.preventDefault();e.stopImmediatePropagation();
+  if(!drag.active||e.pointerId!==drag.pointerId)return;
+  drag.active=false;evo.classList.remove('evo-dragging');
+  try{evo.releasePointerCapture(e.pointerId)}catch(x){}
+  if(!drag.moved)openEvo();
+  e.preventDefault();e.stopImmediatePropagation();
 },true);
-window.addEventListener('resize',placeEvo);window.addEventListener('orientationchange',placeEvo);setTimeout(placeEvo,50);
-document.addEventListener('pointercancel',function(){state.drag=false;var evo=el('evo-fixed');if(evo)evo.classList.remove('evo-dragging')},true);
-document.addEventListener('click',function(e){
- var a=e.target.closest&&e.target.closest('#healthy-cookie-accept'),s=e.target.closest&&e.target.closest('#healthy-cookie-settings'),evo=e.target.closest&&e.target.closest('#evo-fixed');
- if(a){e.preventDefault();e.stopImmediatePropagation();accept()}
- else if(s){e.preventDefault();e.stopImmediatePropagation();settings()}
- else if(evo){e.preventDefault();e.stopImmediatePropagation();openEvo()}
+
+document.addEventListener('pointercancel',function(e){
+  if(!drag.active)return;
+  drag.active=false;evo.classList.remove('evo-dragging');
+  try{evo.releasePointerCapture(e.pointerId)}catch(x){}
 },true);
+
+window.addEventListener('resize',placeEvo);
+window.addEventListener('orientationchange',placeEvo);
+setTimeout(placeEvo,60);
+
+var close=panel.querySelector('.ex');
+if(close)close.onclick=function(e){e.preventDefault();panel.classList.remove('open')};
+var hide= document.getElementById('evo-hide');
+if(hide)hide.onclick=function(e){e.preventDefault();hideEvo()};
+if(ta){
+  ta.addEventListener('focus',function(){if(face)face.classList.add('is-attention')});
+  ta.addEventListener('blur',function(){if(face)face.classList.remove('is-attention')});
+}
+var form=panel.querySelector('form');
+if(form)form.onsubmit=async function(e){
+  e.preventDefault();
+  var q=ta?ta.value.trim():'';
+  if(!q)return;
+  ta.value='';addMsg(q,'user');
+  if(/evo[’']?yu\s+(gizle|kapat|sakla)|evo\s*(yu)\s*(sil|kaldır)/i.test(q)){
+    addMsg('Tamam. EVO bu cihazda gizleniyor.','bot');setTimeout(hideEvo,500);return;
+  }
+  if(face){face.classList.remove('is-attention');face.classList.add('is-thinking')}
+  var w=document.createElement('div');w.className='em bot';w.textContent='Düşünüyorum…';msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
+  try{
+    var r=await fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q})});
+    var d=await r.json();
+    w.textContent=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';
+  }catch(x){
+    w.textContent='Şu anda bağlantı kurulamadı. Genel sağlık bilgileri için sorunuzu tekrar deneyebilirsiniz.';
+  }finally{
+    if(face){face.classList.remove('is-thinking');face.classList.add('is-talking');setTimeout(function(){face.classList.remove('is-talking')},1800)}
+  }
+};
 })();
 </script>
 </body>
