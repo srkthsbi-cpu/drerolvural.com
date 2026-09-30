@@ -282,9 +282,47 @@
     if (!form || form.dataset.bound === '1') return;
     form.dataset.bound = '1';
 
-    // İletişim formu bilinçli olarak native POST kullanır.
-    // FormSubmit, tarayıcıdan yapılan normal POST'u destekler; AJAX/CORS
-    // katmanı iOS Safari'de gereksiz hata üretmemesi için devre dışıdır.
+    // FormSubmit AJAX: kullanıcıyı formsubmit.co sayfasına göndermeden
+    // aynı sayfada gönderimi tamamlar. FormSubmit AJAX uç noktası cross-origin
+    // kullanımı destekler.
+    form.setAttribute('action','https://formsubmit.co/ajax/srkthsbi@gmail.com');
+    if(!form.dataset.ajaxBound){
+      form.dataset.ajaxBound='1';
+      form.addEventListener('submit',async function(event){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const btn=form.querySelector('button[type="submit"]');
+        const success=document.getElementById('successMessage');
+        const original=btn ? btn.innerHTML : '';
+        if(btn){btn.disabled=true;btn.innerHTML='Gönderiliyor…';}
+        try{
+          const data=new URLSearchParams();
+          new FormData(form).forEach((value,key)=>{
+            if(typeof value==='string') data.append(key,value);
+          });
+          const response=await fetch('https://formsubmit.co/ajax/srkthsbi@gmail.com',{
+            method:'POST',
+            headers:{'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+            body:data.toString()
+          });
+          const result=await response.json().catch(()=>null);
+          if(!response.ok || !result || result.success!==true){
+            throw new Error((result&&result.message)||'FormSubmit gönderimi başarısız.');
+          }
+          form.reset();
+          form.style.display='none';
+          if(success){
+            success.style.display='block';
+            success.textContent='Teşekkürler! Mesajınız başarıyla iletildi. En kısa sürede sizinle iletişime geçeceğiz.';
+          }
+        }catch(error){
+          console.error('Contact form error:',error);
+          alert('Mesaj gönderilemedi. Lütfen tekrar deneyin veya WhatsApp üzerinden iletişime geçin.');
+        }finally{
+          if(btn){btn.disabled=false;btn.innerHTML=original;}
+        }
+      },true);
+    }
     if (!form.querySelector('input[name="_honey"]')) {
       const honey = document.createElement('input');
       honey.type = 'text';
