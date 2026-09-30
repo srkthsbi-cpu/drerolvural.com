@@ -156,7 +156,7 @@ function build(){
     msgs.appendChild(w);
     msgs.scrollTop=msgs.scrollHeight;
     try{
-      var r=await fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q})});
+      var r=await fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q,history:[].slice.call(msgs.children).map(function(d){return {role:d.classList.contains('user')?'user':'assistant',content:d.textContent||''}}).slice(-8)})});
       var d=await r.json();
       w.textContent=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';
       saveChat();
