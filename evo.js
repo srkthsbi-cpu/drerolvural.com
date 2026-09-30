@@ -78,7 +78,7 @@ function buildLayeredCharacter(){
   // Inline fetch/fallback yok: böylece eski bozuk fallback karakteri asla gösterilmez.
   var img=document.createElement('img');
   img.className='evo-svg evo-claude';
-  img.src='/assets/evo-claude.svg?v=20260930-22';
+  img.src='/assets/evo-claude.svg?v=20260930-23';
   img.alt='EVO sağlık asistanı';
   img.draggable=false;
   root.appendChild(img);
@@ -253,7 +253,7 @@ function appendStyles(){
   var s=document.createElement('style');
   s.id='evo-global-style';
   s.textContent=`
-#evo-fixed{pointer-events:auto!important;touch-action:none!important;-webkit-tap-highlight-color:transparent;position:fixed;right:12px;bottom:150px;width:126px;height:102px;z-index:2147483647!important;cursor:grab;display:flex;align-items:center;justify-content:center;animation:evoFloat 5s ease-in-out infinite;user-select:none;-webkit-user-select:none}
+#evo-fixed{pointer-events:auto!important;touch-action:none!important;-webkit-tap-highlight-color:transparent;position:fixed;right:12px;bottom:150px;width:150px;height:102px;z-index:2147483647!important;cursor:grab;display:flex;align-items:center;justify-content:center;animation:evoFloat 5s ease-in-out infinite;user-select:none;-webkit-user-select:none}
 #evo-fixed.evo-dragging{cursor:grabbing;animation:none!important}
 #evo-fixed.evo-returning{animation:none!important;transition:left .68s cubic-bezier(.22,.61,.36,1),top .68s cubic-bezier(.22,.61,.36,1),right .68s cubic-bezier(.22,.61,.36,1),bottom .68s cubic-bezier(.22,.61,.36,1);will-change:left,top,right,bottom}
 #evo-fixed.evo-off{display:none}
