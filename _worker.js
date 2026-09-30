@@ -3137,34 +3137,11 @@ const GLOBAL_HTML_JS = `
 (function(){
   'use strict';
   function init(){
-    /* Prevent accidental double-submit handlers on the contact form. */
+    /* Contact form: do not intercept submission here.
+       site.js configures FormSubmit as a native browser POST, which is
+       more reliable on iOS Safari than a cross-origin fetch/CORS request. */
     const form=document.getElementById('contactForm');
-    if(form){
-      form.setAttribute('data-global-qa','1');
-      /* Contact page previously had both an inline FormSubmit handler and
-         the shared site.js handler. Capture-phase handling makes the submit
-         deterministic and prevents duplicate messages. */
-      if((form.getAttribute('action')||'').includes('formsubmit.co') && !form.dataset.qaSubmitBound){
-        form.dataset.qaSubmitBound='1';
-        form.addEventListener('submit',async function(e){
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          const btn=form.querySelector('button[type="submit"]');
-          const success=document.getElementById('successMessage');
-          if(btn){btn.disabled=true;btn.dataset.qaText=btn.textContent;btn.textContent='Gönderiliyor…';}
-          try{
-            const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
-            if(!res.ok) throw new Error('Form submit failed');
-            form.reset();form.style.display='none';if(success)success.style.display='block';
-          }catch(err){
-            console.error(err);
-            alert('Bir hata oluştu, lütfen tekrar deneyin.');
-          }finally{
-            if(btn){btn.disabled=false;btn.textContent=btn.dataset.qaText||'Gönder';}
-          }
-        },true);
-      }
-    }
+    if(form) form.setAttribute('data-global-qa','1');
 
     /* Mobile navigation works even if an older inline handler is missing. */
     const nav=document.getElementById('navMenu');
@@ -3260,7 +3237,7 @@ function enhanceHtmlResponse(response){
     .on('#healthy-cookie-banner',{element(e){ e.remove(); }})
     .on('body',{element(e){
       e.append(`<script id="drerolvural-global-qa-js">${GLOBAL_HTML_JS}</script>`,{html:true});
-      e.append(`<script id="drerolvural-evo-js" src="/evo.js?v=20260930-47" defer></script>`,{html:true});
+      e.append(`<script id="drerolvural-evo-js" src="/evo.js?v=20260930-48" defer></script>`,{html:true});
     }})
     .transform(new Response(response.body,{status:response.status,statusText:response.statusText,headers}));
 }
