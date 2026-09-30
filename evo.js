@@ -263,7 +263,7 @@ function appendStyles(){
 #evo-fixed.evo-off{display:none}
 #evo-fixed .evo-vector-holder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16));transform-origin:center bottom}
 #evo-fixed .evo-vector-holder .evo-svg{width:100%;height:100%;display:block;pointer-events:none;overflow:visible}
-#evo-fixed > .evo-svg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;overflow:visible;transform:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16));clip-path:polygon(11% 50%,11% 69%,15% 77%,17% 76%,17% 79%,21% 79%,31% 90%,46% 94%,69% 91%,78% 81%,84% 78%,90% 66%,88% 55%,90% 51%,82% 40%,79% 27%,73% 16%,62% 8%,44% 7%,57% 5%,44% 5%,33% 12%,25% 22%,19% 38%,16% 40%)}
+#evo-fixed > .evo-svg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;overflow:visible;transform:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16))}
 #evo-fixed .evo-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16))}
 #evo-fixed[data-evo-state="thinking"] .evo-vector-holder{animation:evoThink .9s ease-in-out infinite}
 #evo-fixed[data-evo-state="talking"] .evo-vector-holder{animation:evoTalk .24s ease-in-out infinite alternate}
