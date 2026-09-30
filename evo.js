@@ -35,10 +35,20 @@ function addMsg(t,w,save){
   msgs.scrollTop=msgs.scrollHeight;
   if(save!==false)saveChat();
 }
+function getTimeGreeting(){
+  // Türkiye saati: siteye ilk girişte saat aralığına göre doğal bir karşılama.
+  var now=new Date();
+  var parts=new Intl.DateTimeFormat('tr-TR',{timeZone:'Europe/Istanbul',hour:'numeric',hour12:false}).formatToParts(now);
+  var hour=Number((parts.find(function(p){return p.type==='hour'})||{}).value||0);
+  if(hour>=5&&hour<11)return 'Günaydın! Ben EVO. Size nasıl yardımcı olabilirim?';
+  if(hour>=11&&hour<17)return 'İyi günler! Ben EVO. Size nasıl yardımcı olabilirim?';
+  if(hour>=17&&hour<21)return 'İyi akşamlar! Ben EVO. Size nasıl yardımcı olabilirim?';
+  return 'İyi geceler! Ben EVO. Size nasıl yardımcı olabilirim?';
+}
 function renderChat(){
   var history=loadChat();
   if(history.length) history.forEach(function(m){addMsg(m.text,m.w,false)});
-  else addMsg('Merhaba, ben EVO. Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?','bot',false);
+  else addMsg(getTimeGreeting(),'bot',false);
 }
 function setEvoState(state){
   state=state||'idle';
