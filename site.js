@@ -273,6 +273,14 @@
     const nav = document.getElementById('navMenu');
     if (!nav) return;
     const open = nav.classList.toggle('active');
+    const header = document.querySelector('header');
+    const evoRoot = document.getElementById('evo-fixed');
+    const evoPanel = document.getElementById('evo-panel');
+    if (open) {
+      if (header) header.style.setProperty('z-index', '2147483647', 'important');
+      if (evoRoot) evoRoot.style.setProperty('z-index', '2147483646', 'important');
+      if (evoPanel) evoPanel.style.setProperty('z-index', '2147483646', 'important');
+    }
     document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
