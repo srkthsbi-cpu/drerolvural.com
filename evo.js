@@ -3,7 +3,10 @@
 if(window.__EVO_LOADED__) return;
 window.__EVO_LOADED__=true;
 
-var hiddenKey='drerolvural_evo_hidden';
+var hiddenKey='drerolvural_evo_removed';
+// Eski sürümde "gizle" işlemi bu anahtarı kalıcı olarak yazıyordu.
+// Yeni sürümde gizle yalnızca sohbet penceresini kapattığı için eski kilidi bir kez temizle.
+try{localStorage.removeItem('drerolvural_evo_hidden')}catch(e){}
 var chatKey='drerolvural_evo_chat';
 var root, panel, msgs, ta, face;
 var drag={active:false,moved:false,pointerId:null,startX:0,startY:0,originX:0,originY:0};
