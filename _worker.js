@@ -3435,6 +3435,15 @@ export default {
         if (sensitiveHealth && payload.privacyConsent !== true) {
           const privacyAnswers={tr:'Bu mesaj kişisel sağlık bilgileri içerebilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.',en:'This message may contain personal health information. I need your privacy consent before generating a response.',de:'Diese Nachricht kann persönliche Gesundheitsdaten enthalten. Vor der Antwort ist Ihre Datenschutzzustimmung erforderlich.',ar:'قد تحتوي هذه الرسالة على معلومات صحية شخصية. أحتاج إلى موافقتك على الخصوصية قبل إنشاء الرد.',ru:'Это сообщение может содержать персональные медицинские данные. Перед ответом необходимо ваше согласие на обработку данных.',az:'Bu mesaj şəxsi sağlamlıq məlumatları ehtiva edə bilər. Cavab yaratmazdan əvvəl məxfilik razılığınız lazımdır.',sq:'Ky mesazh mund të përmbajë të dhëna personale shëndetësore. Para përgjigjes kërkohet pëlqimi juaj për privatësinë.',nl:'Dit bericht kan persoonlijke gezondheidsgegevens bevatten. Uw privacytoestemming is nodig voordat ik antwoord kan geven.',es:'Este mensaje puede contener información personal de salud. Necesito su consentimiento de privacidad antes de generar una respuesta.'}; return new Response(JSON.stringify({needsPrivacyConsent:true,answer:privacyAnswers[responseLanguage]||privacyAnswers.tr}), {status:200, headers:baseHeaders});
         }
+        if (/(instagram|insta|instagram hesab|instagram adres|instagram kullanıcı)/i.test(normalized)) {
+          const ig = siteContext.instagram || 'https://instagram.com/tupmidedoktoru';
+          const answer = responseLanguage==='tr' ? 'Instagram hesabımız: @tupmidedoktoru' : responseLanguage==='en' ? 'Our Instagram account: @tupmidedoktoru' : 'Instagram: @tupmidedoktoru';
+          return new Response(JSON.stringify({answer,instagram:ig,source:'site-settings'}), {status:200,headers:baseHeaders});
+        }
+        if (/(telefon|telefon numarası|iletişim numarası|numaranız|telefonunuz|whatsapp numarası)/i.test(normalized)) {
+          const phone = siteContext.phone || '+90 541 456 93 67';
+          return new Response(JSON.stringify({answer:'İletişim telefonumuz: '+phone,phone,source:'site-settings'}), {status:200,headers:baseHeaders});
+        }
         const fallbackFaq = [
           {keys:['bmi nedir','vki nedir'], a:'BMI (Vücut Kitle İndeksi), yetişkinlerde boy ve kilo arasındaki ilişkiyi değerlendirmede kullanılan bir ölçüttür. Tek başına tanı veya tedavi kararı vermez.'},
           {keys:['bmi nasıl hesaplanır','vki nasıl hesaplanır'], a:'BMI, kilogram cinsinden vücut ağırlığının metre cinsinden boyun karesine bölünmesiyle hesaplanır. Sitedeki BMI hesaplayıcısını kullanabilirsiniz.'},
