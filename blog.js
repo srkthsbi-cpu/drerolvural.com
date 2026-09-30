@@ -1,9 +1,9 @@
 /* Erol Vural - SEO blog liste motoru */
 (() => {
   'use strict';
-  const LANGS = ['tr','en','de','ar','ru','az','sq','nl','es'];
-  const FALLBACK_MORE = {tr:'Makaleyi Oku',en:'Read Article',de:'Artikel lesen',ar:'اقرأ المقال',ru:'Читать статью',az:'Məqaləni oxu',sq:'Lexo artikullin',nl:'Artikel lezen',es:'Leer artículo'};
-  const EMPTY = {tr:'Aramanızla eşleşen makale bulunamadı.',en:'No articles match your search.',de:'Keine passenden Artikel gefunden.',ar:'لا توجد مقالات مطابقة للبحث.',ru:'Подходящих статей не найдено.',az:'Axtarışa uyğun məqalə tapılmadı.',sq:'Nuk u gjetën artikuj që përputhen.',nl:'Geen overeenkomende artikelen gevonden.',es:'No se encontraron artículos que coincidan con su búsqueda.'};
+  const LANGS = ['tr','en','de','fr','ar','ru','az','sq','nl','es'];
+  const FALLBACK_MORE = {tr:'Makaleyi Oku',en:'Read Article',de:'Artikel lesen',fr:'Lire l’article',ar:'اقرأ المقال',ru:'Читать статью',az:'Məqaləni oxu',sq:'Lexo artikullin',nl:'Artikel lezen',es:'Leer artículo'};
+  const EMPTY = {tr:'Aramanızla eşleşen makale bulunamadı.',en:'No articles match your search.',de:'Keine passenden Artikel gefunden.',fr:'Aucun article ne correspond à votre recherche.',ar:'لا توجد مقالات مطابقة للبحث.',ru:'Подходящих статей не найдено.',az:'Axtarışa uyğun məqalə tapılmadı.',sq:'Nuk u gjetën artikuj që përputhen.',nl:'Geen overeenkomende artikelen gevonden.',es:'No se encontraron artículos que coincidan con su búsqueda.'};
   const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const normalize = l => LANGS.includes(String(l||'').toLowerCase()) ? String(l).toLowerCase() : 'tr';
   function getLang(){ return normalize(typeof window.siteLanguage==='function' ? window.siteLanguage() : localStorage.getItem('siteLanguage') || document.documentElement.lang || 'tr'); }
@@ -48,7 +48,7 @@
   }
   function renderFilters(lang){
     const el=document.getElementById('blogFilters'); if(!el)return;
-    const allLabel = ({tr:'Tümü',en:'All',de:'Alle',ar:'الكل',ru:'Все',az:'Hamısı',sq:'Të gjitha',nl:'Alles',es:'Todos'})[lang] || 'All';
+    const allLabel = ({tr:'Tümü',en:'All',de:'Alle',fr:'Tous',ar:'الكل',ru:'Все',az:'Hamısı',sq:'Të gjitha',nl:'Alles',es:'Todos'})[lang] || 'All';
     el.innerHTML='<button class="filter active" data-cat="all">'+esc(allLabel)+'</button>'+categories(lang).map(([key,label])=>`<button class="filter" data-cat="${esc(key)}">${esc(label)}</button>`).join('');
     el.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{activeCategory=btn.dataset.cat;el.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b===btn));render(lang);}));
   }
@@ -68,7 +68,7 @@
   }
   async function renderBlogCards(lang=getLang()){
     try{ allPosts=await loadPosts(); renderFilters(lang); render(lang); }
-    catch(e){ console.error(e); const g=document.getElementById('blogGrid'); if(g)g.innerHTML='<div class="empty"><strong>'+esc(({tr:'İçerikler şu anda yüklenemiyor.',en:'Content is currently unavailable.',de:'Inhalte sind derzeit nicht verfügbar.',ar:'المحتوى غير متاح حالياً.',ru:'Материалы сейчас недоступны.',az:'Məzmun hazırda əlçatan deyil.',sq:'Përmbajtja nuk është e disponueshme tani.',nl:'Inhoud is momenteel niet beschikbaar.'})[getLang()]||'Content is currently unavailable.')+'</strong></div>'; }
+    catch(e){ console.error(e); const g=document.getElementById('blogGrid'); if(g)g.innerHTML='<div class="empty"><strong>'+esc(({tr:'İçerikler şu anda yüklenemiyor.',en:'Content is currently unavailable.',de:'Inhalte sind derzeit nicht verfügbar.',fr:'Le contenu est actuellement indisponible.',ar:'المحتوى غير متاح حالياً.',ru:'Материалы сейчас недоступны.',az:'Məzmun hazırda əlçatan deyil.',sq:'Përmbajtja nuk është e disponueshme tani.',nl:'Inhoud is momenteel niet beschikbaar.'})[getLang()]||'Content is currently unavailable.')+'</strong></div>'; }
   }
   window.renderBlogCards=renderBlogCards;
   document.addEventListener('DOMContentLoaded',()=>{ const s=document.getElementById('blogSearch'); if(s)s.addEventListener('input',()=>render(getLang())); renderBlogCards(getLang()); });
