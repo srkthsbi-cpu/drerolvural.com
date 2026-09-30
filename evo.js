@@ -78,10 +78,14 @@ function buildLayeredCharacter(){
   // Inline fetch/fallback yok: böylece eski bozuk fallback karakteri asla gösterilmez.
   var img=document.createElement('img');
   img.className='evo-svg evo-claude';
-  img.src='/assets/evo-user.png?v=20260930-30';
+  img.src='/assets/evo-user.png?v=20260930-31';
   img.alt='EVO sağlık asistanı';
   img.draggable=false;
   root.appendChild(img);
+  var faceFx=document.createElement('div');
+  faceFx.className='evo-face-fx';
+  faceFx.innerHTML='<i class="evo-brow evo-brow-l"></i><i class="evo-brow evo-brow-r"></i><i class="evo-lid evo-lid-l"></i><i class="evo-lid evo-lid-r"></i><i class="evo-mouth"></i>';
+  root.appendChild(faceFx);
   face=img;
   layered=true;
   setEvoState('idle');
@@ -267,6 +271,23 @@ function appendStyles(){
 @keyframes evoThink{0%,100%{transform:translateX(0) rotate(0)}50%{transform:translateX(2px) rotate(1deg)}}
 @keyframes evoTalk{from{transform:translateY(0) scale(1)}to{transform:translateY(-1.5px) scale(1.015)}}
 @keyframes evoHappy{0%,100%{transform:scale(1)}50%{transform:scale(1.055) translateY(-2px)}}
+#evo-fixed .evo-face-fx{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:visible}
+#evo-fixed .evo-brow{position:absolute;top:38%;width:18%;height:4px;border-radius:999px;background:rgba(48,226,255,.92);filter:blur(.15px) drop-shadow(0 0 4px rgba(48,226,255,.8));transform-origin:center}
+#evo-fixed .evo-brow-l{left:28%;transform:rotate(-8deg)}
+#evo-fixed .evo-brow-r{right:28%;transform:rotate(8deg)}
+#evo-fixed .evo-lid{position:absolute;top:50%;width:19%;height:12%;border-radius:50%;background:rgba(4,15,35,.94);transform:scaleY(0);transform-origin:center;box-shadow:0 0 5px rgba(4,15,35,.55)}
+#evo-fixed .evo-lid-l{left:25%}.evo-lid-r{right:25%}
+#evo-fixed .evo-mouth{position:absolute;left:41%;top:68%;width:18%;height:5px;border-radius:999px;background:#39e7ff;filter:drop-shadow(0 0 4px rgba(57,231,255,.9));transform:scaleY(.8);transform-origin:center}
+#evo-fixed[data-evo-state="talking"] .evo-mouth{animation:evoMouth .18s ease-in-out infinite alternate}
+#evo-fixed[data-evo-state="happy"] .evo-mouth{animation:evoSmile .7s ease-in-out 2}
+#evo-fixed[data-evo-state="thinking"] .evo-brow-l{animation:evoBrowL .9s ease-in-out infinite}
+#evo-fixed[data-evo-state="thinking"] .evo-brow-r{animation:evoBrowR .9s ease-in-out infinite}
+@keyframes evoBlink{0%,43%,100%{transform:scaleY(0)}47%,53%{transform:scaleY(1)}}
+@keyframes evoMouth{from{transform:scaleY(.45)}to{transform:scaleY(1.55)}}
+@keyframes evoSmile{0%,100%{transform:scaleY(.8) scaleX(1)}50%{transform:scaleY(1.7) scaleX(1.15)}}
+@keyframes evoBrowL{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(-14deg) translateY(-2px)}}
+@keyframes evoBrowR{0%,100%{transform:rotate(8deg) translateY(0)}50%{transform:rotate(14deg) translateY(-2px)}}
+#evo-fixed .evo-lid-l,#evo-fixed .evo-lid-r{animation:evoBlink 4.8s ease-in-out infinite}
 #evo-fixed .label{position:absolute;right:2px;top:-34px;background:rgba(255,255,255,.96);padding:6px 10px;border-radius:999px;color:#005082;font:600 10px Poppins,sans-serif;white-space:nowrap;box-shadow:0 6px 20px rgba(0,80,130,.16);pointer-events:none}
 .evo-heart{position:absolute;left:50%;top:15%;font-size:20px;line-height:1;pointer-events:none;z-index:4;opacity:0;animation:evoHeartFloat 1.45s cubic-bezier(.18,.72,.28,1) forwards;filter:drop-shadow(0 4px 8px rgba(220,50,100,.22))}
 @keyframes evoHeartFloat{0%{opacity:0;transform:translate(-50%,8px) scale(.35) rotate(-10deg)}12%{opacity:1;transform:translate(-50%,0) scale(1.05) rotate(0)}100%{opacity:0;transform:translate(calc(-50% + var(--heart-x)), -78px) scale(.78) rotate(var(--heart-r))}}
