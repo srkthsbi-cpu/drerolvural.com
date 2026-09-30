@@ -74,18 +74,33 @@ function setEvoState(state){
 }
 async function buildLayeredCharacter(){
   if(!root)return;
-  // En basit ve en stabil çözüm: EVO'yu tek parça, gerçek SVG karakter
-  // olarak kullanıyoruz. Böylece 30 parçalı raster/composite sürümündeki
-  // hizalama ve animasyonsuz görünüm sorunları tamamen ortadan kalkar.
-  var img=document.createElement('img');
-  img.className='evo-svg evo-fallback';
-  img.src='/assets/evo-supplied.svg?v=20260930-20';
-  img.alt='EVO sağlık asistanı';
-  img.draggable=false;
-  root.appendChild(img);
-  face=img;
-  layered=true;
-  setEvoState('idle');
+  // Claude sürümünü siteye aynen uyarlıyoruz: gerçek asset katmanları,
+  // aynı yerleşim mantığı ve yüz ifadeleri. SVG inline edildiği için
+  // EVO'nun mevcut durum sınıfları doğrudan animasyonları kontrol eder.
+  try{
+    var res=await fetch('/assets/evo-claude.svg?v=20260930-21',{cache:'no-store'});
+    var text=await res.text();
+    var holder=document.createElement('div');
+    holder.innerHTML=text.trim();
+    var svg=holder.querySelector('svg');
+    if(!svg)throw new Error('EVO SVG yüklenemedi');
+    svg.classList.add('evo-svg');
+    svg.setAttribute('aria-label','EVO sağlık asistanı');
+    root.appendChild(svg);
+    face=svg;
+    layered=true;
+    setEvoState('idle');
+  }catch(err){
+    console.error('EVO character load failed',err);
+    var img=document.createElement('img');
+    img.className='evo-svg evo-fallback';
+    img.src='/assets/evo-supplied.svg?v=20260930-21';
+    img.alt='EVO sağlık asistanı';
+    root.appendChild(img);
+    face=img;
+    layered=true;
+    setEvoState('idle');
+  }
 }
 
 function showEvoHearts(){
