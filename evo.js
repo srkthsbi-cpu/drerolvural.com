@@ -275,11 +275,11 @@ function appendStyles(){
 #evo-fixed .evo-brow{position:absolute;top:45%;width:18%;height:10px;border-top:4px solid #39e7ff;border-radius:50% 50% 0 0;filter:drop-shadow(0 0 4px rgba(57,231,255,.85));transform-origin:center;box-sizing:border-box}
 #evo-fixed .evo-brow-l{left:28%;transform:rotate(-10deg)}
 #evo-fixed .evo-brow-r{right:28%;transform:rotate(10deg)}
-#evo-fixed .evo-eye{position:absolute;top:55%;width:17%;height:16%;border-radius:50%;background:radial-gradient(circle at 50% 50%,#ffffff 0 38%,#7cf8ff 40% 62%,#00b8dc 64% 100%);box-shadow:0 0 8px rgba(0,225,255,.72);transform-origin:center;animation:evoBlink 5.2s ease-in-out infinite;overflow:hidden}
-#evo-fixed .evo-eye-l{left:28%}#evo-fixed .evo-eye-r{right:28%;animation-delay:.12s}
-#evo-fixed .evo-pupil{position:absolute;left:50%;top:50%;width:34%;height:54%;border-radius:50%;background:#030814;transform:translate(-50%,-50%);box-shadow:0 0 2px rgba(0,0,0,.9)}
-#evo-fixed .evo-pupil:after{content:"";position:absolute;left:28%;top:18%;width:22%;height:22%;border-radius:50%;background:#fff;opacity:.9}
-#evo-fixed .evo-mouth{position:absolute;left:39%;top:76%;width:22%;height:13px;border-bottom:4px solid #39e7ff;border-radius:0 0 50% 50%;filter:drop-shadow(0 0 4px rgba(57,231,255,.9));transform-origin:center;}
+#evo-fixed .evo-eye{position:absolute;top:54%;width:16%;height:16%;border-radius:50%;background:radial-gradient(circle at 50% 50%,#ffffff 0 38%,#7cf8ff 40% 62%,#00b8dc 64% 100%);box-shadow:0 0 8px rgba(0,225,255,.72);transform-origin:center;animation:evoBlink 5.2s ease-in-out infinite;overflow:hidden}
+#evo-fixed .evo-eye-l{left:29%}#evo-fixed .evo-eye-r{right:29%;animation-delay:.12s}
+#evo-fixed .evo-pupil{position:absolute;left:50%;top:50%;width:34%;height:54%;border-radius:50%;background:#030814;transform:translate(-50%,-50%);box-shadow:none}
+#evo-fixed .evo-pupil:after{display:none}
+#evo-fixed .evo-mouth{position:absolute;left:40%;top:73%;width:20%;height:12px;border-bottom:4px solid #39e7ff;border-radius:0 0 50% 50%;filter:drop-shadow(0 0 4px rgba(57,231,255,.9));transform-origin:center;}
 #evo-fixed[data-evo-state="talking"] .evo-mouth{animation:evoMouth .18s ease-in-out infinite alternate}
 #evo-fixed[data-evo-state="happy"] .evo-mouth{animation:evoSmile .7s ease-in-out 2}
 #evo-fixed[data-evo-state="thinking"] .evo-brow-l{animation:evoBrowL .9s ease-in-out infinite}
