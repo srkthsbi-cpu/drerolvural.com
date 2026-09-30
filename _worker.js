@@ -3259,7 +3259,7 @@ function enhanceHtmlResponse(response){
     }})
     .on('body',{element(e){
       e.append(`<script id="drerolvural-global-qa-js">${GLOBAL_HTML_JS}</script>`,{html:true});
-      e.append(`<script id="drerolvural-evo-js" src="/evo.js?v=20260930-1" defer></script>`,{html:true});
+      e.append(`<script id="drerolvural-evo-js" src="/evo.js?v=20260930-2" defer></script>`,{html:true});
     }})
     .transform(new Response(response.body,{status:response.status,statusText:response.statusText,headers}));
 }
