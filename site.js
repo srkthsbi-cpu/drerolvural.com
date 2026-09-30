@@ -19,32 +19,78 @@
   const SUPPORTED = new Set(LANGS.map(x => x.code));
   const DEFAULT_LANG = 'tr';
 
-  // Floating UI layer manager: the last clicked interactive surface stays on top.
-  // This is intentionally language-independent and works on every localized page.
+  // Global floating-layer manager.
+  // Menu/EVO are moved into the same root stacking context when needed, and
+  // every interaction receives the newest layer so the last clicked surface wins.
   function bindLayerPriority() {
     if (document.documentElement.dataset.layerPriorityBound === '1') return;
     document.documentElement.dataset.layerPriorityBound = '1';
-    const HEADER_Z = '2147483645';
-    const EVO_Z = '2147483647';
-    const BASE_HEADER_Z = '1000';
-    const BASE_EVO_Z = '2147483646';
-    const header = () => document.querySelector('header');
-    const evo = () => ({ root: document.getElementById('evo-fixed'), panel: document.getElementById('evo-panel') });
 
-    function bringHeaderToFront() {
-      const h = header();
-      if (h) h.style.setProperty('z-index', HEADER_Z, 'important');
+    const BASE_Z = 2000000000;
+    let layerCounter = 0;
+    let menuPlaceholder = null;
+
+    const header = () => document.querySelector('header');
+    const nav = () => document.getElementById('navMenu');
+    const evo = () => ({ root: document.getElementById('evo-fixed'), panel: document.getElementById('evo-panel') });
+    const nextZ = () => String(BASE_Z + (++layerCounter));
+
+    function setEvoZ(z) {
       const { root, panel } = evo();
-      if (root) root.style.setProperty('z-index', BASE_EVO_Z, 'important');
-      if (panel) panel.style.setProperty('z-index', BASE_EVO_Z, 'important');
+      if (root) root.style.setProperty('z-index', z, 'important');
+      if (panel) panel.style.setProperty('z-index', z, 'important');
+    }
+
+    function setHeaderZ(z) {
+      const h = header();
+      if (h) h.style.setProperty('z-index', z, 'important');
     }
 
     function bringEvoToFront() {
-      const h = header();
-      if (h) h.style.setProperty('z-index', BASE_HEADER_Z, 'important');
-      const { root, panel } = evo();
-      if (root) root.style.setProperty('z-index', EVO_Z, 'important');
-      if (panel) panel.style.setProperty('z-index', EVO_Z, 'important');
+      setHeaderZ(String(BASE_Z));
+      setEvoZ(nextZ());
+      const n = nav();
+      if (n && n.classList.contains('active')) n.style.setProperty('z-index', String(BASE_Z + 1), 'important');
+    }
+
+    function bringMenuToFront() {
+      const z = nextZ();
+      setHeaderZ(z);
+      const n = nav();
+      if (n) n.style.setProperty('z-index', String(BASE_Z + layerCounter + 1), 'important');
+      setEvoZ(String(BASE_Z));
+    }
+
+    function portalMenuToBody() {
+      const n = nav();
+      if (!n || !window.matchMedia || !window.matchMedia('(max-width: 992px)').matches) return;
+      if (!menuPlaceholder) {
+        menuPlaceholder = document.createComment('nav-menu-placeholder');
+        n.parentNode?.insertBefore(menuPlaceholder, n);
+      }
+      if (n.parentElement !== document.body) document.body.appendChild(n);
+      n.classList.add('mobile-menu-portal');
+      n.style.setProperty('position', 'fixed', 'important');
+      n.style.setProperty('top', '72px', 'important');
+      n.style.setProperty('left', '0', 'important');
+      n.style.setProperty('width', '100vw', 'important');
+      n.style.setProperty('max-width', '100vw', 'important');
+      n.style.setProperty('z-index', String(BASE_Z + layerCounter + 1), 'important');
+    }
+
+    function restoreMenuFromBody() {
+      const n = nav();
+      if (!n) return;
+      n.classList.remove('mobile-menu-portal');
+      n.style.removeProperty('position');
+      n.style.removeProperty('top');
+      n.style.removeProperty('left');
+      n.style.removeProperty('width');
+      n.style.removeProperty('max-width');
+      n.style.removeProperty('z-index');
+      if (menuPlaceholder?.parentNode) menuPlaceholder.parentNode.insertBefore(n, menuPlaceholder.nextSibling);
+      if (menuPlaceholder?.parentNode) menuPlaceholder.parentNode.removeChild(menuPlaceholder);
+      menuPlaceholder = null;
     }
 
     document.addEventListener('pointerdown', event => {
@@ -53,24 +99,19 @@
       if (target.closest('#evo-fixed, #evo-panel')) {
         bringEvoToFront();
       } else if (target.closest('header, #navMenu, .lang-content')) {
-        bringHeaderToFront();
+        if (nav() && nav().classList.contains('active')) bringMenuToFront();
+        else setHeaderZ(nextZ());
       }
     }, true);
 
-    // EVO can be created after site.js has loaded; keep its default layer correct.
     const observer = new MutationObserver(() => {
       const { root, panel } = evo();
-      if (root && !root.dataset.layerManaged) {
-        root.dataset.layerManaged = '1';
-        root.style.setProperty('z-index', BASE_EVO_Z, 'important');
-      }
-      if (panel && !panel.dataset.layerManaged) {
-        panel.dataset.layerManaged = '1';
-        panel.style.setProperty('z-index', BASE_EVO_Z, 'important');
-      }
+      if (root && !root.dataset.layerManaged) root.dataset.layerManaged = '1';
+      if (panel && !panel.dataset.layerManaged) panel.dataset.layerManaged = '1';
     });
     observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
   }
+
   const RUNTIME_I18N = {
     fr: {
       "menu.press":"Dans la presse",
@@ -280,14 +321,50 @@
   function toggleMenu() {
     const nav = document.getElementById('navMenu');
     if (!nav) return;
-    const open = nav.classList.toggle('active');
-    const header = document.querySelector('header');
-    const evoRoot = document.getElementById('evo-fixed');
-    const evoPanel = document.getElementById('evo-panel');
+    const open = !nav.classList.contains('active');
+    nav.classList.toggle('active', open);
     if (open) {
-      if (header) header.style.setProperty('z-index', '2147483647', 'important');
-      if (evoRoot) evoRoot.style.setProperty('z-index', '2147483646', 'important');
-      if (evoPanel) evoPanel.style.setProperty('z-index', '2147483646', 'important');
+      // The mobile menu is portaled to <body> so it cannot be trapped behind
+      // EVO's independent stacking context on iOS/Safari.
+      if (window.matchMedia && window.matchMedia('(max-width: 992px)').matches) {
+        if (!nav.dataset.menuPortal) {
+          const placeholder = document.createComment('nav-menu-placeholder');
+          nav.parentNode?.insertBefore(placeholder, nav);
+          nav.dataset.menuPortal = '1';
+          nav.dataset.menuPlaceholder = 'nav-menu-placeholder';
+          nav.__menuPlaceholder = placeholder;
+        }
+        if (nav.parentElement !== document.body) document.body.appendChild(nav);
+        nav.classList.add('mobile-menu-portal');
+        nav.style.setProperty('position', 'fixed', 'important');
+        nav.style.setProperty('top', '72px', 'important');
+        nav.style.setProperty('left', '0', 'important');
+        nav.style.setProperty('width', '100vw', 'important');
+        nav.style.setProperty('max-width', '100vw', 'important');
+      }
+      const header = document.querySelector('header');
+      const evoRoot = document.getElementById('evo-fixed');
+      const evoPanel = document.getElementById('evo-panel');
+      const menuZ = String(2000000000 + Date.now() % 1000000);
+      if (header) header.style.setProperty('z-index', menuZ, 'important');
+      nav.style.setProperty('z-index', String(Number(menuZ) + 1), 'important');
+      if (evoRoot) evoRoot.style.setProperty('z-index', '1999999999', 'important');
+      if (evoPanel) evoPanel.style.setProperty('z-index', '1999999999', 'important');
+    } else {
+      nav.classList.remove('active');
+      nav.classList.remove('mobile-menu-portal');
+      nav.style.removeProperty('position');
+      nav.style.removeProperty('top');
+      nav.style.removeProperty('left');
+      nav.style.removeProperty('width');
+      nav.style.removeProperty('max-width');
+      nav.style.removeProperty('z-index');
+      if (nav.__menuPlaceholder?.parentNode) {
+        nav.__menuPlaceholder.parentNode.insertBefore(nav, nav.__menuPlaceholder.nextSibling);
+        nav.__menuPlaceholder.parentNode.removeChild(nav.__menuPlaceholder);
+      }
+      delete nav.__menuPlaceholder;
+      delete nav.dataset.menuPortal;
     }
     document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -296,7 +373,22 @@
   }
 
   function closeMenu() {
-    document.getElementById('navMenu')?.classList.remove('active');
+    const nav = document.getElementById('navMenu');
+    if (!nav) return;
+    nav.classList.remove('active');
+    nav.classList.remove('mobile-menu-portal');
+    nav.style.removeProperty('position');
+    nav.style.removeProperty('top');
+    nav.style.removeProperty('left');
+    nav.style.removeProperty('width');
+    nav.style.removeProperty('max-width');
+    nav.style.removeProperty('z-index');
+    if (nav.__menuPlaceholder?.parentNode) {
+      nav.__menuPlaceholder.parentNode.insertBefore(nav, nav.__menuPlaceholder.nextSibling);
+      nav.__menuPlaceholder.parentNode.removeChild(nav.__menuPlaceholder);
+    }
+    delete nav.__menuPlaceholder;
+    delete nav.dataset.menuPortal;
     document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
       btn.setAttribute('aria-expanded', 'false');
       btn.setAttribute('aria-label', 'Menüyü aç');
