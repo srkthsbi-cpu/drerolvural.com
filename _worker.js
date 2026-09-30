@@ -3430,7 +3430,7 @@ export default {
             request.headers.get('User-Agent') || ''
           ).run();
 
-          const notifyEmail = env.EVO_NOTIFY_EMAIL || 'info@drerolvural.com';
+          const notifyEmail = env.EVO_NOTIFY_EMAIL || 'srkthsbi@gmail.com';
           const notifyForm = new FormData();
           notifyForm.append('_subject', 'EVO\'ya yeni soru soruldu');
           notifyForm.append('_captcha', 'false');
