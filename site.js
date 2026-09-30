@@ -8,6 +8,7 @@
     { code: 'tr', label: 'TR', name: '🇹🇷 Türkçe' },
     { code: 'en', label: 'EN', name: '🇬🇧 English' },
     { code: 'de', label: 'DE', name: '🇩🇪 Deutsch' },
+    { code: 'fr', label: 'FR', name: '🇫🇷 Français' },
     { code: 'ar', label: 'AR', name: '🇸🇦 العربية' },
     { code: 'ru', label: 'RU', name: '🇷🇺 Русский' },
     { code: 'az', label: 'AZ', name: '🇦🇿 Azərbaycanca' },
@@ -18,6 +19,24 @@
   const SUPPORTED = new Set(LANGS.map(x => x.code));
   const DEFAULT_LANG = 'tr';
   const RUNTIME_I18N = {
+    fr: {
+      "menu.press":"Dans la presse",
+      "about.pressIntro":"Découvrez une sélection de publications dans la presse et de participations à des événements scientifiques concernant le Dr Erol Vural.",
+      "press.eyebrow":"Archives de presse",
+      "press.title":"Dans la presse",
+      "press.intro":"Une sélection d’interviews, d’articles de santé et de publications professionnelles vérifiables concernant le Dr Erol Vural.",
+      "press.selected":"Publications sélectionnées",
+      "press.sourceNote":"Sources : archives des éditeurs concernés",
+      "press.tagInterviewHealth":"Interview · Santé",
+      "press.tagInterviewObesity":"Interview · Obésité",
+      "press.tagMetabolic":"Chirurgie métabolique",
+      "press.read":"Lire l’article",
+      "press.editorialLabel":"Note éditoriale :",
+      "press.editorialText":"Cette page présente une sélection d’archives de presse. Les titres et les informations médicales ou statistiques appartiennent à leurs éditeurs respectifs ; leur présence ici ne constitue pas une garantie de résultat médical ni une vérification indépendante.",
+      "press.scientificTitle":"Événement scientifique",
+      "press.scientificText":"Les actes 2023 de l’Association turque de chirurgie de l’obésité mentionnent une présentation scientifique d’Erol Vural.",
+      "press.viewProceedings":"Voir les actes 2023"
+    },
     en: {"menu.press":"In the Press","about.pressIntro":"Explore selected media and scientific-event coverage featuring Assoc. Prof. Dr. Erol Vural.","press.eyebrow":"Press Archive","press.title":"In the Press","press.intro":"Selected verifiable interviews, health reports and professional event records featuring Assoc. Prof. Dr. Erol Vural from previous years.","press.selected":"Selected Coverage","press.sourceNote":"Sources: archives of the respective publishers","press.tagInterviewHealth":"Interview · Health","press.tagInterviewObesity":"Interview · Obesity","press.tagMetabolic":"Metabolic Surgery","press.story1Title":"What is not widely known about sleeve gastrectomy","press.story2Title":"Who may be considered for bariatric surgery?","press.story3Title":"Report on metabolic surgery for diabetes in Istanbul","press.story1Summary":"The İHA health report compiles statements by Dr. Erol Vural about sleeve gastrectomy, its potential benefits and limitations, and postoperative weight management.","press.story2Summary":"The report includes a Q&A with Dr. Erol Vural about bariatric surgery, patient assessment, eligibility criteria and preoperative preparation.","press.story3Summary":"The report presents statements by Dr. Erol Vural about metabolic surgery and approaches related to type 2 diabetes. Its headline mentions an 83% success rate; that figure is not independently evaluated on this page.","press.read":"Read the report","press.editorialLabel":"Editorial note:","press.editorialText":"This page is a selected press archive. Headlines and medical or statistical statements belong to their respective publishers; inclusion here does not guarantee a medical outcome or constitute independent verification.","press.scientificTitle":"Scientific event record","press.scientificText":"The 2023 proceedings of the Turkish Obesity Surgery Association include a scientific presentation by Erol Vural titled “Early results and complication risks of vertical clip gastroplasty.”","press.viewProceedings":"View the 2023 proceedings"},
     de: {"menu.press":"In der Presse","about.pressIntro":"Hier finden Sie eine Auswahl von Presseberichten und wissenschaftlichen Veranstaltungsnachweisen über Doç. Dr. Erol Vural.","press.eyebrow":"Pressearchiv","press.title":"In der Presse","press.intro":"Ausgewählte überprüfbare Interviews, Gesundheitsberichte und berufliche Veranstaltungsnachweise über Doç. Dr. Erol Vural aus früheren Jahren.","press.selected":"Ausgewählte Berichte","press.sourceNote":"Quellen: Archive der jeweiligen Herausgeber","press.tagInterviewHealth":"Interview · Gesundheit","press.tagInterviewObesity":"Interview · Adipositas","press.tagMetabolic":"Metabolische Chirurgie","press.story1Title":"Was über die Schlauchmagen-Operation weniger bekannt ist","press.story2Title":"Für wen kommt eine bariatrische Operation infrage?","press.story3Title":"Bericht über metabolische Chirurgie bei Diabetes in Istanbul","press.read":"Zum Bericht","press.editorialLabel":"Redaktioneller Hinweis:","press.editorialText":"Diese Seite ist als ausgewähltes Pressearchiv zusammengestellt. Überschriften sowie medizinische oder statistische Angaben stammen von den jeweiligen Herausgebern; ihre Aufnahme stellt keine Garantie eines medizinischen Ergebnisses und keine unabhängige Bestätigung dar.","press.scientificTitle":"Wissenschaftlicher Veranstaltungsnachweis","press.scientificText":"Im Tagungsband 2023 der Türkischen Gesellschaft für Adipositaschirurgie ist ein wissenschaftlicher Vortrag von Erol Vural verzeichnet.","press.viewProceedings":"Tagungsband ansehen"},
     ar: {"menu.press":"في الصحافة","about.pressIntro":"يمكنكم الاطلاع على مجموعة مختارة من التغطيات الصحفية والسجلات العلمية المتعلقة بـ Doç. Dr. Erol Vural.","press.eyebrow":"أرشيف الصحافة","press.title":"في الصحافة","press.intro":"مجموعة مختارة من المقابلات والتقارير الصحية وسجلات الفعاليات المهنية القابلة للتحقق من السنوات السابقة حول Doç. Dr. Erol Vural.","press.selected":"تغطيات مختارة","press.sourceNote":"المصادر: أرشيفات الجهات الناشرة المعنية","press.tagInterviewHealth":"مقابلة · صحة","press.tagInterviewObesity":"مقابلة · سمنة","press.tagMetabolic":"جراحة الأيض","press.story1Title":"ما لا يُعرف على نطاق واسع عن تكميم المعدة","press.story2Title":"من يمكن أن يخضع لجراحة السمنة؟","press.story3Title":"تقرير عن جراحة الأيض لمرض السكري في إسطنبول","press.read":"اقرأ التقرير","press.editorialLabel":"ملاحظة تحريرية:","press.editorialText":"أُعدت هذه الصفحة كأرشيف صحفي مختار. العناوين والعبارات الطبية أو الإحصائية تعود إلى الجهات الناشرة؛ وإدراجها هنا لا يضمن نتيجة طبية ولا يعني التحقق المستقل منها.","press.scientificTitle":"سجل فعالية علمية","press.scientificText":"يتضمن كتاب وقائع عام 2023 للجمعية التركية لجراحة السمنة عرضاً علمياً باسم Erol Vural.","press.viewProceedings":"عرض كتاب الوقائع"},
@@ -313,7 +332,7 @@
           form.style.display='none';
           if(success){
             success.style.display='block';
-            success.textContent='Teşekkürler! Mesajınız başarıyla iletildi. En kısa sürede sizinle iletişime geçeceğiz.';
+            success.textContent=String(getPath(translations,'contact.success') || 'Teşekkürler! Mesajınız başarıyla iletildi. En kısa sürede sizinle iletişime geçeceğiz.');
           }
         }catch(error){
           console.error('Contact form error:',error);
@@ -383,7 +402,7 @@
 })();
 (function globalQAFixes(){
   const routeMap={'index.html':'/','./index.html':'/','/index.html':'/','hakkimizda.html':'/hakkimizda','./hakkimizda.html':'/hakkimizda','/hakkimizda.html':'/hakkimizda','hizmetler.html':'/hizmetler','./hizmetler.html':'/hizmetler','/hizmetler.html':'/hizmetler','blog.html':'/blog','./blog.html':'/blog','/blog.html':'/blog','iletisim.html':'/iletisim','./iletisim.html':'/iletisim','/iletisim.html':'/iletisim','basinda-biz.html':'/basinda-biz','./basinda-biz.html':'/basinda-biz','/basinda-biz.html':'/basinda-biz','saglik-turizmi.html':'/saglik-turizmi','./saglik-turizmi.html':'/saglik-turizmi','/saglik-turizmi.html':'/saglik-turizmi'};
-  const langs=['tr','en','de','ar','ru','az','sq','nl','es'];
+  const langs=['tr','en','de','fr','ar','ru','az','sq','nl','es'];
   function cleanInternalLink(raw){
     if(!raw || /^(?:https?:|mailto:|tel:|javascript:|data:|#)/i.test(raw)) return raw;
     try{const u=new URL(raw,location.href);if(u.origin!==location.origin)return raw;let p=u.pathname;if(routeMap[p])p=routeMap[p];else{for(const l of langs){const prefix='/'+l+'/';if(p===prefix+'index.html')p=prefix;else if(p.startsWith(prefix)&&p.endsWith('.html'))p=p.slice(0,-5);}}u.pathname=p;return u.pathname+u.search+u.hash;}catch(_){return raw;}
