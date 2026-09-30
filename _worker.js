@@ -277,7 +277,26 @@ async function handleAdmin(context) {
         key TEXT PRIMARY KEY,
         value_json TEXT NOT NULL DEFAULT '{}',
         updated_at TEXT NOT NULL
-      )`
+      )`,
+
+      `CREATE TABLE IF NOT EXISTS contact_messages (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        message TEXT NOT NULL,
+        ip_hash TEXT,
+        user_agent TEXT,
+        status TEXT NOT NULL DEFAULT 'new',
+        created_at TEXT NOT NULL,
+        read_at TEXT,
+        replied_at TEXT
+      )`,
+
+      `CREATE INDEX IF NOT EXISTS idx_contact_messages_created
+       ON contact_messages(created_at DESC)`,
+
+      `CREATE INDEX IF NOT EXISTS idx_contact_messages_ip
+       ON contact_messages(ip_hash,created_at)`
     ];
 
     for (const q of stmts) {
@@ -759,6 +778,90 @@ async function handleAdmin(context) {
         });
       }
 
+      /* PUBLIC CONTACT FORM — first-party D1 storage */
+      if (
+        path === 'contact' &&
+        method === 'POST'
+      ) {
+        const contentType = request.headers.get('content-type') || '';
+        let payload = {};
+        try {
+          if (contentType.includes('application/json')) {
+            payload = await request.json();
+          } else {
+            const fd = await request.formData();
+            payload = Object.fromEntries(fd.entries());
+          }
+        } catch (_) {
+          return json({ ok: false, error: 'Geçersiz form verisi.' }, 400);
+        }
+
+        const origin = request.headers.get('Origin');
+        if (origin && origin !== url.origin) {
+          return json({ ok: false, error: 'Geçersiz kaynak.' }, 403);
+        }
+
+        const honey = String(payload._honey || '').trim();
+        if (honey) {
+          return json({ ok: true }, 200);
+        }
+
+        const name = String(payload.ad_soyad || payload.name || '').trim().slice(0, 120);
+        const phone = String(payload.telefon || payload.phone || '').trim().slice(0, 40);
+        const message = String(payload.mesaj || payload.message || '').trim().slice(0, 5000);
+
+        if (!name || !phone || !message) {
+          return json({
+            ok: false,
+            error: 'Ad soyad, telefon ve mesaj alanları zorunludur.'
+          }, 400);
+        }
+
+        const ipHash = await sha256(ip(request));
+        const recent = await env.DB
+          .prepare(
+            `SELECT COUNT(*) AS c
+             FROM contact_messages
+             WHERE ip_hash=? AND created_at >= datetime('now','-10 minutes')`
+          )
+          .bind(ipHash)
+          .first();
+
+        if (Number(recent?.c || 0) >= 5) {
+          return json({
+            ok: false,
+            error: 'Çok fazla gönderim. Lütfen birkaç dakika sonra tekrar deneyin.'
+          }, 429);
+        }
+
+        const id = crypto.randomUUID();
+        const createdAt = iso();
+        const userAgent = String(request.headers.get('User-Agent') || '').slice(0, 500);
+
+        await env.DB
+          .prepare(
+            `INSERT INTO contact_messages
+             (id,name,phone,message,ip_hash,user_agent,status,created_at)
+             VALUES(?,?,?,?,?,?,?,?)`
+          )
+          .bind(
+            id,
+            name,
+            phone,
+            message,
+            ipHash,
+            userAgent,
+            'new',
+            createdAt
+          )
+          .run();
+
+        return json({
+          ok: true,
+          id
+        }, 201);
+      }
+
       const s =
         await requireAuth(
           request,
@@ -814,6 +917,7 @@ async function handleAdmin(context) {
           p,
           b,
           d,
+          m,
           l
         ] =
           await Promise.all([
@@ -837,6 +941,12 @@ async function handleAdmin(context) {
 
             env.DB
               .prepare(
+                "SELECT COUNT(*) c FROM contact_messages WHERE status='new'"
+              )
+              .first(),
+
+            env.DB
+              .prepare(
                 'SELECT * FROM audit_logs ORDER BY id DESC LIMIT 10'
               )
               .all()
@@ -846,9 +956,73 @@ async function handleAdmin(context) {
           posts: p?.c || 0,
           banners: b?.c || 0,
           drafts: d?.c || 0,
+          messages: m?.c || 0,
           logs:
             l?.results || []
         });
+      }
+
+      if (
+        path === 'contact-messages' &&
+        method === 'GET'
+      ) {
+        const r = await env.DB
+          .prepare(
+            'SELECT id,name,phone,message,status,created_at,read_at,replied_at FROM contact_messages ORDER BY datetime(created_at) DESC LIMIT 200'
+          )
+          .all();
+
+        return json(r.results || []);
+      }
+
+      if (
+        path === 'contact-messages' &&
+        method === 'PUT'
+      ) {
+        const b = await body(request);
+        const id = String(b.id || '').trim();
+        const status = ['new','read','replied'].includes(String(b.status))
+          ? String(b.status)
+          : null;
+
+        if (!id || !status) {
+          return json({ error: 'Geçerli id ve durum gerekli.' }, 400);
+        }
+
+        const stamp = iso();
+        await env.DB
+          .prepare(
+            `UPDATE contact_messages
+             SET status=?,
+                 read_at=CASE WHEN ? IN ('read','replied') AND read_at IS NULL THEN ? ELSE read_at END,
+                 replied_at=CASE WHEN ?='replied' AND replied_at IS NULL THEN ? ELSE replied_at END
+             WHERE id=?`
+          )
+          .bind(status, status, stamp, status, stamp, id)
+          .run();
+
+        await audit(env, s, 'contact-message.status', id, request);
+        return json({ ok: true });
+      }
+
+      if (
+        path === 'contact-messages' &&
+        method === 'DELETE'
+      ) {
+        const b = await body(request);
+        const id = String(b.id || '').trim();
+
+        if (!id) {
+          return json({ error: 'Mesaj id gerekli.' }, 400);
+        }
+
+        await env.DB
+          .prepare('DELETE FROM contact_messages WHERE id=?')
+          .bind(id)
+          .run();
+
+        await audit(env, s, 'contact-message.delete', id, request);
+        return json({ ok: true });
       }
 
       if (
