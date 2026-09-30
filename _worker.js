@@ -3411,15 +3411,19 @@ export default {
       try {
         const payload = await request.json().catch(() => ({}));
         const message = String(payload.message || '').trim().slice(0, 4000);
+        const languageNames = {tr:'Turkish',en:'English',de:'German',ar:'Arabic',ru:'Russian',az:'Azerbaijani',sq:'Albanian',nl:'Dutch',es:'Spanish'};
+        const requestedLanguage = String(payload.language || 'tr').toLowerCase().split('-')[0];
+        const responseLanguage = languageNames[requestedLanguage] ? requestedLanguage : 'tr';
+        const languageName = languageNames[responseLanguage];
         const history = Array.isArray(payload.history) ? payload.history.slice(-8).map(x => ({role: x && x.role === 'assistant' ? 'assistant' : 'user', content: String(x && x.content || '').trim().slice(0, 1200)})).filter(x => x.content) : [];
         if (!message) {
-          return new Response(JSON.stringify({error:'Soru boş olamaz.'}), {status:400, headers:baseHeaders});
+          return new Response(JSON.stringify({error:responseLanguage==='tr'?'Soru boş olamaz.':responseLanguage==='en'?'The question cannot be empty.':'Please enter a question.'}), {status:400, headers:baseHeaders});
         }
 
         const normalized = message.toLocaleLowerCase('tr-TR');
         const sensitiveHealth = /(?:kilo|kilom|kiloyum|boyum|boy\\s*\\d|bmi|vki|vücut\\s*kitle|tahlil|kan\\s*değeri|kan\\s*şekeri|şekerim|diyabet|insülin|tansiyon|kolesterol|hastalık|hastayım|teşhis|tanı|ameliyat|operasyon|ilaç|ilaçlar|reçete|mr|tomografi|ultrason|endoskopi|biyopsi|patoloji|rapor|semptom|belirti|ağrı|hamileyim|gebeyim|alerji|alerjim|kan\\s*grubu|nabız|ateş|depresyon|anksiyete|psikiyatr|obezite|tüp\\s*mide|gastrik\\s*bypass|bypass)/i.test(normalized);
         if (sensitiveHealth && payload.privacyConsent !== true) {
-          return new Response(JSON.stringify({needsPrivacyConsent:true,answer:'Bu mesaj kişisel sağlık bilgileri içerebilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.'}), {status:200, headers:baseHeaders});
+          const privacyAnswers={tr:'Bu mesaj kişisel sağlık bilgileri içerebilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.',en:'This message may contain personal health information. I need your privacy consent before generating a response.',de:'Diese Nachricht kann persönliche Gesundheitsdaten enthalten. Vor der Antwort ist Ihre Datenschutzzustimmung erforderlich.',ar:'قد تحتوي هذه الرسالة على معلومات صحية شخصية. أحتاج إلى موافقتك على الخصوصية قبل إنشاء الرد.',ru:'Это сообщение может содержать персональные медицинские данные. Перед ответом необходимо ваше согласие на обработку данных.',az:'Bu mesaj şəxsi sağlamlıq məlumatları ehtiva edə bilər. Cavab yaratmazdan əvvəl məxfilik razılığınız lazımdır.',sq:'Ky mesazh mund të përmbajë të dhëna personale shëndetësore. Para përgjigjes kërkohet pëlqimi juaj për privatësinë.',nl:'Dit bericht kan persoonlijke gezondheidsgegevens bevatten. Uw privacytoestemming is nodig voordat ik antwoord kan geven.',es:'Este mensaje puede contener información personal de salud. Necesito su consentimiento de privacidad antes de generar una respuesta.'}; return new Response(JSON.stringify({needsPrivacyConsent:true,answer:privacyAnswers[responseLanguage]||privacyAnswers.tr}), {status:200, headers:baseHeaders});
         }
         const fallbackFaq = [
           {keys:['bmi nedir','vki nedir'], a:'BMI (Vücut Kitle İndeksi), yetişkinlerde boy ve kilo arasındaki ilişkiyi değerlendirmede kullanılan bir ölçüttür. Tek başına tanı veya tedavi kararı vermez.'},
@@ -3445,10 +3449,8 @@ export default {
         }
 
         if (/^(naber|merhaba|selam|hi|hello|hey)\b/i.test(normalized)) {
-          return new Response(JSON.stringify({
-            answer:'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet, tüp mide ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?',
-            source:'local'
-          }), {status:200, headers:baseHeaders});
+          const greetings={tr:'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet, tüp mide ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?',en:'Hello! I’m EVO 👋 I can provide general information about obesity, BMI, diabetes, sleeve gastrectomy and bariatric surgery. How can I help?',de:'Hallo! Ich bin EVO 👋 Ich kann allgemeine Informationen zu Adipositas, BMI, Diabetes, Schlauchmagen und bariatrischer Chirurgie geben. Wie kann ich helfen?',ar:'مرحباً! أنا EVO 👋 يمكنني تقديم معلومات صحية عامة حول السمنة ومؤشر كتلة الجسم والسكري وتكميم المعدة وجراحات السمنة. كيف يمكنني مساعدتك؟',ru:'Здравствуйте! Я EVO 👋 Я могу предоставить общую информацию об ожирении, ИМТ, диабете, продольной резекции желудка и бариатрической хирургии. Чем могу помочь?',az:'Salam! Mən EVO 👋 Piylənmə, BKİ, diabet, sleeve qastrektomiya və bariatrik cərrahiyyə haqqında ümumi məlumat verə bilərəm. Sizə necə kömək edə bilərəm?',sq:'Përshëndetje! Jam EVO 👋 Mund të jap informacion të përgjithshëm për obezitetin, BMI-në, diabetin, gastrektominë në mëngë dhe kirurgjinë bariatrike. Si mund t’ju ndihmoj?',nl:'Hallo! Ik ben EVO 👋 Ik kan algemene informatie geven over obesitas, BMI, diabetes, sleeve-gastrectomie en bariatrische chirurgie. Hoe kan ik u helpen?',es:'¡Hola! Soy EVO 👋 Puedo ofrecer información general sobre obesidad, IMC, diabetes, gastrectomía en manga y cirugía bariátrica. ¿Cómo puedo ayudarle?'};
+          return new Response(JSON.stringify({answer:greetings[responseLanguage]||greetings.tr,source:'local'}), {status:200, headers:baseHeaders});
         }
 
         let evoData = {faq:[]};
@@ -3460,11 +3462,8 @@ export default {
         } catch (_) {}
 
         // Yerel bilgi bankasında bulunan sorular Cloudflare AI kotası tüketmeden cevaplanır.
-        if (localFaq) {
-          return new Response(JSON.stringify({
-            answer:localFaq,
-            source:'knowledge-base'
-          }), {status:200, headers:baseHeaders});
+        if (localFaq && responseLanguage==='tr') {
+          return new Response(JSON.stringify({answer:localFaq,source:'knowledge-base'}), {status:200, headers:baseHeaders});
         }
 
         // D1 soru kaydı ikincildir; başarısız olması EVO cevabını engellemez.
@@ -3496,7 +3495,7 @@ export default {
           try {
             const aiRes = await env.AI.run('@cf/google/gemma-4-26b-a4b-it', {
               messages: [
-                {role:'system', content:instructions + '\n\nEVO BİLGİ BANKASI:\n' + JSON.stringify(evoData).slice(0,30000)},
+                {role:'system', content:instructions + '\n\nAlways answer in '+languageName+' even if previous messages use another language.\n\nEVO BİLGİ BANKASI:\n' + JSON.stringify(evoData).slice(0,30000)},
                 ...history,
                 {role:'user', content:message}
               ],
