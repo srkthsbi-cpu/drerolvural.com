@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 340" class="evo-svg" role="img" aria-label="EVO sağlık asistanı">
+<defs><style>
+.stage{animation:evoFloat 3.2s ease-in-out infinite;transform-origin:250px 170px}
+.ear{animation:evoGlow 2.4s ease-in-out infinite}
+.eye,.brow,.mouth{transform-box:fill-box;transform-origin:center;transition:transform .15s ease}
+.eye{animation:evoBlink 5.2s ease-in-out infinite}
+.eye.r{animation-delay:.18s}
+.pupil{transform-box:fill-box;transform-origin:center;animation:evoLook 6s ease-in-out infinite}
+.brow{animation:evoBrow 6s ease-in-out infinite}
+.mouth{animation:evoMouth 3.4s ease-in-out infinite}
+.eye.alt,.brow.alt,.mouth.alt{display:none}
+@keyframes evoFloat{50%{transform:translateY(-2px)}}@keyframes evoGlow{50%{filter:drop-shadow(0 0 9px #37e6ff) brightness(1.06)}}@keyframes evoBlink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.07)}}@keyframes evoLook{0%,20%,100%{transform:translateX(0)}30%{transform:translateX(-4px)}40%{transform:translateX(4px)}}@keyframes evoBrow{0%,65%,100%{transform:translateY(0)}70%{transform:translateY(-3px)}75%{transform:translateY(1px)}}@keyframes evoMouth{0%,70%,100%{transform:scaleY(1)}74%{transform:scaleY(.72)}78%{transform:scaleY(1.08)}}
+.is-happy .mouth{transform:scale(1.12)}.is-surprised .eye{transform:scale(1.08)}.is-thinking .pupil{transform:translate(5px,-3px)}.is-attention .pupil{transform:translateY(-3px)}.is-talking .mouth{animation:evoTalk .18s ease-in-out infinite alternate}@keyframes evoTalk{from{transform:scaleY(.68)}to{transform:scaleY(1.18)}}
+.is-sleepy .eye{animation:none;transform:scaleY(.08)}.is-wink .eye:first-of-type{transform:scaleY(.08)}
+@media(prefers-reduced-motion:reduce){.stage,.ear,.eye,.pupil,.brow,.mouth{animation:none!important}}
+</style></defs>
+<g class="stage">
+<!-- Exact Claude base assets: shell, screen, ears -->
+<svg x="43" y="22" width="414" height="296" viewBox="0 0 414 296"><image href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
+<svg x="115" y="95" width="270" height="168" viewBox="0 296 338 210"><image href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
+<svg class="ear" x="16" y="95" width="92" height="113" viewBox="0 506 155 191"><image href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
+<svg class="ear" x="397" y="95" width="95" height="113" viewBox="0 697 163 194"><image href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
+<!-- Code-controlled face -->
+<g class="brow" fill="none" stroke="#45f5eb" stroke-width="6" stroke-linecap="round" opacity=".95"><path d="M137 183 Q162 169 187 183"/><path d="M275 183 Q300 169 325 183"/></g>
+<g class="eye"><svg x="127" y="187" width="70" height="70" viewBox="0 0 106 105"><image href="/assets/evo-eyes-sprite.webp" x="0" y="0" width="223" height="626"/></svg></g>
+<g class="eye r"><svg x="265" y="189" width="70" height="70" viewBox="106 0 106 105"><image href="/assets/evo-eyes-sprite.webp" x="0" y="0" width="223" height="626"/></svg></g>
+<path class="mouth" d="M205 255 Q231 271 257 255" fill="none" stroke="#e9ffff" stroke-width="6" stroke-linecap="round" filter="drop-shadow(0 0 5px #34e8ff)"/>
+</g></svg>
