@@ -45,6 +45,15 @@ async function handleAdmin(context) {
     return b64(crypto.getRandomValues(new Uint8Array(32)));
   }
 
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   async function sha256(text) {
     return b64(
       await crypto.subtle.digest(
@@ -855,6 +864,37 @@ async function handleAdmin(context) {
             createdAt
           )
           .run();
+
+        /* E-MAIL NOTIFICATION — Resend */
+        if (env.RESEND_API_KEY) {
+          try {
+            const emailResponse = await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + env.RESEND_API_KEY,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                from: env.RESEND_FROM_EMAIL || 'Erol Vural Web Sitesi <onboarding@resend.dev>',
+                to: ['srkthsbi@gmail.com'],
+                subject: 'Yeni İletişim Formu — ' + name,
+                html:
+                  '<h2>Yeni iletişim formu</h2>' +
+                  '<p><strong>Ad Soyad:</strong> ' + escapeHtml(name) + '</p>' +
+                  '<p><strong>Telefon:</strong> ' + escapeHtml(phone) + '</p>' +
+                  '<p><strong>Mesaj:</strong></p>' +
+                  '<p style="white-space:pre-wrap">' + escapeHtml(message) + '</p>' +
+                  '<hr><p><strong>Tarih:</strong> ' + escapeHtml(createdAt) + '</p>'
+              })
+            });
+
+            if (!emailResponse.ok) {
+              console.error('Contact email failed:', await emailResponse.text());
+            }
+          } catch (mailError) {
+            console.error('Contact email exception:', mailError);
+          }
+        }
 
         return json({
           ok: true,
