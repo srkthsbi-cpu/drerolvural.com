@@ -1243,7 +1243,7 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
 #evo-fixed{pointer-events:auto!important;touch-action:none!important;-webkit-tap-highlight-color:transparent;position:fixed;right:12px;bottom:130px;width:118px;height:100px;z-index:2147483647!important;cursor:grab;display:flex;align-items:center;justify-content:center;animation:evoFloat 5s ease-in-out infinite;user-select:none;-webkit-user-select:none}#evo-fixed.evo-dragging{cursor:grabbing;animation:none!important}
 #evo-fixed .evo-svg{width:118px;height:100px;display:block}
 #evo-fixed .label{position:absolute;right:2px;top:-34px;background:rgba(255,255,255,.96);padding:6px 10px;border-radius:999px;color:#005082;font:600 10px Poppins,sans-serif;white-space:nowrap;box-shadow:0 6px 20px rgba(0,80,130,.16);pointer-events:none}
-@keyframes evoFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}#evo-fixed.evo-off{display:none}
+@keyframes evoFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}#evo-fixed.evo-off{display:none}#evo-fixed.evo-returning{animation:none!important;transition:left .68s cubic-bezier(.22,.61,.36,1),top .68s cubic-bezier(.22,.61,.36,1),right .68s cubic-bezier(.22,.61,.36,1),bottom .68s cubic-bezier(.22,.61,.36,1),transform .68s cubic-bezier(.22,.61,.36,1),opacity .68s ease;will-change:left,top,right,bottom,transform,opacity}
 #evo-panel{pointer-events:auto!important;touch-action:manipulation!important;position:fixed;right:20px;bottom:20px;width:min(390px,calc(100vw - 28px));height:min(600px,calc(100vh - 40px));z-index:2147483646!important;display:none;flex-direction:column;border:1px solid rgba(255,255,255,.9);border-radius:26px;background:rgba(248,253,255,.96);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 25px 70px rgba(0,60,100,.28);overflow:hidden;font-family:Poppins,sans-serif}
 #evo-panel.open{display:flex}#evo-panel .eh{padding:15px 18px;background:linear-gradient(135deg,#005082,#009bb4);color:#fff;display:flex;align-items:center;justify-content:space-between}#evo-panel .eh strong{font-size:18px}#evo-panel .eh span{display:block;font-size:10px;opacity:.85}#evo-panel .ex{border:0;background:transparent;color:#fff;font-size:25px;cursor:pointer}#evo-msgs{flex:1;overflow:auto;padding:15px}.em{max-width:86%;padding:10px 13px;border-radius:16px;margin:7px 0;font-size:13px;line-height:1.45}.em.bot{background:#e8f7fa;color:#17485a}.em.user{margin-left:auto;background:#005082;color:#fff}#evo-panel .ed{padding:7px 14px;font-size:9px;color:#667;background:#f2fafb}#evo-panel form{display:flex;padding:10px;gap:7px;border-top:1px solid #dcecef}#evo-panel textarea{flex:1;border:1px solid #cfe1e5;border-radius:14px;padding:10px;resize:none;font:12px Poppins,sans-serif}#evo-panel .send{width:42px;border:0;border-radius:14px;background:#005082;color:#fff}#evo-hide{margin:0 10px 5px;border:0;background:transparent;color:#557;font:10px Poppins;cursor:pointer}
 @media(max-width:600px){#evo-fixed{right:10px;bottom:128px;width:104px;height:88px}#evo-fixed .evo-svg{width:104px;height:88px}#evo-fixed .label{top:-30px;right:0;padding:5px 8px;font-size:9px}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
@@ -1352,7 +1352,29 @@ function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function addMsg(t,w){if(!msgs)return;var d=document.createElement('div');d.className='em '+w;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
 function openEvo(){panel.classList.add('open');if(!msgs.children.length)addMsg('Merhaba, ben EVO. Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?','bot');if(ta)ta.focus()}
-function hideEvo(){set(hiddenKey,'1');evo.classList.add('evo-off');panel.classList.remove('open')}
+function hideEvo(){
+  set(hiddenKey,'1');
+  panel.classList.remove('open');
+  evo.dataset.dragged='0';
+  evo.classList.add('evo-returning');
+  evo.style.left='';
+  evo.style.top='';
+  evo.style.right=innerWidth<=600?'10px':'12px';
+  evo.style.bottom='128px';
+  evo.style.transform='translateY(0) scale(.96)';
+  evo.style.opacity='1';
+  void evo.offsetWidth;
+  requestAnimationFrame(function(){
+    evo.style.transform='translateY(0) scale(1)';
+  });
+  setTimeout(function(){
+    evo.classList.add('evo-off');
+    evo.classList.remove('evo-returning');
+    evo.style.transform='';
+    evo.style.opacity='';
+    placeEvo();
+  },700);
+}
 function placeEvo(){
   if(evo.dataset.dragged==='1')return;
   var b=document.getElementById('healthy-cookie-banner');
