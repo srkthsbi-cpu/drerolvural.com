@@ -1,5 +1,6 @@
 (function(){
 'use strict';
+// Deploy trigger: refresh Workers AI binding after Cloudflare AI configuration.
 if(window.__EVO_LOADED__) return;
 window.__EVO_LOADED__=true;
 
