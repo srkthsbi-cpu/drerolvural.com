@@ -3224,7 +3224,7 @@ const GLOBAL_HTML_JS = `
 
     /* External links should not retain opener access. */
     document.querySelectorAll('a[target="_blank"]').forEach(function(a){
-      const rel=(a.getAttribute('rel')||'').split(/\\s+/).filter(Boolean);
+      const rel=(a.getAttribute('rel')||'').split(/\s+/).filter(Boolean);
       if(rel.indexOf('noopener')<0) rel.push('noopener');
       if(rel.indexOf('noreferrer')<0) rel.push('noreferrer');
       a.setAttribute('rel',rel.join(' '));
