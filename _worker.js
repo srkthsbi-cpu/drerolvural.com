@@ -3529,6 +3529,35 @@ export default {
     }
 
     /* =====================================================
+       UNIVERSAL CLEAN HTML ROUTING
+       =====================================================
+       Every extensionless page is checked against the real .html asset
+       before the generic Pages asset resolver runs. This covers root and
+       nested pages and prevents Safari from receiving blank/downloadable
+       responses for HTML documents.
+       ===================================================== */
+    const requestedFile = cleanPathname === '/' ? '' : cleanPathname;
+    const requestedHasExtension = !!requestedFile && requestedFile.split('/').pop().includes('.');
+    if (!response && requestedFile && !requestedHasExtension) {
+      const htmlAssetUrl = new URL(requestedFile + '.html', request.url);
+      const htmlAssetResponse = await env.ASSETS.fetch(new Request(htmlAssetUrl, request));
+      const htmlAssetType = (htmlAssetResponse.headers.get('content-type') || '').toLowerCase();
+      if (htmlAssetResponse.ok && (htmlAssetType.includes('text/html') || htmlAssetType.includes('application/octet-stream'))) {
+        const h = new Headers(htmlAssetResponse.headers);
+        h.set('Content-Type', 'text/html; charset=utf-8');
+        h.delete('Content-Disposition');
+        h.delete('Content-Length');
+        h.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        h.set('Pragma', 'no-cache');
+        h.set('X-Content-Type-Options', 'nosniff');
+        response = enhanceHtmlResponse(new Response(htmlAssetResponse.body, {
+          status: 200,
+          headers: h
+        }));
+      }
+    }
+
+    /* =====================================================
        NORMAL SITE DOSYASI
        ===================================================== */
 
