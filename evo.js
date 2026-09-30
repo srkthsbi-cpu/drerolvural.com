@@ -79,7 +79,7 @@ async function buildLayeredCharacter(){
   // hizalama ve animasyonsuz görünüm sorunları tamamen ortadan kalkar.
   var img=document.createElement('img');
   img.className='evo-svg evo-fallback';
-  img.src='/assets/evo-final.svg?v=20260930-19';
+  img.src='/assets/evo-supplied.svg?v=20260930-20';
   img.alt='EVO sağlık asistanı';
   img.draggable=false;
   root.appendChild(img);
