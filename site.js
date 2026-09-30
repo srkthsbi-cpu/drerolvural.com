@@ -257,6 +257,14 @@
     const menu = document.getElementById('langMenuContent');
     if (!menu) return;
     menu.classList.toggle('show');
+    if (menu.classList.contains('show')) {
+      const header = document.querySelector('header');
+      const evoRoot = document.getElementById('evo-fixed');
+      const evoPanel = document.getElementById('evo-panel');
+      if (header) header.style.setProperty('z-index', '2147483647', 'important');
+      if (evoRoot) evoRoot.style.setProperty('z-index', '2147483646', 'important');
+      if (evoPanel) evoPanel.style.setProperty('z-index', '2147483646', 'important');
+    }
   }
 
   function closeLangMenu() {
