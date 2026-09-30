@@ -78,7 +78,7 @@ function buildLayeredCharacter(){
   // Inline fetch/fallback yok: böylece eski bozuk fallback karakteri asla gösterilmez.
   var img=document.createElement('img');
   img.className='evo-svg evo-claude';
-  img.src='/assets/evo-layer1-fixed.png?v=20260930-36';
+  img.src='/assets/evo-layer1-new.svg?v=20260930-39';
   img.alt='EVO sağlık asistanı';
   img.draggable=false;
   root.appendChild(img);
