@@ -19,95 +19,72 @@
   const SUPPORTED = new Set(LANGS.map(x => x.code));
   const DEFAULT_LANG = 'tr';
 
-  // Global floating-layer manager.
-  // Menu/EVO are moved into the same root stacking context when needed, and
-  // every interaction receives the newest layer so the last clicked surface wins.
+  // Global floating-layer manager: EVO, hamburger and language menu share one
+  // global stack. Every new interaction increments the layer, so the last
+  // clicked surface is always visually above the other two.
   function bindLayerPriority() {
     if (document.documentElement.dataset.layerPriorityBound === '1') return;
     document.documentElement.dataset.layerPriorityBound = '1';
 
     const BASE_Z = 2000000000;
     let layerCounter = 0;
-    let menuPlaceholder = null;
-
     const header = () => document.querySelector('header');
     const nav = () => document.getElementById('navMenu');
+    const lang = () => document.getElementById('langMenuContent');
     const evo = () => ({ root: document.getElementById('evo-fixed'), panel: document.getElementById('evo-panel') });
-    const nextZ = () => String(BASE_Z + (++layerCounter));
 
-    function setEvoZ(z) {
-      const { root, panel } = evo();
-      if (root) root.style.setProperty('z-index', z, 'important');
-      if (panel) panel.style.setProperty('z-index', z, 'important');
+    function nextZ() {
+      layerCounter += 1;
+      return String(BASE_Z + layerCounter);
     }
-
-    function setHeaderZ(z) {
-      const h = header();
-      if (h) h.style.setProperty('z-index', z, 'important');
+    function setZ(el, z) {
+      if (el) el.style.setProperty('z-index', z, 'important');
     }
-
-    function bringEvoToFront() {
-      setHeaderZ(String(BASE_Z));
-      setEvoZ(nextZ());
-      const n = nav();
-      if (n && n.classList.contains('active')) n.style.setProperty('z-index', String(BASE_Z), 'important');
+    function setEvo(z) {
+      const e = evo();
+      setZ(e.root, z);
+      setZ(e.panel, z);
     }
-
-    function bringMenuToFront() {
+    function bring(type) {
       const z = nextZ();
-      setHeaderZ(z);
+      const e = evo();
+      const h = header();
       const n = nav();
-      if (n) n.style.setProperty('z-index', String(BASE_Z + layerCounter + 1), 'important');
-      setEvoZ(String(BASE_Z));
-    }
-
-    function portalMenuToBody() {
-      const n = nav();
-      if (!n || !window.matchMedia || !window.matchMedia('(max-width: 992px)').matches) return;
-      if (!menuPlaceholder) {
-        menuPlaceholder = document.createComment('nav-menu-placeholder');
-        n.parentNode?.insertBefore(menuPlaceholder, n);
+      const l = lang();
+      if (type === 'evo') {
+        setEvo(z);
+        setZ(h, String(BASE_Z));
+        setZ(n, String(BASE_Z));
+        setZ(l, String(BASE_Z));
+      } else if (type === 'menu') {
+        setZ(n, z);
+        setZ(h, String(BASE_Z));
+        setZ(l, String(BASE_Z));
+        setEvo(String(BASE_Z));
+      } else if (type === 'lang') {
+        // Language menu lives inside the header stacking context, so raise
+        // the header itself and keep the menu at the top of that context.
+        setZ(h, z);
+        setZ(l, String(Number(z) + 1));
+        setZ(n, String(BASE_Z));
+        setEvo(String(BASE_Z));
       }
-      if (n.parentElement !== document.body) document.body.appendChild(n);
-      n.classList.add('mobile-menu-portal');
-      n.style.setProperty('position', 'fixed', 'important');
-      n.style.setProperty('top', '72px', 'important');
-      n.style.setProperty('left', '0', 'important');
-      n.style.setProperty('width', '100vw', 'important');
-      n.style.setProperty('max-width', '100vw', 'important');
-      n.style.setProperty('z-index', String(BASE_Z + layerCounter + 1), 'important');
     }
 
-    function restoreMenuFromBody() {
-      const n = nav();
-      if (!n) return;
-      n.classList.remove('mobile-menu-portal');
-      n.style.removeProperty('position');
-      n.style.removeProperty('top');
-      n.style.removeProperty('left');
-      n.style.removeProperty('width');
-      n.style.removeProperty('max-width');
-      n.style.removeProperty('z-index');
-      if (menuPlaceholder?.parentNode) menuPlaceholder.parentNode.insertBefore(n, menuPlaceholder.nextSibling);
-      if (menuPlaceholder?.parentNode) menuPlaceholder.parentNode.removeChild(menuPlaceholder);
-      menuPlaceholder = null;
-    }
+    window.__bringLayer = bring;
 
     document.addEventListener('pointerdown', event => {
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
-      if (target.closest('#evo-fixed, #evo-panel')) {
-        bringEvoToFront();
-      } else if (target.closest('header, #navMenu, .lang-content')) {
-        if (nav() && nav().classList.contains('active')) bringMenuToFront();
-        else setHeaderZ(nextZ());
-      }
+      if (target.closest('#evo-fixed, #evo-panel')) bring('evo');
+      else if (target.closest('.lang-dropdown, .lang-content')) bring('lang');
+      else if (target.closest('#navMenu, .mobile-menu-btn')) bring('menu');
     }, true);
 
     const observer = new MutationObserver(() => {
-      const { root, panel } = evo();
-      if (root && !root.dataset.layerManaged) root.dataset.layerManaged = '1';
-      if (panel && !panel.dataset.layerManaged) panel.dataset.layerManaged = '1';
+      const e = evo();
+      if (e.root && !e.root.dataset.layerManaged) e.root.dataset.layerManaged = '1';
+      if (e.panel && !e.panel.dataset.layerManaged) e.panel.dataset.layerManaged = '1';
     });
     observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
   }
@@ -299,12 +276,7 @@
     if (!menu) return;
     menu.classList.toggle('show');
     if (menu.classList.contains('show')) {
-      const header = document.querySelector('header');
-      const evoRoot = document.getElementById('evo-fixed');
-      const evoPanel = document.getElementById('evo-panel');
-      if (header) header.style.setProperty('z-index', '2147483647', 'important');
-      if (evoRoot) evoRoot.style.setProperty('z-index', '2147483646', 'important');
-      if (evoPanel) evoPanel.style.setProperty('z-index', '2147483646', 'important');
+      if (window.__bringLayer) window.__bringLayer('lang');
     }
   }
 
