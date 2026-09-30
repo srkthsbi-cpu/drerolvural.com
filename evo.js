@@ -166,7 +166,7 @@ function sendQuestion(q,privacyConsent){
   setEvoState('thinking');
   msgs.appendChild(w);
   msgs.scrollTop=msgs.scrollHeight;
-  fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q,privacyConsent:!!privacyConsent,history:[].slice.call(msgs.children).filter(function(d){return d.dataset.sensitive!=='1'}).map(function(d){return {role:d.classList.contains('user')?'user':'assistant',content:d.textContent||''}}).slice(-8)})})
+  fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q,language:evoLang(),privacyConsent:!!privacyConsent,history:[].slice.call(msgs.children).filter(function(d){return d.dataset.sensitive!=='1'}).map(function(d){return {role:d.classList.contains('user')?'user':'assistant',content:d.textContent||''}}).slice(-8)})})
   .then(function(r){return r.json()})
   .then(function(d){
     if(d.needsPrivacyConsent){
