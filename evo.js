@@ -62,7 +62,7 @@ async function buildLayeredCharacter(){
   // Use the original vector EVO inline so its real eye/brow/mouth animations
   // remain active. The raster composite is intentionally not used for motion.
   try{
-    var r=await fetch('/assets/evo-character.svg?v=20260930-10',{cache:'no-store'});
+    var r=await fetch('/assets/evo30-clean-final.svg?v=20260930-11',{cache:'no-store'});
     if(!r.ok)throw new Error('EVO SVG yüklenemedi');
     var markup=await r.text();
     var holder=document.createElement('div');
