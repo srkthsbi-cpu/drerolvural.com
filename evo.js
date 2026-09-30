@@ -212,6 +212,7 @@ function openEvo(){
   if(get(hiddenKey)==='1')return;
   panel.classList.remove('closing');
   panel.classList.add('open');
+  if(window.__bringLayer) window.__bringLayer('evo');
   // EVO açıldığında input otomatik odaklanmaz; iOS Safari klavyesini/viewport'u kendiliğinden açmayız.
 }
 function closeChat(){
