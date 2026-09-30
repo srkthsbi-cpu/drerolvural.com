@@ -982,6 +982,44 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
 </div>
 </div>
 </section>
+<aside id="healthy-cookie-banner" class="healthy-cookie-banner" role="dialog" aria-label="Çerez bildirimi" hidden>
+  <div class="healthy-cookie-icon" aria-hidden="true">🥕</div>
+  <div class="healthy-cookie-copy">
+    <strong>Çerezleri kabul eder misiniz?</strong>
+    <span>Merak etmeyin, burada çerezlerden çok <b>havuçları</b> seviyoruz. 🥕 Sitenin daha iyi çalışması için çerezleri kabul edebilirsiniz.</span>
+  </div>
+  <div class="healthy-cookie-actions">
+    <button type="button" id="healthy-cookie-accept">🥕 Havuçları Kabul Et</button>
+    <button type="button" id="healthy-cookie-settings">Ayarlar</button>
+  </div>
+</aside>
+<style>
+.healthy-cookie-banner{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(920px,calc(100% - 28px));display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.72);border-radius:22px;background:rgba(255,255,255,.78);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,80,130,.16);z-index:9998}
+.healthy-cookie-icon{font-size:30px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.12))}
+.healthy-cookie-copy{display:flex;flex-direction:column;gap:2px;flex:1;color:#333}
+.healthy-cookie-copy strong{color:#005082;font-size:15px}
+.healthy-cookie-copy span{font-size:12px;line-height:1.45;color:#666}
+.healthy-cookie-actions{display:flex;gap:8px;align-items:center}
+.healthy-cookie-actions button{border:0;border-radius:999px;padding:10px 14px;font:600 12px Poppins,sans-serif;cursor:pointer;white-space:nowrap}
+#healthy-cookie-accept{background:#005082;color:#fff;box-shadow:0 5px 14px rgba(0,80,130,.18)}
+#healthy-cookie-settings{background:rgba(255,255,255,.72);color:#005082;border:1px solid rgba(0,80,130,.14)}
+@media(max-width:650px){.healthy-cookie-banner{align-items:flex-start;flex-wrap:wrap;bottom:10px;padding:13px}.healthy-cookie-copy{min-width:calc(100% - 48px)}.healthy-cookie-actions{width:100%;margin-left:44px}.healthy-cookie-actions button{flex:1}}
+</style>
+<script>
+(function(){
+  var b=document.getElementById('healthy-cookie-banner');
+  if(!b)return;
+  try{if(localStorage.getItem('healthy_cookie_choice'))return}catch(e){}
+  b.hidden=false;
+  document.getElementById('healthy-cookie-accept').onclick=function(){
+    try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){}
+    b.remove();
+  };
+  document.getElementById('healthy-cookie-settings').onclick=function(){
+    alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. İsterseniz tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');
+  };
+})();
+</script>
 <!-- =========================
          FOOTER
     ========================= -->
