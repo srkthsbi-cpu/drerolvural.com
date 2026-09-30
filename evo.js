@@ -35,6 +35,22 @@ function addMsg(t,w,save){
   msgs.scrollTop=msgs.scrollHeight;
   if(save!==false)saveChat();
 }
+function animateBotText(el,text,onDone){
+  text=String(text||'');
+  if(!el){if(onDone)onDone();return;}
+  el.classList.add('evo-typing');
+  el.textContent='';
+  var chars=Array.from(text),i=0;
+  var step=function(){
+    var count=Math.min(3,chars.length-i);
+    el.textContent+=chars.slice(i,i+count).join('');
+    i+=count;
+    if(msgs)msgs.scrollTop=msgs.scrollHeight;
+    if(i<chars.length){setTimeout(step,22)}
+    else{el.classList.remove('evo-typing');if(onDone)onDone();}
+  };
+  step();
+}
 const EVO_I18N={
 tr:{morning:'Günaydın! Ben EVO. Size nasıl yardımcı olabilirim?',day:'İyi günler! Ben EVO. Size nasıl yardımcı olabilirim?',evening:'İyi akşamlar! Ben EVO. Size nasıl yardımcı olabilirim?',night:'İyi geceler! Ben EVO. Size nasıl yardımcı olabilirim?',label:'Ben EVO 👋',subtitle:'Erol Vural Online Dijital Sağlık Asistanı',close:'Kapat',hide:"EVO'yu gizle",disclaimer:'Genel sağlık bilgilendirmesi içindir; tanı ve kişiye özel tedavi önerisinin yerine geçmez.',placeholder:"EVO'ya sorunuzu yazın…",send:'Gönder',thinking:'Düşünüyorum…',offline:'Şu anda bağlantı kurulamadı. Genel sağlık bilgileri için sorunuzu tekrar deneyebilirsiniz.',privacyTitle:'Gizlilik uyarısı',privacyBody:'Bu mesaj kişisel sağlık bilgileri içerebilir. Sağlık verileri, KVKK kapsamında özel nitelikli kişisel verilerdir. EVO yanıt oluşturabilmek için bu bilgiyi işleyebilir. Lütfen kişisel kimlik bilgilerinizi paylaşmayın.',privacyContinue:'Devam et',privacyCancel:'İptal',privacyResponse:'Bu mesaj kişisel sağlık bilgileri içeriyor olabilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.',cancelResponse:'Tamam. Kişisel sağlık bilgilerinizi göndermeden de genel bilgi sorabilirsiniz.'},
 en:{morning:'Good morning! I’m EVO. How can I help you?',day:'Good afternoon! I’m EVO. How can I help you?',evening:'Good evening! I’m EVO. How can I help you?',night:'Good night! I’m EVO. How can I help you?',label:'EVO 👋',subtitle:'Erol Vural Online Digital Health Assistant',close:'Close',hide:'Hide EVO',disclaimer:'For general health information only; it does not replace diagnosis or personalized medical advice.',placeholder:'Ask EVO your question…',send:'Send',thinking:'Thinking…',offline:'I could not connect right now. Please try your question again.',privacyTitle:'Privacy notice',privacyBody:'This message may contain personal health information. Health data may be specially protected personal data. EVO may process it to generate a response. Please do not share identifying information.',privacyContinue:'Continue',privacyCancel:'Cancel',privacyResponse:'This message may contain personal health information. I need your privacy consent before generating a response.',cancelResponse:'Okay. You can also ask general questions without sending personal health information.'},
@@ -167,6 +183,7 @@ function sendQuestion(q,privacyConsent){
   var w=document.createElement('div');
   w.className='em bot';
   w.textContent=evoText('thinking');
+  w.classList.add('evo-thinking');
   setEvoState('thinking');
   msgs.appendChild(w);
   msgs.scrollTop=msgs.scrollHeight;
@@ -177,16 +194,18 @@ function sendQuestion(q,privacyConsent){
       w.textContent=evoText('privacyResponse');
       return;
     }
-    w.textContent=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';
+    var answer=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';
+    w.classList.remove('evo-thinking');
     setEvoState(isThanksMessage(q)?'happy':'talking');
-    if(isThanksMessage(q))setTimeout(showEvoHearts,120);
-    setTimeout(function(){setEvoState('idle')},900);
-    saveChat();
+    animateBotText(w,answer,function(){
+      if(isThanksMessage(q))showEvoHearts();
+      setEvoState('idle');
+      saveChat();
+    });
   })
   .catch(function(){
-    w.textContent=evoText('offline');
-    setEvoState('idle');
-    saveChat();
+    w.classList.remove('evo-thinking');
+    animateBotText(w,evoText('offline'),function(){setEvoState('idle');saveChat()});
   });
 }
 function openEvo(){
@@ -304,6 +323,9 @@ function appendStyles(){
 #evo-panel .ex{border:0;background:transparent;color:#fff;font-size:25px;cursor:pointer}
 #evo-msgs{flex:1;overflow:auto;padding:15px}.em{max-width:86%;padding:10px 13px;border-radius:16px;margin:7px 0;font-size:13px;line-height:1.45}.em.bot{background:#e8f7fa;color:#17485a}.em.user{margin-left:auto;background:#005082;color:#fff}
 #evo-panel .ed{padding:7px 14px;font-size:9px;color:#667;background:#f2fafb}
+.em.bot{opacity:0;transform:translateY(6px);animation:evoMessageIn .28s ease forwards}.em.bot.evo-typing{opacity:1;transform:none}.evo-thinking{min-width:62px;display:inline-flex!important;align-items:center;gap:3px}.evo-thinking::after{content:'•••';letter-spacing:3px;animation:evoDots 1s ease-in-out infinite}.evo-thinking{font-size:0!important}.evo-thinking::after{font-size:14px;color:#005082}
+@keyframes evoMessageIn{to{opacity:1;transform:translateY(0)}}
+@keyframes evoDots{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
 .evo-privacy-gate{font-size:12px!important;border:1px solid #b8dfe7}
 .evo-privacy-gate strong{color:#005082}
 .evo-privacy-text{margin-top:7px}
