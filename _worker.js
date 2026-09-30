@@ -2205,7 +2205,7 @@ async function handleSitemap(
       }
     } catch (_) {}
 
-    if (env.DB) {
+    if (env.DB && !sensitiveHealth) {
       try {
 
         const r =
@@ -3258,8 +3258,11 @@ function enhanceHtmlResponse(response){
       e.append(`<style id="drerolvural-global-qa">${GLOBAL_HTML_CSS}</style>`,{html:true});
     }})
     .on('body',{element(e){
+      e.on?null:null;
       e.append(`<script id="drerolvural-global-qa-js">${GLOBAL_HTML_JS}</script>`,{html:true});
-      e.append(`<script id="drerolvural-evo-js" src="/evo.js?v=20260930-3" defer></script>`,{html:true});
+      e.remove?null:null;
+      e.append(`<script id="drerolvural-evo-js" src="/evo.js?v=20260930-4" defer></script>`,{html:true});
+      e.on?null:null;
     }})
     .transform(new Response(response.body,{status:response.status,statusText:response.statusText,headers}));
 }
@@ -3416,6 +3419,10 @@ export default {
         }
 
         const normalized = message.toLocaleLowerCase('tr-TR');
+        const sensitiveHealth = /(?:kilo|kilom|kiloyum|boyum|boy\\s*\\d|bmi|vki|vücut\\s*kitle|tahlil|kan\\s*değeri|kan\\s*şekeri|şekerim|diyabet|insülin|tansiyon|kolesterol|hastalık|hastayım|teşhis|tanı|ameliyat|operasyon|ilaç|ilaçlar|reçete|mr|tomografi|ultrason|endoskopi|biyopsi|patoloji|rapor|semptom|belirti|ağrı|hamileyim|gebeyim|alerji|alerjim|kan\\s*grubu|nabız|ateş|depresyon|anksiyete|psikiyatr|obezite|tüp\\s*mide|gastrik\\s*bypass|bypass)/i.test(normalized);
+        if (sensitiveHealth && payload.privacyConsent !== true) {
+          return new Response(JSON.stringify({needsPrivacyConsent:true,answer:'Bu mesaj kişisel sağlık bilgileri içerebilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.'}), {status:200, headers:baseHeaders});
+        }
         const fallbackFaq = [
           {keys:['bmi nedir','vki nedir'], a:'BMI (Vücut Kitle İndeksi), yetişkinlerde boy ve kilo arasındaki ilişkiyi değerlendirmede kullanılan bir ölçüttür. Tek başına tanı veya tedavi kararı vermez.'},
           {keys:['bmi nasıl hesaplanır','vki nasıl hesaplanır'], a:'BMI, kilogram cinsinden vücut ağırlığının metre cinsinden boyun karesine bölünmesiyle hesaplanır. Sitedeki BMI hesaplayıcısını kullanabilirsiniz.'},
