@@ -3251,6 +3251,8 @@ function enhanceHtmlResponse(response){
   if(!ct.includes('text/html')) return response;
   const headers=new Headers(response.headers);
   headers.delete('content-length');
+  headers.set('Cache-Control','no-store, no-cache, must-revalidate, max-age=0');
+  headers.set('CDN-Cache-Control','no-store');
   return new HTMLRewriter()
     .on('head',{element(e){
       e.append(`<style id="drerolvural-global-qa">${GLOBAL_HTML_CSS}</style>`,{html:true});
