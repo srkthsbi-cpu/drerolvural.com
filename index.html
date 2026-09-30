@@ -1214,81 +1214,51 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
 <section id="evo-panel" aria-label="EVO sağlık asistanı"><div class="eh"><div><strong>EVO</strong><span>Erol Vural Sağlık Asistanı</span></div><button class="ex" aria-label="Kapat">×</button></div><div id="evo-msgs"></div><div class="ed">Genel sağlık bilgilendirmesi içindir; tanı ve kişiye özel tedavi önerisinin yerine geçmez.</div><button id="evo-hide">EVO'yu gizle</button><form><textarea rows="1" maxlength="1200" placeholder="EVO'ya sorunuzu yazın…"></textarea><button class="send">➤</button></form></section>
 <script>(function(){window.__EVO_LOADED__=true;var key='drerolvural_evo_hidden',choice='healthy_cookie_choice';function get(k){try{return localStorage.getItem(k)}catch(e){return null}}function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}var evo=document.getElementById('evo-fixed'),panel=document.getElementById('evo-panel'),msgs=document.getElementById('evo-msgs'),ta=panel.querySelector('textarea'),face=evo.querySelector('.evo-svg');if(get(key)==='1')evo.classList.add('evo-off');function msg(t,w){var d=document.createElement('div');d.className='em '+w;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}function open(){panel.classList.add('open');if(!msgs.children.length)msg('Merhaba, ben EVO. Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?','bot');ta.focus()}function hide(){set(key,'1');evo.classList.add('evo-off');panel.classList.remove('open')}evo.addEventListener('pointerup',function(e){if(e.button!==undefined&&e.button!==0)return;if(e.target.closest&&e.target.closest('.label'))return;e.preventDefault();e.stopPropagation();open()},{passive:false});evo.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.label'))return;e.preventDefault();e.stopPropagation();open()});evo.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}panel.querySelector('.ex').onclick=function(){panel.classList.remove('open')};document.getElementById('evo-hide').onclick=hide;ta.addEventListener('focus',function(){face.classList.add('is-attention')});ta.addEventListener('blur',function(){face.classList.remove('is-attention')});panel.querySelector('form').onsubmit=async function(e){e.preventDefault();var q=ta.value.trim();if(!q)return;ta.value='';msg(q,'user');if(/evo[’']?yu\s+(gizle|kapat|sakla)|evo\s*(yu)\s*(sil|kaldır)/i.test(q)){msg('Tamam. EVO bu cihazda gizleniyor.','bot');setTimeout(hide,500);return}face.classList.remove('is-attention');face.classList.add('is-thinking');var w=document.createElement('div');w.className='em bot';w.textContent='Düşünüyorum…';msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;try{var r=await fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q})});var d=await r.json();w.textContent=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';face.classList.remove('is-thinking');face.classList.add('is-talking');setTimeout(function(){face.classList.remove('is-talking')},1800)}catch(x){face.classList.remove('is-thinking');w.textContent='Şu anda bağlantı kurulamadı. Genel sağlık bilgileri için sorunuzu tekrar deneyebilirsiniz.'}};var cb=document.getElementById('healthy-cookie-banner'),ab=document.getElementById('healthy-cookie-accept');if(cb&&ab){if(get(choice)==='accepted'){cb.remove()}else{cb.hidden=false}var acceptCookie=function(e){if(e){e.preventDefault();e.stopPropagation();}set(choice,'accepted');cb.hidden=true;cb.style.display='none';setTimeout(function(){if(cb&&cb.parentNode)cb.remove()},0)};ab.addEventListener('pointerup',acceptCookie,{passive:false});ab.addEventListener('click',acceptCookie)}})();<script>
 (function(){
-  'use strict';
-  function openEvo(){
-    var p=document.getElementById('evo-panel');
-    if(!p)return;
-    p.classList.add('open');
-    var m=document.getElementById('evo-msgs');
-    if(m&&!m.children.length){
-      var d=document.createElement('div');d.className='em bot';
-      d.textContent='Merhaba, ben EVO. Size nasıl yardımcı olabilirim?';m.appendChild(d);
-    }
-    var t=p.querySelector('textarea');if(t){try{t.focus({preventScroll:true})}catch(e){t.focus()}}
-  }
-  window.__acceptSiteCookies=function(e){if(e){e.preventDefault();e.stopPropagation();}var b=document.getElementById('healthy-cookie-banner');try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(x){}if(b){b.hidden=true;b.style.display='none';b.remove();}};
-  window.__openCookieSettings=function(e){if(e){e.preventDefault();e.stopPropagation();}alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');};
-  function closeCookie(){
-    var b=document.getElementById('healthy-cookie-banner');
-    if(b){try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){} b.hidden=true;b.style.display='none';b.remove();}
-  }
-  function init(){
-    var evo=document.getElementById('evo-fixed');
-    var accept=document.getElementById('healthy-cookie-accept');
-    var settings=document.getElementById('healthy-cookie-settings');
-    if(evo&&!evo.dataset.dragBound){
-      evo.dataset.dragBound='1';
-      var sx=0,sy=0,ox=0,oy=0,drag=false,moved=false,pid=null;
-      evo.addEventListener('pointerdown',function(e){
-        if(e.pointerType==='mouse'&&e.button!==0)return;
-        pid=e.pointerId;sx=e.clientX;sy=e.clientY;
-        var r=evo.getBoundingClientRect();ox=r.left;oy=r.top;
-        drag=true;moved=false;evo.classList.add('evo-dragging');
-        try{evo.setPointerCapture(pid)}catch(x){}
-        e.preventDefault();
-      },{passive:false});
-      evo.addEventListener('pointermove',function(e){
-        if(!drag)return;
-        var dx=e.clientX-sx,dy=e.clientY-sy;
-        if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;
-        if(!moved)return;
-        var x=Math.max(4,Math.min(window.innerWidth-evo.offsetWidth-4,ox+dx));
-        var y=Math.max(4,Math.min(window.innerHeight-evo.offsetHeight-4,oy+dy));
-        evo.style.left=x+'px';evo.style.top=y+'px';evo.style.right='auto';evo.style.bottom='auto';
-        e.preventDefault();
-      },{passive:false});
-      evo.addEventListener('pointerup',function(e){
-        if(!drag)return;drag=false;evo.classList.remove('evo-dragging');
-        try{evo.releasePointerCapture(pid)}catch(x){}
-        if(!moved)openEvo();
-        e.preventDefault();e.stopPropagation();
-      },{passive:false});
-      evo.addEventListener('pointercancel',function(){drag=false;evo.classList.remove('evo-dragging')},{passive:true});
-    }
-    if(accept&&!accept.dataset.hardBound){
-      accept.dataset.hardBound='1';
-      accept.addEventListener('pointerup',function(e){e.preventDefault();e.stopPropagation();closeCookie()},{passive:false});
-      accept.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();closeCookie()});
-    }
-    if(settings&&!settings.dataset.hardBound){
-      settings.dataset.hardBound='1';
-      settings.addEventListener('pointerup',function(e){
-        e.preventDefault();e.stopPropagation();
-        alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');
-      },{passive:false});
-      settings.addEventListener('click',function(e){
-        e.preventDefault();e.stopPropagation();
-        alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');
-      });
-    }
-  }
-  init();setTimeout(init,100);setTimeout(init,500);
-  document.addEventListener('click',function(e){
-    var a=e.target&&e.target.closest?e.target.closest('#healthy-cookie-accept'):null;
-    if(a){e.preventDefault();e.stopPropagation();closeCookie();}
-    var s=e.target&&e.target.closest?e.target.closest('#healthy-cookie-settings'):null;
-    if(s){e.preventDefault();e.stopPropagation();alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');}
-  },true);
+'use strict';
+var state={drag:false,moved:false,sx:0,sy:0,ox:0,oy:0};
+function el(id){return document.getElementById(id)}
+function inside(node,x,y){if(!node)return false;var r=node.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom}
+function openEvo(){var p=el('evo-panel');if(!p)return;p.classList.add('open');var m=el('evo-msgs');if(m&&!m.children.length){var d=document.createElement('div');d.className='em bot';d.textContent='Merhaba, ben EVO. Size nasıl yardımcı olabilirim?';m.appendChild(d)}}
+function accept(){var b=el('healthy-cookie-banner');try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){}if(b)b.remove()}
+function settings(){alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.')}
+document.addEventListener('pointerdown',function(e){
+ var evo=el('evo-fixed'),a=el('healthy-cookie-accept'),s=el('healthy-cookie-settings');
+ if(inside(a,e.clientX,e.clientY)){e.preventDefault();e.stopImmediatePropagation();accept();return}
+ if(inside(s,e.clientX,e.clientY)){e.preventDefault();e.stopImmediatePropagation();settings();return}
+ if(inside(evo,e.clientX,e.clientY)){
+   if(e.pointerType==='mouse'&&e.button!==0)return;
+   state.drag=true;state.moved=false;state.sx=e.clientX;state.sy=e.clientY;
+   var r=evo.getBoundingClientRect();state.ox=r.left;state.oy=r.top;
+   evo.classList.add('evo-dragging');try{evo.setPointerCapture(e.pointerId)}catch(x){}
+   e.preventDefault();e.stopImmediatePropagation();
+ }
+},true);
+document.addEventListener('pointermove',function(e){
+ if(!state.drag)return;
+ var evo=el('evo-fixed');if(!evo)return;
+ var dx=e.clientX-state.sx,dy=e.clientY-state.sy;
+ if(Math.abs(dx)>5||Math.abs(dy)>5)state.moved=true;
+ if(state.moved){
+   var x=Math.max(4,Math.min(innerWidth-evo.offsetWidth-4,state.ox+dx));
+   var y=Math.max(4,Math.min(innerHeight-evo.offsetHeight-4,state.oy+dy));
+   evo.style.left=x+'px';evo.style.top=y+'px';evo.style.right='auto';evo.style.bottom='auto';
+ }
+ e.preventDefault();e.stopImmediatePropagation();
+},true);
+document.addEventListener('pointerup',function(e){
+ if(!state.drag)return;
+ var evo=el('evo-fixed');state.drag=false;
+ if(evo){evo.classList.remove('evo-dragging');try{evo.releasePointerCapture(e.pointerId)}catch(x){}}
+ if(!state.moved)openEvo();
+ e.preventDefault();e.stopImmediatePropagation();
+},true);
+document.addEventListener('pointercancel',function(){state.drag=false;var evo=el('evo-fixed');if(evo)evo.classList.remove('evo-dragging')},true);
+document.addEventListener('click',function(e){
+ var a=e.target.closest&&e.target.closest('#healthy-cookie-accept'),s=e.target.closest&&e.target.closest('#healthy-cookie-settings'),evo=e.target.closest&&e.target.closest('#evo-fixed');
+ if(a){e.preventDefault();e.stopImmediatePropagation();accept()}
+ else if(s){e.preventDefault();e.stopImmediatePropagation();settings()}
+ else if(evo){e.preventDefault();e.stopImmediatePropagation();openEvo()}
+},true);
 })();
 </script>
 </body>
