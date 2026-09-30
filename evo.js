@@ -43,7 +43,7 @@ function openEvo(){
   if(get(hiddenKey)==='1')return;
   panel.classList.remove('closing');
   panel.classList.add('open');
-  if(ta)setTimeout(function(){ta.focus()},120);
+  // EVO açıldığında input otomatik odaklanmaz; iOS Safari klavyesini/viewport'u kendiliğinden açmayız.
 }
 function closeChat(){
   panel.classList.remove('open');
@@ -74,6 +74,30 @@ function placeEvo(){
   root.style.right=innerWidth<=600?'10px':'12px';
   root.style.bottom='128px';
 }
+function syncVisualViewport(){
+  if(!panel)return;
+  var vv=window.visualViewport;
+  if(!vv){
+    panel.classList.remove('evo-keyboard');
+    panel.style.removeProperty('--evo-vv-height');
+    panel.style.removeProperty('--evo-vv-bottom');
+    return;
+  }
+  var layoutH=window.innerHeight||document.documentElement.clientHeight;
+  var visualH=vv.height||layoutH;
+  var keyboardOpen=ta&&document.activeElement===ta&&((layoutH-visualH)>80||vv.offsetTop>20);
+  if(keyboardOpen){
+    var bottomGap=Math.max(10,layoutH-(vv.offsetTop+visualH)+10);
+    var maxH=Math.max(260,Math.min(600,visualH-20));
+    panel.classList.add('evo-keyboard');
+    panel.style.setProperty('--evo-vv-height',maxH+'px');
+    panel.style.setProperty('--evo-vv-bottom',bottomGap+'px');
+  }else{
+    panel.classList.remove('evo-keyboard');
+    panel.style.removeProperty('--evo-vv-height');
+    panel.style.removeProperty('--evo-vv-bottom');
+  }
+}
 function hit(node,x,y){
   if(!node)return false;
   var r=node.getBoundingClientRect();
@@ -93,6 +117,7 @@ function appendStyles(){
 #evo-panel{pointer-events:auto!important;touch-action:manipulation!important;position:fixed;right:20px;bottom:20px;width:min(390px,calc(100vw - 28px));height:min(600px,calc(100vh - 40px));z-index:2147483646!important;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.9);border-radius:26px;background:rgba(248,253,255,.96);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 25px 70px rgba(0,60,100,.28);overflow:hidden;font-family:Poppins,sans-serif;opacity:0;visibility:hidden;transform:translateY(16px) scale(.96);transition:opacity .28s ease,transform .28s ease,visibility 0s linear .28s}
 #evo-panel.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);transition:opacity .28s ease,transform .28s ease,visibility 0s}
 #evo-panel.closing{opacity:0;visibility:hidden;transform:translateY(16px) scale(.96)}
+#evo-panel.evo-keyboard{height:var(--evo-vv-height)!important;bottom:var(--evo-vv-bottom)!important;transform:none!important;transition:opacity .2s ease,visibility 0s}
 #evo-panel .eh{padding:15px 18px;background:linear-gradient(135deg,#005082,#009bb4);color:#fff;display:flex;align-items:center;justify-content:space-between}
 #evo-panel .eh strong{font-size:18px}#evo-panel .eh span{display:block;font-size:10px;opacity:.85}
 #evo-panel .ex{border:0;background:transparent;color:#fff;font-size:25px;cursor:pointer}
@@ -133,17 +158,18 @@ function build(){
   root.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openEvo()}});
   if(ta){
     ta.addEventListener('focus',function(){
-      // iOS Safari can still zoom a focused textarea even at 16px depending
-      // on the page viewport. Temporarily lock the viewport while EVO is active.
-      var vp=document.querySelector('meta[name="viewport"]');
-      if(vp){
-        if(!vp.dataset.evoOriginal) vp.dataset.evoOriginal=vp.getAttribute('content')||'width=device-width,initial-scale=1';
-        vp.setAttribute('content','width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no');
-      }
+      // iOS Safari'de klavye açıldığında görsel viewport küçülür. Paneli
+      // visualViewport'a göre yeniden konumlandırarak sayfanın yukarı
+      // kaymış/zoom olmuş gibi görünmesini engelleriz.
+      panel.classList.add('evo-input-focused');
+      setTimeout(syncVisualViewport,0);
+      setTimeout(syncVisualViewport,120);
+      setTimeout(syncVisualViewport,300);
     });
     ta.addEventListener('blur',function(){
-      var vp=document.querySelector('meta[name="viewport"]');
-      if(vp&&vp.dataset.evoOriginal) vp.setAttribute('content',vp.dataset.evoOriginal);
+      panel.classList.remove('evo-input-focused');
+      setTimeout(syncVisualViewport,80);
+      setTimeout(syncVisualViewport,350);
     });
   }
   panel.querySelector('form').onsubmit=async function(e){
@@ -212,6 +238,16 @@ function installPointer(){
     try{root.releasePointerCapture(e.pointerId)}catch(x){}
   },true);
 }
-function init(){build();installPointer();window.addEventListener('resize',placeEvo);window.addEventListener('orientationchange',placeEvo)}
+function init(){
+  build();
+  installPointer();
+  window.addEventListener('resize',function(){placeEvo();syncVisualViewport()});
+  window.addEventListener('orientationchange',function(){placeEvo();setTimeout(syncVisualViewport,150)});
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize',syncVisualViewport,{passive:true});
+    window.visualViewport.addEventListener('scroll',syncVisualViewport,{passive:true});
+  }
+  syncVisualViewport();
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
