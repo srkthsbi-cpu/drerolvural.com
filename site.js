@@ -373,8 +373,21 @@
         form.style.display = 'none';
         if (success) success.style.display = 'block';
       } catch (err) {
-        console.error(err);
-        alert(currentLang === 'tr' ? 'Bir hata oluştu, lütfen tekrar deneyin.' : 'An error occurred. Please try again.');
+        console.error('FormSubmit AJAX failed; falling back to native POST.', err);
+        // FormSubmit'in AJAX/CORS isteği başarısız olursa kullanıcıya hata
+        // göstermeden normal POST'a düş. Böylece iOS Safari'de de gönderim
+        // FormSubmit'in kendi sunucusu üzerinden tamamlanabilir.
+        let next = form.querySelector('[name="_next"]');
+        if (!next) {
+          next = document.createElement('input');
+          next.type = 'hidden';
+          next.name = '_next';
+          form.appendChild(next);
+        }
+        next.value = location.origin + location.pathname + '?contact=sent';
+        form.dataset.fallback = '1';
+        HTMLFormElement.prototype.submit.call(form);
+        return;
       } finally {
         if (button) { button.disabled = false; button.textContent = button.dataset.originalText || button.textContent; }
       }
