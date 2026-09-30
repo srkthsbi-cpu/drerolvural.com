@@ -16,7 +16,7 @@
   const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const normalize = l => LANGS.includes(String(l||'').toLowerCase()) ? String(l).toLowerCase() : 'tr';
   const getLang = () => normalize(new URLSearchParams(location.search).get('lang') || (typeof window.siteLanguage==='function' ? window.siteLanguage() : localStorage.getItem('siteLanguage') || document.documentElement.lang || 'tr'));
-  async function readJSON(url){ const r=await fetch(url,{cache:'no-store',headers:{Accept:'application/json'}}); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
+  async function readJSON(url){ const r=await fetch(url,{cache:'no-store',headers:{Accept:'application/json'}}); if(!r.ok) throw new Error(`HTTP ${r.status}`); const text=await r.text(); try{return JSON.parse(text);}catch(e){throw new Error(`Invalid JSON from ${url}`);} }
   function siteBase(){ const script=Array.from(document.scripts).find(s=>/(?:^|\/)site\.js(?:\?|$)/.test(s.src)); return script?new URL('./',script.src):new URL('./',document.baseURI); }
   function assetUrl(path){ return new URL(String(path).replace(/^\//,''),siteBase()).href; }
   function apiUrl(path){ return new URL(String(path).replace(/^\//,''),siteBase()).href; }
@@ -57,8 +57,10 @@
   }
   async function renderBlogPost(lang=getLang()){
     const root=document.getElementById('post'); if(!root)return;
-    const b=await loadPost(new URLSearchParams(location.search).get('slug')||'');
     const labels=LABELS[lang]||LABELS.tr;
+    let b=null;
+    try { b=await loadPost(new URLSearchParams(location.search).get('slug')||''); }
+    catch (e) { console.error('Blog render error:', e); root.innerHTML=`<h1>${esc(labels.notFound)}</h1><p>${esc(labels.missing)}</p>`; return; }
     if(!b){root.innerHTML=`<h1>${esc(labels.notFound)}</h1><p>${esc(labels.missing)}</p>`;return;}
     // No cross-language fallback: a foreign page must never show Turkish content.
     if(!b.title?.[lang] || !b.content?.[lang]){root.innerHTML=`<h1>${esc(labels.notFound)}</h1><p>${esc(labels.missing)}</p>`;return;}
