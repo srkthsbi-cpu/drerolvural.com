@@ -3419,7 +3419,7 @@ export default {
               ip TEXT,
               user_agent TEXT
             )`)
-          ).run();
+            .run();
           await env.DB.prepare(
             'INSERT INTO evo_questions(question,created_at,ip,user_agent) VALUES(?,?,?,?)'
           ).bind(
