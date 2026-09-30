@@ -85,5 +85,15 @@
     const back=document.querySelector('[data-blog-back]'); if(back)back.textContent=labels.back;
   }
   window.renderBlogPost=renderBlogPost;
-  document.addEventListener('DOMContentLoaded',()=>renderBlogPost(getLang()));
+  document.addEventListener('DOMContentLoaded',()=>{
+    // site.js also invokes the renderer after translations load. Keep a guarded
+    // fallback here so the article cannot remain on the loading state if the
+    // shared language layer is delayed or unavailable.
+    if(window.__erolBlogPostFallbackBound) return;
+    window.__erolBlogPostFallbackBound=true;
+    setTimeout(()=>{
+      const root=document.getElementById('post');
+      if(root && /İçerik yükleniyor|Loading content/i.test(root.textContent||'')) renderBlogPost(getLang());
+    },1500);
+  });
 })();
