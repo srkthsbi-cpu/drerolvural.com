@@ -373,7 +373,13 @@ async function build(){
       showPrivacyGate(q);
       return;
     }
-    if(/(?:randevu|randev[uü])(?:\\s+oluştur|\\s+al|\\s+istiyorum|\\s+talebi)?|randevu\\s+(?:oluşturmak|almak)\\s+istiyorum/i.test(q)){\n      var waText='Merhaba, EVO üzerinden randevu oluşturmak istiyorum.';\n      addMsg('Sizi WhatsApp üzerinden randevu iletişimine yönlendiriyorum.','bot');\n      setTimeout(function(){window.location.href='https://wa.me/905414569367?text='+encodeURIComponent(waText)},350);\n      return;\n    }\n    if(/evo[’']?yu\s+(kaldır|sil)/i.test(q)){
+    if(/(?:randevu|randev[uü])(?:\s+oluştur|\s+al|\s+istiyorum|\s+talebi)?|randevu\s+(?:oluşturmak|almak)\s+istiyorum/i.test(q)){
+      var waText='Merhaba, EVO üzerinden randevu oluşturmak istiyorum.';
+      addMsg('Sizi WhatsApp üzerinden randevu iletişimine yönlendiriyorum.','bot');
+      setTimeout(function(){window.location.href='https://wa.me/905414569367?text='+encodeURIComponent(waText)},350);
+      return;
+    }
+    if(/evo[’']?yu\s+(kaldır|sil)/i.test(q)){
       addMsg(evoCommand('remove'),'bot');
       setTimeout(removeEvo,350);
       return;
