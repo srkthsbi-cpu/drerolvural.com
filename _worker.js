@@ -3412,14 +3412,13 @@ export default {
 
         // EVO soru kaydı: her kullanıcı sorusunu D1'e kaydet ve site e-postasına bildirim gönder.
         try {
-          await env.DB.prepare(\
-            \`CREATE TABLE IF NOT EXISTS evo_questions (
+          await env.DB.prepare(`CREATE TABLE IF NOT EXISTS evo_questions (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               question TEXT NOT NULL,
               created_at TEXT NOT NULL,
               ip TEXT,
               user_agent TEXT
-            )\`
+            )`)
           ).run();
           await env.DB.prepare(
             'INSERT INTO evo_questions(question,created_at,ip,user_agent) VALUES(?,?,?,?)'
