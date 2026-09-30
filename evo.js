@@ -84,7 +84,7 @@ function buildLayeredCharacter(){
   root.appendChild(img);
   var faceFx=document.createElement('div');
   faceFx.className='evo-face-fx';
-  faceFx.innerHTML='<i class="evo-brow evo-brow-l"></i><i class="evo-brow evo-brow-r"></i><i class="evo-lid evo-lid-l"></i><i class="evo-lid evo-lid-r"></i><i class="evo-mouth"></i>';
+  faceFx.innerHTML='<i class="evo-brow evo-brow-l"></i><i class="evo-brow evo-brow-r"></i><span class="evo-eye evo-eye-l"><i class="evo-pupil"></i></span><span class="evo-eye evo-eye-r"><i class="evo-pupil"></i></span><i class="evo-mouth"></i>';
   root.appendChild(faceFx);
   face=img;
   layered=true;
@@ -263,7 +263,7 @@ function appendStyles(){
 #evo-fixed.evo-off{display:none}
 #evo-fixed .evo-vector-holder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16));transform-origin:center bottom}
 #evo-fixed .evo-vector-holder .evo-svg{width:100%;height:100%;display:block;pointer-events:none;overflow:visible}
-#evo-fixed > .evo-svg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;overflow:visible;transform:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16))}
+#evo-fixed > .evo-svg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;overflow:visible;transform:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16));clip-path:polygon(11% 50%,11% 69%,15% 77%,17% 76%,17% 79%,21% 79%,31% 90%,46% 94%,69% 91%,78% 81%,84% 78%,90% 66%,88% 55%,90% 51%,82% 40%,79% 27%,73% 16%,62% 8%,44% 7%,57% 5%,44% 5%,33% 12%,25% 22%,19% 38%,16% 40%)}
 #evo-fixed .evo-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16))}
 #evo-fixed[data-evo-state="thinking"] .evo-vector-holder{animation:evoThink .9s ease-in-out infinite}
 #evo-fixed[data-evo-state="talking"] .evo-vector-holder{animation:evoTalk .24s ease-in-out infinite alternate}
@@ -275,8 +275,9 @@ function appendStyles(){
 #evo-fixed .evo-brow{position:absolute;top:42%;width:17%;height:3px;border-radius:999px;background:rgba(48,226,255,.88);filter:blur(.15px) drop-shadow(0 0 4px rgba(48,226,255,.75));transform-origin:center}
 #evo-fixed .evo-brow-l{left:27%;transform:rotate(-8deg)}
 #evo-fixed .evo-brow-r{right:27%;transform:rotate(8deg)}
-#evo-fixed .evo-lid{position:absolute;top:52%;width:22%;height:12%;border-radius:50%;background:rgba(3,13,30,.98);transform:scaleY(0);transform-origin:center;box-shadow:0 0 5px rgba(3,13,30,.5)}
-#evo-fixed .evo-lid-l{left:24%}#evo-fixed .evo-lid-r{right:24%}
+#evo-fixed .evo-eye{position:absolute;top:47%;width:18%;height:15%;border-radius:50%;background:radial-gradient(circle at 50% 50%,#ffffff 0 42%,#6df3ff 44% 62%,#00b8dc 64% 100%);box-shadow:0 0 8px rgba(0,225,255,.72);transform-origin:center;animation:evoBlink 4.8s ease-in-out infinite;overflow:hidden}
+#evo-fixed .evo-eye-l{left:25%}#evo-fixed .evo-eye-r{right:25%}
+#evo-fixed .evo-pupil{position:absolute;left:50%;top:50%;width:38%;height:58%;border-radius:50%;background:#050b18;transform:translate(-50%,-50%);box-shadow:0 0 2px rgba(0,0,0,.8)}
 #evo-fixed .evo-mouth{position:absolute;left:41%;top:68%;width:18%;height:5px;border-radius:999px;background:#39e7ff;filter:drop-shadow(0 0 4px rgba(57,231,255,.9));transform:scaleY(.8);transform-origin:center}
 #evo-fixed[data-evo-state="talking"] .evo-mouth{animation:evoMouth .18s ease-in-out infinite alternate}
 #evo-fixed[data-evo-state="happy"] .evo-mouth{animation:evoSmile .7s ease-in-out 2}
@@ -287,8 +288,8 @@ function appendStyles(){
 @keyframes evoSmile{0%,100%{transform:scaleY(.8) scaleX(1)}50%{transform:scaleY(1.7) scaleX(1.15)}}
 @keyframes evoBrowL{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(-14deg) translateY(-2px)}}
 @keyframes evoBrowR{0%,100%{transform:rotate(8deg) translateY(0)}50%{transform:rotate(14deg) translateY(-2px)}}
-#evo-fixed .evo-lid-l,#evo-fixed .evo-lid-r{animation:evoBlink 4.8s ease-in-out infinite}
-#evo-fixed .label{position:absolute;right:-8px;top:-2px;z-index:20;background:rgba(255,255,255,.96);padding:6px 10px;border-radius:999px;color:#005082;font:600 10px Poppins,sans-serif;white-space:nowrap;box-shadow:0 6px 20px rgba(0,80,130,.16);pointer-events:none}
+
+#evo-fixed .label{position:absolute;right:-8px;top:-14px;z-index:20;background:rgba(255,255,255,.96);padding:6px 10px;border-radius:999px;color:#005082;font:600 10px Poppins,sans-serif;white-space:nowrap;box-shadow:0 6px 20px rgba(0,80,130,.16);pointer-events:none}
 .evo-heart{position:absolute;left:50%;top:15%;font-size:20px;line-height:1;pointer-events:none;z-index:4;opacity:0;animation:evoHeartFloat 1.45s cubic-bezier(.18,.72,.28,1) forwards;filter:drop-shadow(0 4px 8px rgba(220,50,100,.22))}
 @keyframes evoHeartFloat{0%{opacity:0;transform:translate(-50%,8px) scale(.35) rotate(-10deg)}12%{opacity:1;transform:translate(-50%,0) scale(1.05) rotate(0)}100%{opacity:0;transform:translate(calc(-50% + var(--heart-x)), -78px) scale(.78) rotate(var(--heart-r))}}
 @keyframes evoFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}
@@ -311,7 +312,7 @@ function appendStyles(){
 #evo-panel textarea{flex:1;min-width:0;border:1px solid #cfe1e5;border-radius:14px;padding:10px;resize:none;font:16px/1.35 Poppins,sans-serif;-webkit-text-size-adjust:100%;touch-action:manipulation;outline:none;box-sizing:border-box;max-height:120px}
 #evo-panel .send{width:42px;border:0;border-radius:14px;background:#005082;color:#fff;cursor:pointer}
 #evo-hide{margin:0 10px 5px;border:0;background:transparent;color:#557;font:10px Poppins;cursor:pointer}
-@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:8px;bottom:158px;width:118px;height:96px}#evo-fixed .evo-svg{width:118px;height:96px;object-fit:contain;max-height:none}.evo-label-placeholder{}#evo-fixed .label{top:-2px;right:-8px;padding:5px 8px;font-size:9px;z-index:20}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
+@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:8px;bottom:158px;width:118px;height:96px}#evo-fixed .evo-svg{width:118px;height:96px;object-fit:contain;max-height:none}.evo-label-placeholder{}#evo-fixed .label{top:-14px;right:-8px;padding:5px 8px;font-size:9px;z-index:20}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
 `;
   document.head.appendChild(s);
 }
