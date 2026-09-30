@@ -23,7 +23,7 @@ function loadChat(){
 }
 function saveChat(){
   if(!msgs)return;
-  var arr=[].slice.call(msgs.children).map(function(d){return {w:d.classList.contains('user')?'user':'bot',text:d.textContent||''}}).slice(-60);
+  var arr=[].slice.call(msgs.children).filter(function(d){return d.dataset.sensitive!=='1'}).map(function(d){return {w:d.classList.contains('user')?'user':'bot',text:d.textContent||''}}).slice(-60);
   set(chatKey,JSON.stringify(arr));
 }
 function addMsg(t,w,save){
