@@ -54,7 +54,7 @@ function buildLayeredCharacter(){
   // self-contained SVG character until genuinely isolated layers are available.
   var fallback=document.createElement('img');
   fallback.className='evo-svg evo-fallback';
-  fallback.src='/assets/evo-character.svg';
+  fallback.src='/assets/evo30-composite.svg';
   fallback.alt='EVO sağlık asistanı';
   root.appendChild(fallback);
   face=fallback;
