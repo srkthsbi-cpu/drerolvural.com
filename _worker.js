@@ -3765,7 +3765,7 @@ export default {
           try {
             const aiRes = await env.AI.run('@cf/google/gemma-4-26b-a4b-it', {
               messages: [
-                {role:'system', content:instructions + '\n\nAlways answer in '+languageName+' even if previous messages use another language.\n\nEVO BİLGİ BANKASI:\n' + JSON.stringify(evoData).slice(0,30000)},
+                {role:'system', content:instructions + '\n\nAlways answer in '+languageName+' even if previous messages use another language. For French, use “IMC (indice de masse corporelle)” instead of “BMI” and prefer French medical terminology such as “gastrectomie en manchon”. Keep “EVO” as the assistant brand name.\n\nEVO BİLGİ BANKASI:\n' + JSON.stringify(evoData).slice(0,30000)},
                 ...history,
                 {role:'user', content:message}
               ],
@@ -3784,6 +3784,12 @@ export default {
             }
 
             if (answer.trim()) {
+              if (responseLanguage === 'fr') {
+                answer = answer
+                  .replace(/\bBMI\b/gi, 'IMC')
+                  .replace(/\bbody mass index\b/gi, 'indice de masse corporelle')
+                  .replace(/\bsleeve gastrectomy\b/gi, 'gastrectomie en manchon');
+              }
               return new Response(JSON.stringify({
                 answer:answer.trim(),
                 source:'cloudflare-ai',
@@ -3794,12 +3800,16 @@ export default {
         }
 
         return new Response(JSON.stringify({
-          answer:'Şu anda yapay zekâ bağlantısında kısa süreli bir sorun var. Obezite, BMI, diyabet, tüp mide veya bariatrik cerrahi hakkında sorunuzu tekrar yazabilirsiniz.',
+          answer: responseLanguage === 'fr'
+            ? 'La connexion à l’intelligence artificielle rencontre actuellement un problème temporaire. Vous pouvez réessayer votre question sur l’obésité, l’IMC, le diabète, la gastrectomie en manchon ou la chirurgie bariatrique.'
+            : 'Şu anda yapay zekâ bağlantısında kısa süreli bir sorun var. Obezite, BMI, diyabet, tüp mide veya bariatrik cerrahi hakkında sorunuzu tekrar yazabilirsiniz.',
           source:'fallback'
         }), {status:200, headers:baseHeaders});
       } catch (_) {
         return new Response(JSON.stringify({
-          answer:'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Sorunuzu tekrar yazabilirsiniz.',
+          answer: responseLanguage === 'fr'
+            ? 'Bonjour ! Je suis EVO 👋 Je peux fournir des informations générales sur l’obésité, l’IMC, le diabète et la chirurgie bariatrique. Vous pouvez réessayer votre question.'
+            : 'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Sorunuzu tekrar yazabilirsiniz.',
           source:'safe-fallback'
         }), {status:200, headers:baseHeaders});
       }
