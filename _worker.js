@@ -919,6 +919,10 @@ async function handleAdmin(context) {
           .run();
 
         /* E-MAIL NOTIFICATION — Gmail API */
+        let emailSent = false;
+        let emailStatus = 'not_configured';
+        let emailError = null;
+
         if (
           env.GMAIL_CLIENT_ID &&
           env.GMAIL_CLIENT_SECRET &&
@@ -960,23 +964,50 @@ async function handleAdmin(context) {
               }
             );
 
-            if (!emailResponse.ok) {
-              console.error(
-                'Gmail notification failed:',
-                await emailResponse.text()
-              );
+            if (emailResponse.ok) {
+              emailSent = true;
+              emailStatus = 'sent';
+              console.log(JSON.stringify({
+                type: 'contact_email_sent',
+                contactId: id,
+                status: emailResponse.status
+              }));
+            } else {
+              emailStatus = 'gmail_api_error';
+              const errorText = (await emailResponse.text()).slice(0, 2000);
+              emailError = 'HTTP ' + emailResponse.status + ': ' + errorText;
+              console.error(JSON.stringify({
+                type: 'contact_email_failed',
+                contactId: id,
+                status: emailResponse.status,
+                error: errorText
+              }));
             }
           } catch (mailError) {
-            console.error(
-              'Gmail notification exception:',
-              mailError
-            );
+            emailStatus = 'gmail_exception';
+            emailError = String(mailError && mailError.message ? mailError.message : mailError).slice(0, 2000);
+            console.error(JSON.stringify({
+              type: 'contact_email_exception',
+              contactId: id,
+              error: emailError
+            }));
           }
+        } else {
+          emailStatus = 'missing_secrets';
+          emailError = 'Gmail secrets are not available in the Worker runtime.';
+          console.error(JSON.stringify({
+            type: 'contact_email_not_configured',
+            contactId: id
+          }));
         }
 
+        /* Keep the form submission stored even if Gmail fails. */
         return json({
           ok: true,
-          id
+          id,
+          emailSent,
+          emailStatus,
+          ...(emailError ? { emailError } : {})
         }, 201);
       }
 
