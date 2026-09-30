@@ -3254,9 +3254,11 @@ function enhanceHtmlResponse(response){
   return new HTMLRewriter()
     .on('head',{element(e){
       e.append(`<style id="drerolvural-global-qa">${GLOBAL_HTML_CSS}</style>`,{html:true});
+      e.append('<link id="evo-assistant-css" rel="stylesheet" href="/evo.css?v=20260930-evo1">',{html:true});
     }})
     .on('body',{element(e){
       e.append(`<script id="drerolvural-global-qa-js">${GLOBAL_HTML_JS}</script>`,{html:true});
+      e.append('<script id="evo-assistant-js" src="/evo.js?v=20260930-evo1" defer></script>',{html:true});
     }})
     .transform(new Response(response.body,{status:response.status,statusText:response.statusText,headers}));
 }
@@ -3395,6 +3397,48 @@ export default {
       });
     }
 
+
+    /* EVO AI ASSISTANT API */
+    if (url.pathname === '/api/evo' && request.method === 'POST') {
+      try {
+        const body = await request.json();
+        const message = String(body?.message || '').trim().slice(0, 1200);
+        if (!message) return new Response(JSON.stringify({error:'Soru boş olamaz.'}), {status:400, headers:{'content-type':'application/json;charset=utf-8','cache-control':'no-store'}});
+
+        const baseHeaders = {'content-type':'application/json;charset=utf-8','cache-control':'no-store','X-Content-Type-Options':'nosniff'};
+        const dataRes = await env.ASSETS.fetch(new Request(new URL('/data/evo.json', request.url), request));
+        let evoData = {faq:[]};
+        if (dataRes.ok) { try { evoData = await dataRes.json(); } catch (_) {} }
+
+        const normalized = message.toLocaleLowerCase('tr-TR');
+        const localFaq = Array.isArray(evoData.faq) ? evoData.faq.find(x => x && (normalized.includes(String(x.q||'').toLocaleLowerCase('tr-TR')) || String(x.q||'').toLocaleLowerCase('tr-TR').split(/\\s+/).some(w => w.length>4 && normalized.includes(w)))) : null;
+
+        if (!env.OPENAI_API_KEY) {
+          const answer = localFaq?.a || 'EVO şu anda genel bilgi modunda. Obezite, diyabet, BMI, tüp mide ve genel sağlık hakkında soru sorabilirsiniz.';
+          return new Response(JSON.stringify({answer, source:'knowledge-base'}), {status:200, headers:baseHeaders});
+        }
+
+        const instructions = 'Sen EVO\'sun: Doç. Dr. Erol Vural web sitesinin genel sağlık bilgilendirme asistanısın. Türkçe, kısa, anlaşılır ve sakin konuş. Obezite, diyabet, BMI, genel sağlık, beslenme ve bariatrik cerrahi hakkında genel ve güvenli bilgi ver. Tanı koyma; kişiye özel tedavi, ilaç dozu veya ameliyat uygunluğu hakkında kesin karar verme; garanti veya kesin sonuç vaat etme. Kullanıcı kişisel sağlık bilgileri verse bile bunu tanı koymak için kullanma. Acil belirtilerde acil sağlık hizmetlerine başvurulmasını söyle. Gerekirse hekim değerlendirmesinin gerekli olduğunu açıkça belirt. Kendini doktor veya insan gibi tanıtma; EVO adlı dijital asistan olduğunu söyle. Reklam, üstünlük veya başarı garantisi içeren ifadeler kullanma. Aşağıdaki Erol Vural bilgi bankasını öncelikli kaynak olarak kullan; bilgi bankasında olmayan tıbbi ayrıntıları kesin gerçek gibi sunma.\\n\\nEVO BİLGİ BANKASI:\\n'+JSON.stringify(evoData).slice(0,30000);
+        const aiRes = await fetch('https://api.openai.com/v1/responses', {
+          method:'POST',
+          headers:{'Authorization':'Bearer '+env.OPENAI_API_KEY,'Content-Type':'application/json'},
+          body:JSON.stringify({model:env.EVO_MODEL || 'gpt-5.6-luna',instructions,input:message,max_output_tokens:700})
+        });
+        if (!aiRes.ok) {
+          const answer = localFaq?.a || 'Şu anda bağlantıda kısa süreli bir sorun var. Lütfen sorunuzu tekrar deneyin.';
+          return new Response(JSON.stringify({answer,source:'fallback'}), {status:200,headers:baseHeaders});
+        }
+        const ai = await aiRes.json();
+        let answer = String(ai.output_text || '');
+        if (!answer && Array.isArray(ai.output)) {
+          answer = ai.output.flatMap(o=>Array.isArray(o.content)?o.content:[]).map(x=>x.text||'').filter(Boolean).join('\\n');
+        }
+        if (!answer) answer = localFaq?.a || 'Şu anda cevap oluşturamadım. Lütfen sorunuzu yeniden yazın.';
+        return new Response(JSON.stringify({answer,source:'ai'}), {status:200,headers:baseHeaders});
+      } catch (e) {
+        return new Response(JSON.stringify({answer:'EVO şu anda yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin.'}), {status:200,headers:{'content-type':'application/json;charset=utf-8','cache-control':'no-store'}});
+      }
+    }
 
     /* ADMIN API */
 
