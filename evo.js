@@ -72,37 +72,20 @@ function setEvoState(state){
     face.setAttribute('class','evo-svg evo-fallback is-'+state);
   }
 }
-async function buildLayeredCharacter(){
+function buildLayeredCharacter(){
   if(!root)return;
-  // Claude sürümünü siteye aynen uyarlıyoruz: gerçek asset katmanları,
-  // aynı yerleşim mantığı ve yüz ifadeleri. SVG inline edildiği için
-  // EVO'nun mevcut durum sınıfları doğrudan animasyonları kontrol eder.
-  try{
-    var res=await fetch('/assets/evo-claude.svg?v=20260930-21',{cache:'no-store'});
-    var text=await res.text();
-    var holder=document.createElement('div');
-    holder.innerHTML=text.trim();
-    var svg=holder.querySelector('svg');
-    if(!svg)throw new Error('EVO SVG yüklenemedi');
-    svg.classList.add('evo-svg');
-    svg.setAttribute('aria-label','EVO sağlık asistanı');
-    root.appendChild(svg);
-    face=svg;
-    layered=true;
-    setEvoState('idle');
-  }catch(err){
-    console.error('EVO character load failed',err);
-    var img=document.createElement('img');
-    img.className='evo-svg evo-fallback';
-    img.src='/assets/evo-supplied.svg?v=20260930-21';
-    img.alt='EVO sağlık asistanı';
-    root.appendChild(img);
-    face=img;
-    layered=true;
-    setEvoState('idle');
-  }
+  // Claude tarafından hazırlanan gerçek EVO SVG'yi doğrudan kullan.
+  // Inline fetch/fallback yok: böylece eski bozuk fallback karakteri asla gösterilmez.
+  var img=document.createElement('img');
+  img.className='evo-svg evo-claude';
+  img.src='/assets/evo-claude.svg?v=20260930-22';
+  img.alt='EVO sağlık asistanı';
+  img.draggable=false;
+  root.appendChild(img);
+  face=img;
+  layered=true;
+  setEvoState('idle');
 }
-
 function showEvoHearts(){
   if(!root||root.classList.contains('evo-off'))return;
   if(layered)setEvoState('happy');
@@ -276,6 +259,7 @@ function appendStyles(){
 #evo-fixed.evo-off{display:none}
 #evo-fixed .evo-vector-holder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16));transform-origin:center bottom}
 #evo-fixed .evo-vector-holder .evo-svg{width:100%;height:100%;display:block;pointer-events:none;overflow:visible}
+#evo-fixed > .evo-svg{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;overflow:visible;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16))}
 #evo-fixed .evo-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16))}
 #evo-fixed[data-evo-state="thinking"] .evo-vector-holder{animation:evoThink .9s ease-in-out infinite}
 #evo-fixed[data-evo-state="talking"] .evo-vector-holder{animation:evoTalk .24s ease-in-out infinite alternate}
