@@ -35,16 +35,29 @@ function addMsg(t,w,save){
   msgs.scrollTop=msgs.scrollHeight;
   if(save!==false)saveChat();
 }
+const EVO_I18N={
+tr:{morning:'Günaydın! Ben EVO. Size nasıl yardımcı olabilirim?',day:'İyi günler! Ben EVO. Size nasıl yardımcı olabilirim?',evening:'İyi akşamlar! Ben EVO. Size nasıl yardımcı olabilirim?',night:'İyi geceler! Ben EVO. Size nasıl yardımcı olabilirim?',label:'Ben EVO 👋',subtitle:'Erol Vural Online Dijital Sağlık Asistanı',close:'Kapat',hide:"EVO'yu gizle",disclaimer:'Genel sağlık bilgilendirmesi içindir; tanı ve kişiye özel tedavi önerisinin yerine geçmez.',placeholder:"EVO'ya sorunuzu yazın…",send:'Gönder',thinking:'Düşünüyorum…',offline:'Şu anda bağlantı kurulamadı. Genel sağlık bilgileri için sorunuzu tekrar deneyebilirsiniz.',privacyTitle:'Gizlilik uyarısı',privacyBody:'Bu mesaj kişisel sağlık bilgileri içerebilir. Sağlık verileri, KVKK kapsamında özel nitelikli kişisel verilerdir. EVO yanıt oluşturabilmek için bu bilgiyi işleyebilir. Lütfen kişisel kimlik bilgilerinizi paylaşmayın.',privacyContinue:'Devam et',privacyCancel:'İptal',privacyResponse:'Bu mesaj kişisel sağlık bilgileri içeriyor olabilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.',cancelResponse:'Tamam. Kişisel sağlık bilgilerinizi göndermeden de genel bilgi sorabilirsiniz.'},
+en:{morning:'Good morning! I’m EVO. How can I help you?',day:'Good afternoon! I’m EVO. How can I help you?',evening:'Good evening! I’m EVO. How can I help you?',night:'Good night! I’m EVO. How can I help you?',label:'EVO 👋',subtitle:'Erol Vural Online Digital Health Assistant',close:'Close',hide:'Hide EVO',disclaimer:'For general health information only; it does not replace diagnosis or personalized medical advice.',placeholder:'Ask EVO your question…',send:'Send',thinking:'Thinking…',offline:'I could not connect right now. Please try your question again.',privacyTitle:'Privacy notice',privacyBody:'This message may contain personal health information. Health data may be specially protected personal data. EVO may process it to generate a response. Please do not share identifying information.',privacyContinue:'Continue',privacyCancel:'Cancel',privacyResponse:'This message may contain personal health information. I need your privacy consent before generating a response.',cancelResponse:'Okay. You can also ask general questions without sending personal health information.'},
+de:{morning:'Guten Morgen! Ich bin EVO. Wie kann ich Ihnen helfen?',day:'Guten Tag! Ich bin EVO. Wie kann ich Ihnen helfen?',evening:'Guten Abend! Ich bin EVO. Wie kann ich Ihnen helfen?',night:'Gute Nacht! Ich bin EVO. Wie kann ich Ihnen helfen?',label:'EVO 👋',subtitle:'Digitaler Gesundheitsassistent von Erol Vural',close:'Schließen',hide:'EVO ausblenden',disclaimer:'Nur zur allgemeinen Gesundheitsinformation; ersetzt keine Diagnose oder individuelle medizinische Beratung.',placeholder:'Stellen Sie EVO Ihre Frage…',send:'Senden',thinking:'Ich denke nach…',offline:'Die Verbindung konnte derzeit nicht hergestellt werden. Bitte versuchen Sie es erneut.',privacyTitle:'Datenschutzhinweis',privacyBody:'Diese Nachricht kann persönliche Gesundheitsdaten enthalten. EVO kann diese Daten zur Erstellung einer Antwort verarbeiten. Bitte teilen Sie keine identifizierenden Daten.',privacyContinue:'Weiter',privacyCancel:'Abbrechen',privacyResponse:'Diese Nachricht kann persönliche Gesundheitsdaten enthalten. Vor der Antwort ist Ihre Datenschutzzustimmung erforderlich.',cancelResponse:'In Ordnung. Sie können auch allgemeine Fragen stellen, ohne persönliche Gesundheitsdaten zu senden.'},
+ar:{morning:'صباح الخير! أنا EVO. كيف يمكنني مساعدتك؟',day:'نهارك سعيد! أنا EVO. كيف يمكنني مساعدتك؟',evening:'مساء الخير! أنا EVO. كيف يمكنني مساعدتك؟',night:'تصبح على خير! أنا EVO. كيف يمكنني مساعدتك؟',label:'EVO 👋',subtitle:'المساعد الصحي الرقمي لـ Erol Vural',close:'إغلاق',hide:'إخفاء EVO',disclaimer:'للمعلومات الصحية العامة فقط، ولا يحل محل التشخيص أو الاستشارة الطبية الشخصية.',placeholder:'اكتب سؤالك إلى EVO…',send:'إرسال',thinking:'أفكر…',offline:'تعذر الاتصال حالياً. يرجى المحاولة مرة أخرى.',privacyTitle:'تنبيه الخصوصية',privacyBody:'قد تحتوي هذه الرسالة على معلومات صحية شخصية. قد يعالج EVO هذه المعلومات لإنشاء الرد. يرجى عدم مشاركة بيانات التعريف الشخصية.',privacyContinue:'متابعة',privacyCancel:'إلغاء',privacyResponse:'قد تحتوي هذه الرسالة على معلومات صحية شخصية. أحتاج إلى موافقتك على الخصوصية قبل إنشاء الرد.',cancelResponse:'حسناً. يمكنك أيضاً طرح أسئلة عامة دون إرسال معلومات صحية شخصية.'},
+ru:{morning:'Доброе утро! Я EVO. Чем могу помочь?',day:'Добрый день! Я EVO. Чем могу помочь?',evening:'Добрый вечер! Я EVO. Чем могу помочь?',night:'Доброй ночи! Я EVO. Чем могу помочь?',label:'EVO 👋',subtitle:'Цифровой медицинский помощник Erol Vural',close:'Закрыть',hide:'Скрыть EVO',disclaimer:'Только для общей медицинской информации; не заменяет диагностику или индивидуальную медицинскую консультацию.',placeholder:'Задайте вопрос EVO…',send:'Отправить',thinking:'Думаю…',offline:'Сейчас не удалось установить соединение. Попробуйте ещё раз.',privacyTitle:'Уведомление о конфиденциальности',privacyBody:'Это сообщение может содержать персональные медицинские данные. EVO может обрабатывать их для формирования ответа. Не отправляйте идентифицирующие данные.',privacyContinue:'Продолжить',privacyCancel:'Отмена',privacyResponse:'Это сообщение может содержать персональные медицинские данные. Перед ответом необходимо ваше согласие на обработку данных.',cancelResponse:'Хорошо. Вы также можете задавать общие вопросы без отправки персональных медицинских данных.'},
+az:{morning:'Sabahınız xeyir! Mən EVO. Sizə necə kömək edə bilərəm?',day:'Gününüz xeyir! Mən EVO. Sizə necə kömək edə bilərəm?',evening:'Axşamınız xeyir! Mən EVO. Sizə necə kömək edə bilərəm?',night:'Gecəniz xeyrə! Mən EVO. Sizə necə kömək edə bilərəm?',label:'EVO 👋',subtitle:'Erol Vural Onlayn Rəqəmsal Sağlamlıq Köməkçisi',close:'Bağla',hide:'EVO-nu gizlət',disclaimer:'Yalnız ümumi sağlamlıq məlumatı üçündür; diaqnoz və fərdi tibbi məsləhəti əvəz etmir.',placeholder:'Sualınızı EVO-ya yazın…',send:'Göndər',thinking:'Düşünürəm…',offline:'Hazırda bağlantı qurmaq mümkün olmadı. Sualınızı yenidən göndərin.',privacyTitle:'Məxfilik bildirişi',privacyBody:'Bu mesaj şəxsi sağlamlıq məlumatları ehtiva edə bilər. EVO cavab yaratmaq üçün bu məlumatları emal edə bilər. Şəxsi identifikasiya məlumatlarını paylaşmayın.',privacyContinue:'Davam et',privacyCancel:'Ləğv et',privacyResponse:'Bu mesaj şəxsi sağlamlıq məlumatları ehtiva edə bilər. Cavab yaratmazdan əvvəl məxfilik razılığınız lazımdır.',cancelResponse:'Oldu. Şəxsi sağlamlıq məlumatları göndərmədən də ümumi suallar verə bilərsiniz.'},
+sq:{morning:'Mirëmëngjes! Jam EVO. Si mund t’ju ndihmoj?',day:'Mirëdita! Jam EVO. Si mund t’ju ndihmoj?',evening:'Mirëmbrëma! Jam EVO. Si mund t’ju ndihmoj?',night:'Natën e mirë! Jam EVO. Si mund t’ju ndihmoj?',label:'EVO 👋',subtitle:'Asistenti digjital i shëndetit i Erol Vural',close:'Mbyll',hide:'Fshih EVO',disclaimer:'Vetëm për informacion të përgjithshëm shëndetësor; nuk zëvendëson diagnozën ose këshillën mjekësore individuale.',placeholder:'Bëjini pyetjen tuaj EVO-s…',send:'Dërgo',thinking:'Po mendoj…',offline:'Nuk u lidh dot tani. Ju lutemi provoni përsëri.',privacyTitle:'Njoftim privatësie',privacyBody:'Ky mesazh mund të përmbajë të dhëna personale shëndetësore. EVO mund t’i përpunojë për të krijuar një përgjigje. Mos ndani të dhëna identifikuese.',privacyContinue:'Vazhdo',privacyCancel:'Anulo',privacyResponse:'Ky mesazh mund të përmbajë të dhëna personale shëndetësore. Para përgjigjes kërkohet pëlqimi juaj për privatësinë.',cancelResponse:'Në rregull. Mund të bëni edhe pyetje të përgjithshme pa dërguar të dhëna personale shëndetësore.'},
+nl:{morning:'Goedemorgen! Ik ben EVO. Hoe kan ik u helpen?',day:'Goedendag! Ik ben EVO. Hoe kan ik u helpen?',evening:'Goedenavond! Ik ben EVO. Hoe kan ik u helpen?',night:'Goedenacht! Ik ben EVO. Hoe kan ik u helpen?',label:'EVO 👋',subtitle:'Digitale gezondheidsassistent van Erol Vural',close:'Sluiten',hide:'EVO verbergen',disclaimer:'Alleen voor algemene gezondheidsinformatie; vervangt geen diagnose of persoonlijk medisch advies.',placeholder:'Stel EVO uw vraag…',send:'Versturen',thinking:'Even nadenken…',offline:'Er kon momenteel geen verbinding worden gemaakt. Probeer het opnieuw.',privacyTitle:'Privacyverklaring',privacyBody:'Dit bericht kan persoonlijke gezondheidsgegevens bevatten. EVO kan deze gegevens verwerken om een antwoord te maken. Deel geen identificerende gegevens.',privacyContinue:'Doorgaan',privacyCancel:'Annuleren',privacyResponse:'Dit bericht kan persoonlijke gezondheidsgegevens bevatten. Uw privacytoestemming is nodig voordat ik antwoord kan geven.',cancelResponse:'Prima. U kunt ook algemene vragen stellen zonder persoonlijke gezondheidsgegevens te sturen.'},
+es:{morning:'¡Buenos días! Soy EVO. ¿Cómo puedo ayudarle?',day:'¡Buenas tardes! Soy EVO. ¿Cómo puedo ayudarle?',evening:'¡Buenas noches! Soy EVO. ¿Cómo puedo ayudarle?',night:'¡Buenas noches! Soy EVO. ¿Cómo puedo ayudarle?',label:'EVO 👋',subtitle:'Asistente digital de salud de Erol Vural',close:'Cerrar',hide:'Ocultar EVO',disclaimer:'Solo para información general de salud; no sustituye el diagnóstico ni el consejo médico personalizado.',placeholder:'Escriba su pregunta a EVO…',send:'Enviar',thinking:'Pensando…',offline:'No se pudo establecer la conexión. Inténtelo de nuevo.',privacyTitle:'Aviso de privacidad',privacyBody:'Este mensaje puede contener información personal de salud. EVO puede procesarla para generar una respuesta. No comparta datos identificativos.',privacyContinue:'Continuar',privacyCancel:'Cancelar',privacyResponse:'Este mensaje puede contener información personal de salud. Necesito su consentimiento de privacidad antes de generar una respuesta.',cancelResponse:'De acuerdo. También puede hacer preguntas generales sin enviar información personal de salud.'}
+};
+function evoLang(){var l=(document.documentElement&&document.documentElement.lang)||get('siteLanguage')||'tr';l=String(l).toLowerCase().split('-')[0];return EVO_I18N[l]?l:'tr';}
+function evoText(k){return (EVO_I18N[evoLang()]||EVO_I18N.tr)[k]||EVO_I18N.tr[k]||k;}
 function getTimeGreeting(){
-  // Türkiye saati: siteye ilk girişte saat aralığına göre doğal bir karşılama.
   var now=new Date();
-  var parts=new Intl.DateTimeFormat('tr-TR',{timeZone:'Europe/Istanbul',hour:'numeric',hour12:false}).formatToParts(now);
+  var parts=new Intl.DateTimeFormat(evoLang()==='tr'?'tr-TR':evoLang(),{timeZone:'Europe/Istanbul',hour:'numeric',hour12:false}).formatToParts(now);
   var hour=Number((parts.find(function(p){return p.type==='hour'})||{}).value||0);
-  if(hour>=5&&hour<11)return 'Günaydın! Ben EVO. Size nasıl yardımcı olabilirim?';
-  if(hour>=11&&hour<17)return 'İyi günler! Ben EVO. Size nasıl yardımcı olabilirim?';
-  if(hour>=17&&hour<21)return 'İyi akşamlar! Ben EVO. Size nasıl yardımcı olabilirim?';
-  return 'İyi geceler! Ben EVO. Size nasıl yardımcı olabilirim?';
+  if(hour>=5&&hour<11)return evoText('morning');
+  if(hour>=11&&hour<17)return evoText('day');
+  if(hour>=17&&hour<21)return evoText('evening');
+  return evoText('night');
 }
+
 function renderChat(){
   var history=loadChat();
   if(history.length) history.forEach(function(m){addMsg(m.text,m.w,false)});
@@ -64,7 +77,7 @@ async function buildLayeredCharacter(){
   // hizalama ve animasyonsuz görünüm sorunları tamamen ortadan kalkar.
   var img=document.createElement('img');
   img.className='evo-svg evo-fallback';
-  img.src='/assets/evo-character.svg?v=20260930-12';
+  img.src='/assets/evo-coded.svg?v=20260930-13';
   img.alt='EVO sağlık asistanı';
   img.draggable=false;
   root.appendChild(img);
@@ -105,11 +118,36 @@ function isSensitiveHealthMessage(text){
 function isThanksMessage(text){
   return /\b(teşekkür(?:ler|lerim)?|tesekkur(?:ler|lerim)?|sağ\s*ol(?:un)?|sag\s*ol(?:un)?|çok\s*sağ\s*ol|cok\s*sag\s*ol|thanks|thank\s*you|thx)\b/i.test(text||'');
 }
+function applyEvoLanguage(resetChat){
+  if(!root||!panel)return;
+  var l=evoLang(), t=EVO_I18N[l]||EVO_I18N.tr;
+  root.setAttribute('aria-label',t.label.replace(' 👋',''));
+  var label=root.querySelector('.label'); if(label)label.textContent=t.label;
+  var strong=panel.querySelector('.eh strong'); if(strong)strong.textContent='EVO';
+  var sub=panel.querySelector('.eh span'); if(sub)sub.textContent=t.subtitle;
+  var ex=panel.querySelector('.ex'); if(ex){ex.textContent='×';ex.setAttribute('aria-label',t.close)}
+  var hide=panel.querySelector('#evo-hide'); if(hide)hide.textContent=t.hide;
+  var ed=panel.querySelector('.ed'); if(ed)ed.textContent=t.disclaimer;
+  if(ta){ta.placeholder=t.placeholder;ta.setAttribute('aria-label',t.placeholder)}
+  var send=panel.querySelector('.send'); if(send)send.setAttribute('aria-label',t.send);
+  panel.setAttribute('aria-label',t.label.replace(' 👋',''));
+  panel.dir=l==='ar'?'rtl':'ltr';
+  if(resetChat){
+    try{localStorage.removeItem(chatKey)}catch(e){}
+    if(msgs){msgs.innerHTML='';addMsg(getTimeGreeting(),'bot',false)}
+  }
+}
+function watchEvoLanguage(){
+  if(!document.documentElement||document.documentElement.dataset.evoLangWatch==='1')return;
+  document.documentElement.dataset.evoLangWatch='1';
+  var last=evoLang();
+  new MutationObserver(function(){var next=evoLang();if(next!==last){last=next;applyEvoLanguage(true)}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+}
 function showPrivacyGate(q){
   var box=document.createElement('div');
   box.className='em bot evo-privacy-gate';
   box.dataset.sensitive='1';
-  box.innerHTML='<strong>Gizlilik uyarısı</strong><br>Bu mesaj kişisel sağlık bilgileri içerebilir. Sağlık verileri, KVKK kapsamında özel nitelikli kişisel verilerdir. EVO yanıt oluşturabilmek için bu bilgiyi işleyebilir. Lütfen kişisel kimlik bilgilerinizi (T.C. kimlik no, telefon, adres vb.) paylaşmayın.<div class="evo-privacy-text">Devam etmeden önce bu bilgilerin EVO tarafından yanıt oluşturma amacıyla işlenmesine devam etmek istediğinizi seçin.</div><div class="evo-privacy-actions"><button type="button" class="evo-privacy-continue">Devam et</button><button type="button" class="evo-privacy-cancel">İptal</button></div>';
+  var t=EVO_I18N[evoLang()]||EVO_I18N.tr; box.innerHTML='<strong>'+t.privacyTitle+'</strong><br>'+t.privacyBody+'<div class="evo-privacy-text">'+t.privacyBody+'</div><div class="evo-privacy-actions"><button type="button" class="evo-privacy-continue">'+t.privacyContinue+'</button><button type="button" class="evo-privacy-cancel">'+t.privacyCancel+'</button></div>';
   msgs.appendChild(box);
   msgs.scrollTop=msgs.scrollHeight;
   box.querySelector('.evo-privacy-continue').onclick=function(){
@@ -118,13 +156,13 @@ function showPrivacyGate(q){
   };
   box.querySelector('.evo-privacy-cancel').onclick=function(){
     box.remove();
-    addMsg('Tamam. Kişisel sağlık bilgilerinizi göndermeden de genel bilgi sorabilirsiniz.','bot');
+    addMsg(evoText('cancelResponse'),'bot');
   };
 }
 function sendQuestion(q,privacyConsent){
   var w=document.createElement('div');
   w.className='em bot';
-  w.textContent='Düşünüyorum…';
+  w.textContent=evoText('thinking');
   setEvoState('thinking');
   msgs.appendChild(w);
   msgs.scrollTop=msgs.scrollHeight;
@@ -132,7 +170,7 @@ function sendQuestion(q,privacyConsent){
   .then(function(r){return r.json()})
   .then(function(d){
     if(d.needsPrivacyConsent){
-      w.textContent='Bu mesaj kişisel sağlık bilgileri içeriyor olabilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.';
+      w.textContent=evoText('privacyResponse');
       return;
     }
     w.textContent=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';
@@ -142,7 +180,7 @@ function sendQuestion(q,privacyConsent){
     saveChat();
   })
   .catch(function(){
-    w.textContent='Şu anda bağlantı kurulamadı. Genel sağlık bilgileri için sorunuzu tekrar deneyebilirsiniz.';
+    w.textContent=evoText('offline');
     setEvoState('idle');
     saveChat();
   });
@@ -263,7 +301,7 @@ async function build(){
   root.setAttribute('aria-label','EVO sağlık asistanı');
   root.setAttribute('role','button');
   root.tabIndex=0;
-  root.innerHTML='<div class="label">Ben EVO 👋</div>';
+  root.innerHTML='<div class="label">'+evoText('label')+'</div>';
   panel=document.createElement('section');
   panel.id='evo-panel';
   panel.setAttribute('aria-label','EVO sağlık asistanı');
@@ -273,7 +311,9 @@ async function build(){
   msgs=panel.querySelector('#evo-msgs');
   ta=panel.querySelector('textarea');
   await buildLayeredCharacter();
+  applyEvoLanguage(false);
   renderChat();
+  watchEvoLanguage();
   placeEvo();
   if(get(hiddenKey)==='1')root.classList.add('evo-off');
 
