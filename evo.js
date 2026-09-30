@@ -64,8 +64,50 @@ function handleEvoTripleTap(){
   }
   evoTapTimer=setTimeout(function(){evoTapCount=0},650);
 }
+function isSensitiveHealthMessage(text){
+  text=String(text||'');
+  return /(?:kilo|kilom|kiloyum|boyum|boy\s*\d|bmi|vki|vücut\s*kitle|tahlil|kan\s*değeri|kan\s*şekeri|şekerim|diyabet|insülin|tansiyon|kolesterol|hastalık|hastayım|teşhis|tanı|ameliyat|operasyon|ilaç|ilaçlar|reçete|mr|tomografi|ultrason|endoskopi|biyopsi|patoloji|rapor|semptom|belirti|ağrı|hamileyim|gebeyim|alerji|alerjim|kan\s*grubu|nabız|ateş|depresyon|anksiyete|psikiyatr|obezite|mide\s*balonu|tüp\s*mide|gastrik\s*bypass|bypass)/i.test(text);
+}
 function isThanksMessage(text){
   return /\b(teşekkür(?:ler|lerim)?|tesekkur(?:ler|lerim)?|sağ\s*ol(?:un)?|sag\s*ol(?:un)?|çok\s*sağ\s*ol|cok\s*sag\s*ol|thanks|thank\s*you|thx)\b/i.test(text||'');
+}
+function showPrivacyGate(q){
+  var box=document.createElement('div');
+  box.className='em bot evo-privacy-gate';
+  box.dataset.sensitive='1';
+  box.innerHTML='<strong>Gizlilik uyarısı</strong><br>Bu mesaj kişisel sağlık bilgileri içerebilir. Sağlık verileri, KVKK kapsamında özel nitelikli kişisel verilerdir. EVO yanıt oluşturabilmek için bu bilgiyi işleyebilir. Lütfen kişisel kimlik bilgilerinizi (T.C. kimlik no, telefon, adres vb.) paylaşmayın.<div class="evo-privacy-text">Devam etmeden önce bu bilgilerin EVO tarafından yanıt oluşturma amacıyla işlenmesine devam etmek istediğinizi seçin.</div><div class="evo-privacy-actions"><button type="button" class="evo-privacy-continue">Devam et</button><button type="button" class="evo-privacy-cancel">İptal</button></div>';
+  msgs.appendChild(box);
+  msgs.scrollTop=msgs.scrollHeight;
+  box.querySelector('.evo-privacy-continue').onclick=function(){
+    box.remove();
+    sendQuestion(q,true);
+  };
+  box.querySelector('.evo-privacy-cancel').onclick=function(){
+    box.remove();
+    addMsg('Tamam. Kişisel sağlık bilgilerinizi göndermeden de genel bilgi sorabilirsiniz.','bot');
+  };
+}
+function sendQuestion(q,privacyConsent){
+  var w=document.createElement('div');
+  w.className='em bot';
+  w.textContent='Düşünüyorum…';
+  msgs.appendChild(w);
+  msgs.scrollTop=msgs.scrollHeight;
+  fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q,privacyConsent:!!privacyConsent,history:[].slice.call(msgs.children).filter(function(d){return d.dataset.sensitive!=='1'}).map(function(d){return {role:d.classList.contains('user')?'user':'assistant',content:d.textContent||''}}).slice(-8)})})
+  .then(function(r){return r.json()})
+  .then(function(d){
+    if(d.needsPrivacyConsent){
+      w.textContent='Bu mesaj kişisel sağlık bilgileri içeriyor olabilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.';
+      return;
+    }
+    w.textContent=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';
+    if(isThanksMessage(q))setTimeout(showEvoHearts,120);
+    saveChat();
+  })
+  .catch(function(){
+    w.textContent='Şu anda bağlantı kurulamadı. Genel sağlık bilgileri için sorunuzu tekrar deneyebilirsiniz.';
+    saveChat();
+  });
 }
 function openEvo(){
   if(get(hiddenKey)==='1')return;
@@ -153,6 +195,12 @@ function appendStyles(){
 #evo-panel .ex{border:0;background:transparent;color:#fff;font-size:25px;cursor:pointer}
 #evo-msgs{flex:1;overflow:auto;padding:15px}.em{max-width:86%;padding:10px 13px;border-radius:16px;margin:7px 0;font-size:13px;line-height:1.45}.em.bot{background:#e8f7fa;color:#17485a}.em.user{margin-left:auto;background:#005082;color:#fff}
 #evo-panel .ed{padding:7px 14px;font-size:9px;color:#667;background:#f2fafb}
+.evo-privacy-gate{font-size:12px!important;border:1px solid #b8dfe7}
+.evo-privacy-gate strong{color:#005082}
+.evo-privacy-text{margin-top:7px}
+.evo-privacy-actions{display:flex;gap:7px;margin-top:10px}
+.evo-privacy-actions button{border:0;border-radius:999px;padding:8px 12px;font:600 11px Poppins,sans-serif;cursor:pointer}
+.evo-privacy-continue{background:#005082;color:#fff}.evo-privacy-cancel{background:#fff;color:#005082;border:1px solid #cfe1e5!important}
 #evo-panel form{display:flex;padding:10px;gap:7px;border-top:1px solid #dcecef;align-items:flex-end;flex-shrink:0}
 #evo-panel textarea{flex:1;min-width:0;border:1px solid #cfe1e5;border-radius:14px;padding:10px;resize:none;font:16px/1.35 Poppins,sans-serif;-webkit-text-size-adjust:100%;touch-action:manipulation;outline:none;box-sizing:border-box;max-height:120px}
 #evo-panel .send{width:42px;border:0;border-radius:14px;background:#005082;color:#fff;cursor:pointer}
@@ -173,7 +221,7 @@ function build(){
   panel=document.createElement('section');
   panel.id='evo-panel';
   panel.setAttribute('aria-label','EVO sağlık asistanı');
-  panel.innerHTML='<div class="eh"><div><strong>EVO</strong><span>Erol Vural Sağlık Asistanı</span></div><button class="ex" aria-label="Kapat">×</button></div><div id="evo-msgs"></div><div class="ed">Genel sağlık bilgilendirmesi içindir; tanı ve kişiye özel tedavi önerisinin yerine geçmez.</div><button id="evo-hide">EVO\'yu gizle</button><form><textarea rows="1" maxlength="1200" placeholder="EVO\'ya sorunuzu yazın…"></textarea><button class="send" aria-label="Gönder">➤</button></form>';
+  panel.innerHTML='<div class="eh"><div><strong>EVO</strong><span>Erol Vural Online Dijital Sağlık Asistanı</span></div><button class="ex" aria-label="Kapat">×</button></div><div id="evo-msgs"></div><div class="ed">Genel sağlık bilgilendirmesi içindir; tanı ve kişiye özel tedavi önerisinin yerine geçmez.</div><button id="evo-hide">EVO\'yu gizle</button><form><textarea rows="1" maxlength="1200" placeholder="EVO\'ya sorunuzu yazın…"></textarea><button class="send" aria-label="Gönder">➤</button></form>';
   document.body.appendChild(root);
   document.body.appendChild(panel);
   msgs=panel.querySelector('#evo-msgs');
@@ -207,7 +255,13 @@ function build(){
     var q=ta.value.trim();
     if(!q)return;
     ta.value='';
-    addMsg(q,'user');
+    addMsg(q,'user',!isSensitiveHealthMessage(q));
+    if(isSensitiveHealthMessage(q)){
+      var sensitiveUser=msgs.lastElementChild;
+      if(sensitiveUser)sensitiveUser.dataset.sensitive='1';
+      showPrivacyGate(q);
+      return;
+    }
     if(/evo[’']?yu\s+(kaldır|sil)/i.test(q)){
       addMsg('Tamam. EVO bu cihazda kaldırılıyor.','bot');
       setTimeout(removeEvo,350);
@@ -218,20 +272,7 @@ function build(){
       setTimeout(closeChat,350);
       return;
     }
-    var w=document.createElement('div');
-    w.className='em bot';
-    w.textContent='Düşünüyorum…';
-    msgs.appendChild(w);
-    msgs.scrollTop=msgs.scrollHeight;
-    try{
-      var r=await fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q,history:[].slice.call(msgs.children).map(function(d){return {role:d.classList.contains('user')?'user':'assistant',content:d.textContent||''}}).slice(-8)})});
-      var d=await r.json();
-      w.textContent=d.answer||'Bu konuda genel sağlık bilgisi verebilirim. Kişisel tanı ve tedavi kararları için hekiminizle görüşmelisiniz.';
-      saveChat();
-    }catch(x){
-      w.textContent='Şu anda bağlantı kurulamadı. Genel sağlık bilgileri için sorunuzu tekrar deneyebilirsiniz.';
-      saveChat();
-    }
+    sendQuestion(q,false);
   };
 }
 function installPointer(){
