@@ -11,6 +11,7 @@ try{localStorage.removeItem('drerolvural_evo_hidden')}catch(e){}
 var chatKey='drerolvural_evo_chat';
 var root, panel, msgs, ta, face;
 var drag={active:false,moved:false,pointerId:null,startX:0,startY:0,originX:0,originY:0};
+var evoTapCount=0,evoTapTimer=null;
 
 function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
@@ -38,6 +39,33 @@ function renderChat(){
   var history=loadChat();
   if(history.length) history.forEach(function(m){addMsg(m.text,m.w,false)});
   else addMsg('Merhaba, ben EVO. Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?','bot',false);
+}
+function showEvoHearts(){
+  if(!root||root.classList.contains('evo-off'))return;
+  var hearts=['💙','💙','💙','💙','💙'];
+  hearts.forEach(function(h,i){
+    var el=document.createElement('span');
+    el.className='evo-heart';
+    el.textContent=h;
+    el.style.setProperty('--heart-x',((i-2)*24+(Math.random()*12-6))+'px');
+    el.style.setProperty('--heart-r',((i-2)*10+(Math.random()*10-5))+'deg');
+    el.style.animationDelay=(i*70)+'ms';
+    root.appendChild(el);
+    setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el)},1700);
+  });
+}
+function handleEvoTripleTap(){
+  evoTapCount++;
+  clearTimeout(evoTapTimer);
+  if(evoTapCount>=3){
+    evoTapCount=0;
+    showEvoHearts();
+    return;
+  }
+  evoTapTimer=setTimeout(function(){evoTapCount=0},650);
+}
+function isThanksMessage(text){
+  return /\b(teşekkür(?:ler|lerim)?|tesekkur(?:ler|lerim)?|sağ\s*ol(?:un)?|sag\s*ol(?:un)?|çok\s*sağ\s*ol|cok\s*sag\s*ol|thanks|thank\s*you|thx)\b/i.test(text||'');
 }
 function openEvo(){
   if(get(hiddenKey)==='1')return;
@@ -113,6 +141,8 @@ function appendStyles(){
 #evo-fixed.evo-off{display:none}
 #evo-fixed .evo-svg{width:118px;height:100px;display:block;pointer-events:none}
 #evo-fixed .label{position:absolute;right:2px;top:-34px;background:rgba(255,255,255,.96);padding:6px 10px;border-radius:999px;color:#005082;font:600 10px Poppins,sans-serif;white-space:nowrap;box-shadow:0 6px 20px rgba(0,80,130,.16);pointer-events:none}
+.evo-heart{position:absolute;left:50%;top:15%;font-size:20px;line-height:1;pointer-events:none;z-index:4;opacity:0;animation:evoHeartFloat 1.45s cubic-bezier(.18,.72,.28,1) forwards;filter:drop-shadow(0 4px 8px rgba(220,50,100,.22))}
+@keyframes evoHeartFloat{0%{opacity:0;transform:translate(-50%,8px) scale(.35) rotate(-10deg)}12%{opacity:1;transform:translate(-50%,0) scale(1.05) rotate(0)}100%{opacity:0;transform:translate(calc(-50% + var(--heart-x)), -78px) scale(.78) rotate(var(--heart-r))}}
 @keyframes evoFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}
 #evo-panel{pointer-events:auto!important;touch-action:manipulation!important;position:fixed;right:20px;bottom:20px;width:min(390px,calc(100vw - 28px));height:min(600px,calc(100vh - 40px));z-index:2147483646!important;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.9);border-radius:26px;background:rgba(248,253,255,.96);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 25px 70px rgba(0,60,100,.28);overflow:hidden;font-family:Poppins,sans-serif;opacity:0;visibility:hidden;transform:translateY(16px) scale(.96);transition:opacity .28s ease,transform .28s ease,visibility 0s linear .28s}
 #evo-panel.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);transition:opacity .28s ease,transform .28s ease,visibility 0s}
@@ -229,7 +259,10 @@ function installPointer(){
     if(!drag.active||e.pointerId!==drag.pointerId)return;
     drag.active=false;root.classList.remove('evo-dragging');
     try{root.releasePointerCapture(e.pointerId)}catch(x){}
-    if(!drag.moved)openEvo();
+    if(!drag.moved){
+      handleEvoTripleTap();
+      openEvo();
+    }
     e.preventDefault();e.stopImmediatePropagation();
   },true);
   document.addEventListener('pointercancel',function(e){
