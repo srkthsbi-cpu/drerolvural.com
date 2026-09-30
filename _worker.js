@@ -3399,7 +3399,7 @@ export default {
     }
 
 
-    /* EVO AI ASSISTANT API */
+    /* EVO AI ASSISTANT API — Cloudflare Workers AI / Gemma 4 */
     if (url.pathname === '/api/evo' && request.method === 'POST') {
       const baseHeaders = {
         'content-type':'application/json; charset=utf-8',
@@ -3408,17 +3408,12 @@ export default {
       };
 
       try {
-        const body = await request.json();
-        const message = String(body?.message || '').trim().slice(0, 1200);
+        const payload = await request.json().catch(() => ({}));
+        const message = String(payload.message || '').trim().slice(0, 4000);
         if (!message) {
           return new Response(JSON.stringify({error:'Soru boş olamaz.'}), {status:400, headers:baseHeaders});
         }
 
-        /*
-         * EVO önce yerel bilgi bankasından cevap verebilir. Böylece D1,
-         * e-posta bildirimi veya harici AI servisi geçici olarak çalışmasa
-         * bile kullanıcıya "yanıt veremiyor" hatası gösterilmez.
-         */
         const normalized = message.toLocaleLowerCase('tr-TR');
         const fallbackFaq = [
           {keys:['bmi nedir','vki nedir'], a:'BMI (Vücut Kitle İndeksi), yetişkinlerde boy ve kilo arasındaki ilişkiyi değerlendirmede kullanılan bir ölçüttür. Tek başına tanı veya tedavi kararı vermez.'},
@@ -3434,9 +3429,13 @@ export default {
           {keys:['vitamin gerekir mi','ameliyattan sonra vitamin'], a:'Bazı bariatrik cerrahi yöntemlerinden sonra vitamin ve mineral takviyeleri gerekebilir. Hangi takviyenin ve dozun kullanılacağı ameliyat türü ve laboratuvar sonuçlarına göre sağlık ekibi tarafından belirlenmelidir.'},
           {keys:['ne zaman acile','acile ne zaman'], a:'Şiddetli göğüs ağrısı, ciddi nefes darlığı, bilinç değişikliği, bayılma, ciddi kanama veya yaşamı tehdit eden başka belirtilerde çevrimiçi bilgi beklemek yerine acil sağlık hizmetlerine başvurun.'}
         ];
+
         let localFaq = null;
         for (const item of fallbackFaq) {
-          if (item.keys.some(k => normalized.includes(k))) { localFaq = item.a; break; }
+          if (item.keys.some(k => normalized.includes(k))) {
+            localFaq = item.a;
+            break;
+          }
         }
 
         if (/^(naber|merhaba|selam|hi|hello|hey)\b/i.test(normalized)) {
@@ -3454,15 +3453,15 @@ export default {
           }
         } catch (_) {}
 
-        if (!localFaq && Array.isArray(evoData.faq)) {
-          const item = evoData.faq.find(x => {
-            const q = String(x?.q || '').toLocaleLowerCase('tr-TR');
-            return q === normalized || q.split(/\s+/).some(w => w.length > 4 && normalized.includes(w));
-          });
-          localFaq = item?.a || null;
+        // Yerel bilgi bankasında bulunan sorular Cloudflare AI kotası tüketmeden cevaplanır.
+        if (localFaq) {
+          return new Response(JSON.stringify({
+            answer:localFaq,
+            source:'knowledge-base'
+          }), {status:200, headers:baseHeaders});
         }
 
-        // Soru kaydı ve bildirim tamamen ikincildir; başarısız olması cevabı etkilemez.
+        // D1 soru kaydı ikincildir; başarısız olması EVO cevabını engellemez.
         try {
           if (env.DB) {
             await env.DB.prepare(`CREATE TABLE IF NOT EXISTS evo_questions (
@@ -3483,39 +3482,50 @@ export default {
           }
         } catch (_) {}
 
-        if (!env.OPENAI_API_KEY) {
-          return new Response(JSON.stringify({
-            answer: localFaq || 'EVO genel sağlık bilgisi verebilir. Obezite, BMI, diyabet, tüp mide veya bariatrik cerrahi hakkında sorunuzu yazabilirsiniz.',
-            source:'knowledge-base'
-          }), {status:200, headers:baseHeaders});
+        const instructions = 'Sen EVO\'sun: Doç. Dr. Erol Vural web sitesinin genel sağlık bilgilendirme asistanısın. Türkçe, kısa, anlaşılır ve sakin konuş. Obezite, diyabet, BMI, genel sağlık, beslenme ve bariatrik cerrahi hakkında genel ve güvenli bilgi ver. Tanı koyma; kişiye özel tedavi, ilaç dozu veya ameliyat uygunluğu hakkında kesin karar verme; garanti veya kesin sonuç vaat etme. Kullanıcı kişisel sağlık bilgileri verse bile bunu tanı koymak için kullanma. Acil belirtilerde acil sağlık hizmetlerine başvurulmasını söyle. Gerekirse hekim değerlendirmesinin gerekli olduğunu açıkça belirt. Kendini doktor veya insan gibi tanıtma; EVO adlı dijital asistan olduğunu söyle. Reklam, üstünlük veya başarı garantisi içeren ifadeler kullanma. Aşağıdaki Erol Vural bilgi bankasını öncelikli kaynak olarak kullan. Bilgi bankasında olmayan tıbbi ayrıntıları kesin gerçek gibi sunma.';
+
+        // Cloudflare Workers AI: Google Gemma 4 26B A4B IT.
+        // AI binding'i Cloudflare Pages/Worker ayarlarında "AI" adıyla bağlanmalıdır.
+        if (env.AI && typeof env.AI.run === 'function') {
+          try {
+            const aiRes = await env.AI.run('@cf/google/gemma-4-26b-a4b-it', {
+              messages: [
+                {role:'system', content:instructions + '\n\nEVO BİLGİ BANKASI:\n' + JSON.stringify(evoData).slice(0,30000)},
+                {role:'user', content:message}
+              ],
+              chat_template_kwargs: {enable_thinking:false}
+            }, {rejectIfBusy:true});
+
+            let answer = '';
+            if (typeof aiRes === 'string') {
+              answer = aiRes;
+            } else if (aiRes && typeof aiRes.response === 'string') {
+              answer = aiRes.response;
+            } else if (aiRes && Array.isArray(aiRes.choices)) {
+              answer = String(aiRes.choices?.[0]?.message?.content || '');
+            } else if (aiRes && typeof aiRes.output_text === 'string') {
+              answer = aiRes.output_text;
+            }
+
+            if (answer.trim()) {
+              return new Response(JSON.stringify({
+                answer:answer.trim(),
+                source:'cloudflare-ai',
+                model:'@cf/google/gemma-4-26b-a4b-it'
+              }), {status:200, headers:baseHeaders});
+            }
+          } catch (_) {}
         }
 
-        const instructions = 'Sen EVO\'sun: Doç. Dr. Erol Vural web sitesinin genel sağlık bilgilendirme asistanısın. Türkçe, kısa, anlaşılır ve sakin konuş. Obezite, diyabet, BMI, genel sağlık, beslenme ve bariatrik cerrahi hakkında genel ve güvenli bilgi ver. Tanı koyma; kişiye özel tedavi, ilaç dozu veya ameliyat uygunluğu hakkında kesin karar verme; garanti veya kesin sonuç vaat etme. Kullanıcı kişisel sağlık bilgileri verse bile bunu tanı koymak için kullanma. Acil belirtilerde acil sağlık hizmetlerine başvurulmasını söyle. Gerekirse hekim değerlendirmesinin gerekli olduğunu açıkça belirt. Kendini doktor veya insan gibi tanıtma; EVO adlı dijital asistan olduğunu söyle. Reklam, üstünlük veya başarı garantisi içeren ifadeler kullanma. Aşağıdaki Erol Vural bilgi bankasını öncelikli kaynak olarak kullan; bilgi bankasında olmayan tıbbi ayrıntıları kesin gerçek gibi sunma.\\n\\nEVO BİLGİ BANKASI:\\n'+JSON.stringify(evoData).slice(0,30000);
-        try {
-          const aiRes = await fetch('https://api.openai.com/v1/responses', {
-            method:'POST',
-            headers:{'Authorization':'Bearer '+env.OPENAI_API_KEY,'Content-Type':'application/json'},
-            body:JSON.stringify({model:env.EVO_MODEL || 'gpt-5.6-luna',instructions,input:message,max_output_tokens:700})
-          });
-          if (aiRes.ok) {
-            const ai = await aiRes.json();
-            let answer = String(ai.output_text || '');
-            if (!answer && Array.isArray(ai.output)) {
-              answer = ai.output.flatMap(o=>Array.isArray(o.content)?o.content:[]).map(x=>x.text||'').filter(Boolean).join('\n');
-            }
-            if (answer) return new Response(JSON.stringify({answer,source:'ai'}), {status:200,headers:baseHeaders});
-          }
-        } catch (_) {}
-
         return new Response(JSON.stringify({
-          answer: localFaq || 'Şu anda bağlantıda kısa süreli bir sorun var. Genel sağlık sorunuz varsa tekrar yazabilirsiniz.',
+          answer:'Şu anda yapay zekâ bağlantısında kısa süreli bir sorun var. Obezite, BMI, diyabet, tüp mide veya bariatrik cerrahi hakkında sorunuzu tekrar yazabilirsiniz.',
           source:'fallback'
-        }), {status:200,headers:baseHeaders});
+        }), {status:200, headers:baseHeaders});
       } catch (_) {
         return new Response(JSON.stringify({
           answer:'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Sorunuzu tekrar yazabilirsiniz.',
           source:'safe-fallback'
-        }), {status:200,headers:baseHeaders});
+        }), {status:200, headers:baseHeaders});
       }
     }
 
