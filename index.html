@@ -995,140 +995,113 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
   </div>
 </aside>
 <style>
+/* Cookie banner — compact version matching the earlier mobile design */
 .healthy-cookie-banner{
   position:fixed!important;
   left:50%!important;
   right:auto!important;
-  bottom:20px!important;
+  bottom:18px!important;
   transform:translateX(-50%)!important;
-  width:min(770px,calc(100% - 28px))!important;
-  max-width:770px!important;
-  min-height:0;
+  width:min(620px,calc(100% - 28px))!important;
+  max-width:620px!important;
   display:grid!important;
-  grid-template-columns:56px 1fr;
+  grid-template-columns:38px 1fr;
   grid-template-areas:"icon copy" "icon actions";
-  column-gap:14px;
-  row-gap:14px;
+  column-gap:10px;
+  row-gap:12px;
   align-items:center;
-  padding:26px 28px 24px;
+  padding:18px 20px 17px;
   border:1px solid rgba(255,255,255,.9);
-  border-radius:32px;
-  background:rgba(255,255,255,.82);
-  backdrop-filter:blur(24px) saturate(135%);
-  -webkit-backdrop-filter:blur(24px) saturate(135%);
-  box-shadow:0 18px 55px rgba(0,80,130,.18),inset 0 1px 0 rgba(255,255,255,.95);
-  z-index:2147483645!important;
+  border-radius:26px;
+  background:rgba(255,255,255,.84);
+  backdrop-filter:blur(20px) saturate(130%);
+  -webkit-backdrop-filter:blur(20px) saturate(130%);
+  box-shadow:0 14px 38px rgba(0,80,130,.16),inset 0 1px 0 rgba(255,255,255,.95);
+  z-index:2147483000!important;
   pointer-events:auto!important;
   touch-action:manipulation!important;
-  -webkit-tap-highlight-color:transparent;
 }
 .healthy-cookie-icon{
   grid-area:icon;
   align-self:start;
   justify-self:center;
-  font-size:48px;
+  font-size:34px;
   line-height:1;
-  filter:drop-shadow(0 4px 6px rgba(0,0,0,.12));
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.1));
 }
 .healthy-cookie-copy{
   grid-area:copy;
   min-width:0;
   display:flex;
   flex-direction:column;
-  gap:4px;
-  color:#333;
+  gap:3px;
 }
 .healthy-cookie-copy strong{
   color:#005082;
-  font-size:23px;
+  font-size:17px;
   line-height:1.2;
   font-weight:700;
 }
 .healthy-cookie-copy span{
   color:#666;
-  font-size:16px;
-  line-height:1.5;
+  font-size:12px;
+  line-height:1.4;
 }
 .healthy-cookie-actions{
   grid-area:actions;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:16px;
+  gap:10px;
   width:100%;
 }
 .healthy-cookie-actions button{
   width:100%;
-  min-height:58px;
+  min-height:46px;
   border:0;
   border-radius:999px;
-  padding:12px 18px;
-  font:700 16px Poppins,sans-serif;
+  padding:9px 12px;
+  font:700 13px Poppins,sans-serif;
   cursor:pointer;
   white-space:nowrap;
   touch-action:manipulation!important;
   pointer-events:auto!important;
-  -webkit-tap-highlight-color:transparent;
 }
 #healthy-cookie-accept{
   background:#005f8f;
   color:#fff;
-  box-shadow:0 8px 18px rgba(0,80,130,.22);
+  box-shadow:0 6px 15px rgba(0,80,130,.2);
 }
 #healthy-cookie-settings{
-  background:rgba(255,255,255,.72);
+  background:rgba(255,255,255,.76);
   color:#005082;
-  border:1px solid rgba(0,80,130,.16);
-  box-shadow:0 2px 10px rgba(0,80,130,.05);
+  border:1px solid rgba(0,80,130,.15);
 }
 @media(max-width:650px){
   .healthy-cookie-banner{
     left:14px!important;
     right:14px!important;
-    bottom:20px!important;
+    bottom:16px!important;
     transform:none!important;
     width:auto!important;
     max-width:none!important;
-    grid-template-columns:48px 1fr;
-    grid-template-areas:"icon copy" "actions actions";
-    column-gap:10px;
-    row-gap:16px;
-    padding:24px 16px 20px;
-    border-radius:30px;
+    grid-template-columns:34px 1fr;
+    column-gap:9px;
+    row-gap:10px;
+    padding:17px 14px 15px;
+    border-radius:24px;
   }
-  .healthy-cookie-icon{
-    font-size:40px;
-    margin-top:2px;
-  }
-  .healthy-cookie-copy strong{
-    font-size:20px;
-    line-height:1.22;
-  }
-  .healthy-cookie-copy span{
-    font-size:14px;
-    line-height:1.48;
-  }
-  .healthy-cookie-actions{
-    gap:12px;
-  }
-  .healthy-cookie-actions button{
-    min-height:56px;
-    padding:10px 8px;
-    font-size:15px;
-  }
+  .healthy-cookie-icon{font-size:30px}
+  .healthy-cookie-copy strong{font-size:16px}
+  .healthy-cookie-copy span{font-size:11.5px;line-height:1.4}
+  .healthy-cookie-actions{gap:8px}
+  .healthy-cookie-actions button{min-height:44px;padding:8px 7px;font-size:12px}
 }
 @media(max-width:390px){
-  .healthy-cookie-banner{
-    left:10px!important;
-    right:10px!important;
-    padding:20px 13px 17px;
-    border-radius:26px;
-    grid-template-columns:42px 1fr;
-  }
-  .healthy-cookie-icon{font-size:34px}
-  .healthy-cookie-copy strong{font-size:18px}
-  .healthy-cookie-copy span{font-size:12.5px}
-  .healthy-cookie-actions{gap:9px}
-  .healthy-cookie-actions button{min-height:52px;font-size:14px}
+  .healthy-cookie-banner{left:10px!important;right:10px!important;padding:15px 12px 13px;border-radius:22px}
+  .healthy-cookie-icon{font-size:28px}
+  .healthy-cookie-copy strong{font-size:15px}
+  .healthy-cookie-copy span{font-size:11px}
+  .healthy-cookie-actions button{min-height:42px;font-size:11.5px}
 }
 </style>
 <script>
@@ -1346,7 +1319,8 @@ var state={drag:false,moved:false,sx:0,sy:0,ox:0,oy:0};
 function el(id){return document.getElementById(id)}
 function inside(node,x,y){if(!node)return false;var r=node.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom}
 function openEvo(){var p=el('evo-panel');if(!p)return;p.classList.add('open');var m=el('evo-msgs');if(m&&!m.children.length){var d=document.createElement('div');d.className='em bot';d.textContent='Merhaba, ben EVO. Size nasıl yardımcı olabilirim?';m.appendChild(d)}}
-function accept(){var b=el('healthy-cookie-banner');try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){}if(b)b.remove()}
+function placeEvo(){var evo=el('evo-fixed'),b=el('healthy-cookie-banner');if(!evo||evo.dataset.dragged==='1')return;if(b&&b.getBoundingClientRect().height>0){var r=b.getBoundingClientRect();evo.style.bottom=Math.max(130,Math.round(innerHeight-r.top+12))+'px';}else{evo.style.bottom='128px';}}
+function accept(){var b=el('healthy-cookie-banner');try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){}if(b)b.remove();var evo=el('evo-fixed');if(evo){evo.style.bottom='128px';evo.dataset.dragged='0';}placeEvo()}
 function settings(){alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.')}
 document.addEventListener('pointerdown',function(e){
  var evo=el('evo-fixed'),a=el('healthy-cookie-accept'),s=el('healthy-cookie-settings');
@@ -1368,7 +1342,7 @@ document.addEventListener('pointermove',function(e){
  if(state.moved){
    var x=Math.max(4,Math.min(innerWidth-evo.offsetWidth-4,state.ox+dx));
    var y=Math.max(4,Math.min(innerHeight-evo.offsetHeight-4,state.oy+dy));
-   evo.style.left=x+'px';evo.style.top=y+'px';evo.style.right='auto';evo.style.bottom='auto';
+   evo.style.left=x+'px';evo.style.top=y+'px';evo.style.right='auto';evo.style.bottom='auto';evo.dataset.dragged='1';
  }
  e.preventDefault();e.stopImmediatePropagation();
 },true);
@@ -1379,6 +1353,7 @@ document.addEventListener('pointerup',function(e){
  if(!state.moved)openEvo();
  e.preventDefault();e.stopImmediatePropagation();
 },true);
+window.addEventListener('resize',placeEvo);window.addEventListener('orientationchange',placeEvo);setTimeout(placeEvo,50);
 document.addEventListener('pointercancel',function(){state.drag=false;var evo=el('evo-fixed');if(evo)evo.classList.remove('evo-dragging')},true);
 document.addEventListener('click',function(e){
  var a=e.target.closest&&e.target.closest('#healthy-cookie-accept'),s=e.target.closest&&e.target.closest('#healthy-cookie-settings'),evo=e.target.closest&&e.target.closest('#evo-fixed');
