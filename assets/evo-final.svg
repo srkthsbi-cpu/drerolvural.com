@@ -1,0 +1,95 @@
+<svg class="evo-svg evo-final" viewBox="0 0 560 450" role="img" aria-label="EVO sağlık asistanı" xmlns="http://www.w3.org/2000/svg">
+<style>
+.evo-brow{transform-box:fill-box;transform-origin:center;animation:evoBrow 5.7s ease-in-out infinite}
+.evo-eye{transform-box:fill-box;transform-origin:center;animation:evoBlink 6.2s ease-in-out infinite}
+.evo-eye.r{animation-delay:.18s}
+.evo-pupil{transform-box:fill-box;transform-origin:center;transition:transform .28s ease}
+.evo-mouth{transform-box:fill-box;transform-origin:center;animation:evoSmile 5s ease-in-out infinite}
+.evo-halo{animation:evoHalo 3.4s ease-in-out infinite}
+.is-attention .evo-pupil{transform:translateY(-4px) scale(1.04)}
+.is-thinking .evo-pupil{transform:translate(10px,-6px)}
+.is-talking .evo-mouth{animation:evoTalk .24s ease-in-out infinite alternate}
+.evo-face-code{isolation:isolate}
+.evo-eye,.evo-brow,.evo-mouth{will-change:transform}
+.is-happy .evo-mouth{animation:evoHappy .65s ease-in-out 2}
+.is-surprised .evo-eye{animation:evoSurprise .7s ease-in-out}
+.is-serious .evo-brow{animation:evoSerious .7s ease-in-out}
+@keyframes evoHappy{0%,100%{transform:scaleX(1)}50%{transform:scaleX(1.16) translateY(-1px)}}
+@keyframes evoSurprise{50%{transform:scale(1.08)}}
+@keyframes evoSerious{50%{transform:translateY(4px) scaleX(.94)}}
+@keyframes evoBlink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.06)}}
+@keyframes evoBrow{0%,72%,100%{transform:translateY(0)}76%{transform:translateY(-7px)}80%{transform:translateY(1px)}}
+@keyframes evoSmile{0%,100%{transform:scaleX(1)}50%{transform:scaleX(1.08)}}
+@keyframes evoTalk{from{transform:scaleY(.72)}to{transform:scaleY(1.22)}}
+@keyframes evoHalo{0%,100%{opacity:.68}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.evo-svg *{animation:none!important;transition:none!important}}
+</style>
+<defs>
+ <linearGradient id="evoShell" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".58" stop-color="#f4fbfd"/><stop offset="1" stop-color="#d8f1f5"/></linearGradient>
+ <linearGradient id="evoScreen" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#061522"/><stop offset="1" stop-color="#071f2d"/></linearGradient>
+ <radialGradient id="evoEye" cx=".48" cy=".42"><stop stop-color="#ffffff"/><stop offset=".34" stop-color="#b9fff0"/><stop offset=".72" stop-color="#4cf1c7"/><stop offset="1" stop-color="#18c989"/></radialGradient>
+ <linearGradient id="evoEar" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#00d9ff"/><stop offset=".55" stop-color="#008db1"/><stop offset="1" stop-color="#005a79"/></linearGradient>
+ <filter id="evoShadow" x="-25%" y="-25%" width="150%" height="170%"><feDropShadow dx="0" dy="16" stdDeviation="15" flood-color="#005082" flood-opacity=".23"/></filter>
+ <filter id="evoGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<g class="evo-halo" filter="url(#evoGlow)">
+ <ellipse cx="280" cy="220" rx="258" ry="201" fill="none" stroke="#79ecff" stroke-width="4" opacity=".42"/>
+ <ellipse cx="280" cy="222" rx="270" ry="208" fill="none" stroke="#b6f7ff" stroke-width="2" opacity=".6"/>
+</g>
+
+<g filter="url(#evoShadow)">
+ <!-- EVO base + face are one self-contained SVG; no external image layers -->
+ <!-- ears -->
+ <g>
+  <ellipse cx="62" cy="251" rx="45" ry="76" fill="url(#evoEar)"/>
+  <ellipse cx="62" cy="251" rx="34" ry="63" fill="#0b6f8c"/>
+  <ellipse cx="62" cy="251" rx="22" ry="43" fill="#26e2bd"/>
+  <ellipse cx="498" cy="251" rx="45" ry="76" fill="url(#evoEar)"/>
+  <ellipse cx="498" cy="251" rx="34" ry="63" fill="#0b6f8c"/>
+  <ellipse cx="498" cy="251" rx="22" ry="43" fill="#26e2bd"/>
+ </g>
+
+ <!-- white head -->
+ <path d="M106 135C118 73 179 39 278 38C380 37 441 70 456 128L487 287C497 345 454 390 396 402C327 416 232 416 161 402C103 391 62 346 73 287Z"
+       fill="url(#evoShell)" stroke="#fff" stroke-width="7"/>
+ <path d="M128 92C174 57 237 50 298 53" fill="none" stroke="#fff" stroke-width="13" stroke-linecap="round" opacity=".76"/>
+ <path d="M347 60C387 68 416 88 436 115" fill="none" stroke="#d8f3f8" stroke-width="7" stroke-linecap="round"/>
+ <path d="M199 62C221 49 246 43 270 42" fill="none" stroke="#008db1" stroke-width="11" stroke-linecap="round"/>
+ <path d="M203 57C220 48 238 44 255 43" fill="none" stroke="#54d6ee" stroke-width="4" stroke-linecap="round"/>
+
+ <!-- forehead logo -->
+ <g transform="translate(280 107)">
+   <path d="M-7 21C-45 16-60-10-45-35C-23-30-7-12-7 21Z" fill="#83bf16"/>
+   <path d="M-1 25C13-5 32-26 52-29C60-2 40 23-1 25Z" fill="#0497b6"/>
+   <path d="M-6 23C3 13 11 2 18-8" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+ </g>
+
+ <!-- face screen -->
+ <path d="M112 178C123 145 151 127 188 124H372C410 127 438 146 448 179L470 286C477 323 451 350 418 358H142C107 349 84 322 90 285Z"
+       fill="url(#evoScreen)" stroke="#fff" stroke-width="7"/>
+ <path d="M125 169C181 139 360 139 427 169" fill="none" stroke="#fff" stroke-width="5" opacity=".1"/>
+
+ <!-- CODE-DRAWN EXPRESSIVE BROWS -->
+ <path class="evo-brow" d="M164 211Q201 184 234 208" fill="none" stroke="#62ead7" stroke-width="11" stroke-linecap="round"/>
+ <path class="evo-brow" d="M326 208Q359 184 396 211" fill="none" stroke="#62ead7" stroke-width="11" stroke-linecap="round"/>
+
+ <!-- CODE-DRAWN EXPRESSIVE EYES -->
+ <g class="evo-eye l">
+   <ellipse cx="205" cy="266" rx="58" ry="64" fill="url(#evoEye)" stroke="#67fff0" stroke-width="4"/>
+   <ellipse class="evo-pupil" cx="209" cy="269" rx="28" ry="36" fill="#04131b"/>
+   <circle cx="226" cy="244" r="10" fill="#fff"/>
+   <circle cx="197" cy="287" r="5" fill="#fff" opacity=".92"/>
+ </g>
+ <g class="evo-eye r">
+   <ellipse cx="355" cy="266" rx="58" ry="64" fill="url(#evoEye)" stroke="#67fff0" stroke-width="4"/>
+   <ellipse class="evo-pupil" cx="359" cy="269" rx="28" ry="36" fill="#04131b"/>
+   <circle cx="376" cy="244" r="10" fill="#fff"/>
+   <circle cx="347" cy="287" r="5" fill="#fff" opacity=".92"/>
+ </g>
+
+ <!-- CODE-DRAWN EXPRESSIVE MOUTH -->
+ <path class="evo-mouth" d="M252 310Q280 339 308 310" fill="none" stroke="#65f3e4" stroke-width="13" stroke-linecap="round"/>
+ <path d="M240 309Q280 355 320 309" fill="none" stroke="#0bd7c5" stroke-width="3" stroke-linecap="round" opacity=".2"/>
+</g>
+</svg>
