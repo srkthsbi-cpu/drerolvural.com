@@ -3276,6 +3276,28 @@ function legacyNotFoundResponse(request, reason = 'legacy-url-not-found') {
   return new Response(null, { status: 404, headers: h });
 }
 
+
+async function renderServerBlogArticle(request, env, slug) {
+  const langs = ['tr','en','de','ar','ru','az','sq','nl','es'];
+  const url = new URL(request.url);
+  const requestedLang = (url.searchParams.get('lang') || 'tr').toLowerCase();
+  const lang = langs.includes(requestedLang) ? requestedLang : 'tr';
+  const dataResponse = await env.ASSETS.fetch(new Request(new URL('/data/blogs.json', request.url), request));
+  if (!dataResponse.ok) return null;
+  let posts; try { posts = await dataResponse.json(); } catch (_) { return null; }
+  const post = Array.isArray(posts) ? posts.find(p => p && (String(p.id || '') === slug || Object.values(p.slug || {}).some(v => String(v) === slug))) : null;
+  if (!post || !post.title?.[lang] || !post.content?.[lang]) return null;
+  const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const title=post.title[lang], description=post.description?.[lang]||'', category=post.category?.[lang]||post.category?.tr||'';
+  const canonicalSlug=post.slug?.[lang]||post.slug?.tr||slug;
+  const canonical=new URL('/blog/'+encodeURIComponent(canonicalSlug).replace(/%2F/g,'/'),request.url);
+  if(lang!=='tr') canonical.searchParams.set('lang',lang);
+  const dir=lang==='ar'?'rtl':'ltr';
+  const back={tr:'Uzmanından Bilgiler',en:'Expert Insights',de:'Fachinformationen',ar:'معلومات الخبير',ru:'Экспертные материалы',az:'Mütəxəssis məlumatları',sq:'Informacion nga eksperti',nl:'Expertinformatie',es:'Información del experto'}[lang];
+  const html='<!doctype html><html lang="'+esc(lang)+'" dir="'+dir+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="description" content="'+esc(post.meta_description?.[lang]||description)+'"><link rel="canonical" href="'+esc(canonical.href)+'"><title>'+esc(post.meta_title?.[lang]||title)+'</title><link rel="icon" href="/favicon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>:root{--b:#005082;--t:#009bb4;--bg:#f7fbfc;--muted:#62676d;--line:#dcebf0}*{box-sizing:border-box}html,body{margin:0;padding:0;max-width:100%;overflow-x:hidden}body{font-family:Poppins,sans-serif;color:#30343a;line-height:1.8;background:#fff}header{position:sticky;top:0;background:#fff;box-shadow:0 2px 12px #0001;z-index:10;padding:10px 5%;display:flex;justify-content:space-between;align-items:center}header img{max-height:62px;max-width:230px}.back{color:#fff;background:var(--t);padding:9px 16px;border-radius:24px;font-weight:600;text-decoration:none}main{max-width:900px;margin:0 auto;padding:55px 5% 70px}.crumbs{font-size:13px;color:#718086;margin-bottom:18px}.crumbs a{color:var(--t)}.badge{display:inline-block;background:#eaf5f7;color:var(--b);padding:5px 12px;border-radius:15px;font-size:12px;font-weight:700}h1{font-size:clamp(30px,5vw,48px);line-height:1.2;color:var(--b);margin:15px 0}.lead{font-size:19px;color:#596168;margin:0 0 22px}.meta{font-size:13px;color:#7b858b;padding-bottom:25px;border-bottom:1px solid var(--line)}.article-content{font-size:17px;margin-top:35px}.article-content h2{color:var(--b);font-size:27px;line-height:1.3;margin:38px 0 12px}.article-content p{margin:0 0 20px}.article-content ul{padding-left:22px;margin:12px 0 24px}.article-content li{margin:8px 0}.author-box{margin-top:45px;background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:25px}.author-box strong{display:block;color:var(--b);font-size:19px}.author-box p{margin:7px 0 0;color:var(--muted)}.disclaimer{margin-top:25px;font-size:13px;color:#697177;background:#fffdf4;border:1px solid #efe2ad;border-radius:12px;padding:15px}footer{background:var(--b);color:#fff;text-align:center;padding:40px 20px}footer img{max-height:65px;max-width:100%;filter:brightness(0) invert(1);margin-bottom:12px}.whatsapp{position:fixed;right:25px;bottom:25px;width:60px;height:60px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:34px;z-index:1001;text-decoration:none}@media(max-width:700px){header{padding:9px 4%}header img{max-width:185px}.back{font-size:13px}.article-content{font-size:16px}main{padding-top:35px}}</style></head><body><header><a href="/"><img src="/logo1.png" alt="Doç. Dr. Erol Vural"></a><a class="back" href="/blog">'+esc(back)+'</a></header><main><div class="crumbs"><a href="/">Anasayfa</a> / <a href="/blog">'+esc(back)+'</a> / '+esc(title)+'</div><span class="badge">'+esc(category||'Bilgilendirici İçerik')+'</span><h1>'+esc(title)+'</h1>'+(description?'<p class="lead">'+esc(description)+'</p>':'')+'<div class="meta">Doç. Dr. Erol Vural · Bilgilendirme içeriği</div><article class="article-content">'+String(post.content[lang])+'</article><div class="author-box"><strong>Doç. Dr. Erol Vural</strong><p>Metabolik ve bariatrik cerrahi alanında bilgilendirme içerikleri. <a href="/hakkimizda.html">Hakkımda</a> sayfasından daha fazla bilgiye ulaşabilirsiniz.</p></div><div class="disclaimer"><strong>Tıbbi bilgilendirme:</strong> Bu içerik genel bilgilendirme amacıyla hazırlanmıştır; muayene, tanı veya kişiye özel tedavi önerisinin yerine geçmez. Sağlıkla ilgili kararlar için hekim değerlendirmesi gerekir.</div></main><footer><a href="/"><img src="/logo2.png" alt="Doç. Dr. Erol Vural"></a><p>© 2026 Doç. Dr. Erol VURAL | Metabolik ve Bariatrik Cerrahi. Tüm hakları saklıdır.</p></footer><a aria-label="WhatsApp" class="whatsapp" href="https://wa.me/905414569367" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a></body></html>';
+  return new Response(html,{status:200,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store, max-age=0, must-revalidate','X-Content-Type-Options':'nosniff'}});
+}
+
 export default {
 
   async fetch(
@@ -3492,34 +3514,17 @@ export default {
        with the slug while keeping the clean browser URL.
        ===================================================== */
     if (url.pathname.startsWith('/blog/') && url.pathname !== '/blog/') {
-      const slug = url.pathname.slice('/blog/'.length).replace(/\/$/, '');
+      const slug = cleanPathname.slice('/blog/'.length);
       if (slug && !slug.includes('.')) {
-        const articleUrl = new URL('/blog-post.html', request.url);
-        articleUrl.searchParams.set('slug', slug);
-        if (url.searchParams.has('lang')) {
-          articleUrl.searchParams.set('lang', url.searchParams.get('lang') || '');
-        }
-        const articleResponse = await env.ASSETS.fetch(new Request(articleUrl, request));
-        const articleType = (articleResponse.headers.get('content-type') || '').toLowerCase();
-        if (articleResponse.ok && articleType.includes('text/html')) {
-          const articleHeaders = new Headers(articleResponse.headers);
-          articleHeaders.set('Content-Type', 'text/html; charset=utf-8');
-          articleHeaders.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
-          articleHeaders.delete('Content-Disposition');
-          articleHeaders.delete('Content-Length');
-          response = new Response(articleResponse.body, {
-            status: 200,
-            headers: articleHeaders
-          });
-        } else {
-          const notFoundUrl = new URL('/404.html', request.url);
-          const notFound = await env.ASSETS.fetch(new Request(notFoundUrl, request));
-          const h = new Headers(notFound.headers);
-          h.set('X-Robots-Tag', 'noindex, nofollow');
-          h.set('Cache-Control', 'no-store, max-age=0');
-          h.delete('Content-Disposition');
-          return enhanceHtmlResponse(new Response(notFound.body, { status: 404, headers: h }));
-        }
+        const serverArticle = await renderServerBlogArticle(request, env, slug);
+        if (serverArticle) return serverArticle;
+        const notFoundUrl = new URL('/404.html', request.url);
+        const notFound = await env.ASSETS.fetch(new Request(notFoundUrl, request));
+        const h = new Headers(notFound.headers);
+        h.set('X-Robots-Tag', 'noindex, nofollow');
+        h.set('Cache-Control', 'no-store, max-age=0');
+        h.delete('Content-Disposition');
+        return enhanceHtmlResponse(new Response(notFound.body, { status: 404, headers: h }));
       }
     }
 
