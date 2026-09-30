@@ -322,6 +322,7 @@
       nav.style.setProperty('z-index', String(Number(menuZ) + 1), 'important');
       if (evoRoot) evoRoot.style.setProperty('z-index', '1999999999', 'important');
       if (evoPanel) evoPanel.style.setProperty('z-index', '1999999999', 'important');
+      if (window.__bringLayer) window.__bringLayer('menu');
     } else {
       nav.classList.remove('active');
       nav.classList.remove('mobile-menu-portal');
