@@ -990,8 +990,8 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
     <span>Merak etmeyin, burada çerezlerden çok <b>havuçları</b> seviyoruz. 🥕 Sitenin daha iyi çalışması için çerezleri kabul edebilirsiniz.</span>
   </div>
   <div class="healthy-cookie-actions">
-    <button type="button" id="healthy-cookie-accept">Çerezleri Kabul Et</button>
-    <button type="button" id="healthy-cookie-settings">Ayarlar</button>
+    <button type="button" id="healthy-cookie-accept" onclick="window.__acceptSiteCookies&&window.__acceptSiteCookies(event)">Çerezleri Kabul Et</button>
+    <button type="button" id="healthy-cookie-settings" onclick="window.__openCookieSettings&&window.__openCookieSettings(event)">Ayarlar</button>
   </div>
 </aside>
 <style>
@@ -1226,6 +1226,8 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
     }
     var t=p.querySelector('textarea');if(t){try{t.focus({preventScroll:true})}catch(e){t.focus()}}
   }
+  window.__acceptSiteCookies=function(e){if(e){e.preventDefault();e.stopPropagation();}var b=document.getElementById('healthy-cookie-banner');try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(x){}if(b){b.hidden=true;b.style.display='none';b.remove();}};
+  window.__openCookieSettings=function(e){if(e){e.preventDefault();e.stopPropagation();}alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');};
   function closeCookie(){
     var b=document.getElementById('healthy-cookie-banner');
     if(b){try{localStorage.setItem('healthy_cookie_choice','accepted')}catch(e){} b.hidden=true;b.style.display='none';b.remove();}
@@ -1288,7 +1290,6 @@ f.addEventListener('submit',e=>{e.preventDefault();calculate()});apply();new Mut
     if(s){e.preventDefault();e.stopPropagation();alert('Bu sitede zorunlu çerezler sitenin çalışması için kullanılır. Tarayıcınızın çerez ayarlarından tercihlerinizi yönetebilirsiniz.');}
   },true);
 })();
-</script>
 </script>
 </body>
 </html>
