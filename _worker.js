@@ -54,6 +54,59 @@ async function handleAdmin(context) {
       .replace(/'/g, '&#39;');
   }
 
+  async function getGmailAccessToken(env) {
+    if (!env.GMAIL_CLIENT_ID || !env.GMAIL_CLIENT_SECRET || !env.GMAIL_REFRESH_TOKEN) {
+      throw new Error('Gmail OAuth secrets are not configured.');
+    }
+
+    const response = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        client_id: env.GMAIL_CLIENT_ID,
+        client_secret: env.GMAIL_CLIENT_SECRET,
+        refresh_token: env.GMAIL_REFRESH_TOKEN,
+        grant_type: 'refresh_token'
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.access_token) {
+      throw new Error(
+        'Gmail access token refresh failed: ' +
+        JSON.stringify(data)
+      );
+    }
+
+    return data.access_token;
+  }
+
+  function base64UrlUtf8(value) {
+    const bytes = new TextEncoder().encode(value);
+    let binary = '';
+    const chunkSize = 0x8000;
+
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      binary += String.fromCharCode(
+        ...bytes.subarray(i, i + chunkSize)
+      );
+    }
+
+    return btoa(binary)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+  }
+
+  function mimeSubject(value) {
+    return '=?UTF-8?B?' +
+      btoa(unescape(encodeURIComponent(value))) +
+      '?=';
+  }
+
   async function sha256(text) {
     return b64(
       await crypto.subtle.digest(
@@ -865,34 +918,59 @@ async function handleAdmin(context) {
           )
           .run();
 
-        /* E-MAIL NOTIFICATION — Resend */
-        if (env.RESEND_API_KEY) {
+        /* E-MAIL NOTIFICATION — Gmail API */
+        if (
+          env.GMAIL_CLIENT_ID &&
+          env.GMAIL_CLIENT_SECRET &&
+          env.GMAIL_REFRESH_TOKEN
+        ) {
           try {
-            const emailResponse = await fetch('https://api.resend.com/emails', {
-              method: 'POST',
-              headers: {
-                'Authorization': 'Bearer ' + env.RESEND_API_KEY,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                from: env.RESEND_FROM_EMAIL || 'Erol Vural Web Sitesi <onboarding@resend.dev>',
-                to: ['srkthsbi@gmail.com'],
-                subject: 'Yeni İletişim Formu — ' + name,
-                html:
-                  '<h2>Yeni iletişim formu</h2>' +
-                  '<p><strong>Ad Soyad:</strong> ' + escapeHtml(name) + '</p>' +
-                  '<p><strong>Telefon:</strong> ' + escapeHtml(phone) + '</p>' +
-                  '<p><strong>Mesaj:</strong></p>' +
-                  '<p style="white-space:pre-wrap">' + escapeHtml(message) + '</p>' +
-                  '<hr><p><strong>Tarih:</strong> ' + escapeHtml(createdAt) + '</p>'
-              })
-            });
+            const accessToken = await getGmailAccessToken(env);
+            const to = env.GMAIL_TO_EMAIL || 'srkthsbi@gmail.com';
+            const subject = 'Yeni İletişim Formu — ' + name;
+            const html =
+              '<h2>Yeni iletişim formu</h2>' +
+              '<p><strong>Ad Soyad:</strong> ' + escapeHtml(name) + '</p>' +
+              '<p><strong>Telefon:</strong> ' + escapeHtml(phone) + '</p>' +
+              '<p><strong>Mesaj:</strong></p>' +
+              '<p style="white-space:pre-wrap">' + escapeHtml(message) + '</p>' +
+              '<hr><p><strong>Tarih:</strong> ' + escapeHtml(createdAt) + '</p>';
+
+            const mimeMessage = [
+              'To: ' + to,
+              'Subject: ' + mimeSubject(subject),
+              'MIME-Version: 1.0',
+              'Content-Type: text/html; charset=UTF-8',
+              'Content-Transfer-Encoding: 8bit',
+              '',
+              html
+            ].join('\r\n');
+
+            const emailResponse = await fetch(
+              'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
+              {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + accessToken,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  raw: base64UrlUtf8(mimeMessage)
+                })
+              }
+            );
 
             if (!emailResponse.ok) {
-              console.error('Contact email failed:', await emailResponse.text());
+              console.error(
+                'Gmail notification failed:',
+                await emailResponse.text()
+              );
             }
           } catch (mailError) {
-            console.error('Contact email exception:', mailError);
+            console.error(
+              'Gmail notification exception:',
+              mailError
+            );
           }
         }
 
