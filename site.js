@@ -282,10 +282,8 @@
     if (!form || form.dataset.bound === '1') return;
     form.dataset.bound = '1';
 
-    // FormSubmit AJAX: kullanıcıyı formsubmit.co sayfasına göndermeden
-    // aynı sayfada gönderimi tamamlar. FormSubmit AJAX uç noktası cross-origin
-    // kullanımı destekler.
-    form.setAttribute('action','https://formsubmit.co/ajax/srkthsbi@gmail.com');
+    // First-party contact API: FormSubmit tamamen kaldırıldı.
+    form.setAttribute('action','/api/contact');
     if(!form.dataset.ajaxBound){
       form.dataset.ajaxBound='1';
       form.addEventListener('submit',async function(event){
@@ -296,18 +294,20 @@
         const original=btn ? btn.innerHTML : '';
         if(btn){btn.disabled=true;btn.innerHTML='Gönderiliyor…';}
         try{
-          const data=new URLSearchParams();
+          const payload={};
           new FormData(form).forEach((value,key)=>{
-            if(typeof value==='string') data.append(key,value);
+            if(typeof value==='string') payload[key]=value;
           });
-          const response=await fetch('https://formsubmit.co/ajax/srkthsbi@gmail.com',{
+          const response=await fetch('/api/contact',{
             method:'POST',
-            headers:{'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-            body:data.toString()
+            headers:{'Content-Type':'application/json','Accept':'application/json'},
+            body:JSON.stringify(payload),
+            credentials:'same-origin',
+            cache:'no-store'
           });
           const result=await response.json().catch(()=>null);
-          if(!response.ok || !result || result.success!==true){
-            throw new Error((result&&result.message)||'FormSubmit gönderimi başarısız.');
+          if(!response.ok || !result || result.ok!==true){
+            throw new Error((result&&result.error)||'Mesaj gönderilemedi.');
           }
           form.reset();
           form.style.display='none';
@@ -341,7 +341,7 @@
       next.name = '_next';
       form.appendChild(next);
     }
-    next.value = location.origin + '/iletisim?contact=sent';
+    next.value = location.origin + '/iletisim';
   }
 
   document.addEventListener('click', event => {
