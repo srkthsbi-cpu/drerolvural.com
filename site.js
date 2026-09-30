@@ -1,5 +1,5 @@
 /* Erol Vural - ortak site motoru
-   9 dil + kalıcı dil seçimi + banner slider + mobil menü + form yardımcıları
+   10 dil + kalıcı dil seçimi + banner slider + mobil menü + form yardımcıları
 */
 (() => {
   'use strict';
