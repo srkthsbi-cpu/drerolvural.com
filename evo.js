@@ -41,28 +41,25 @@ function renderChat(){
   else addMsg('Merhaba, ben EVO. Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?','bot',false);
 }
 function setEvoState(state){
-  if(!layered)return;
-  if(root)root.dataset.evoState=state||'idle';
+  state=state||'idle';
+  if(root)root.dataset.evoState=state;
+  if(face){
+    face.setAttribute('class','evo-svg evo-fallback is-'+state);
+  }
 }
 function buildLayeredCharacter(){
   if(!root)return;
-  var wrap=document.createElement('div');
-  wrap.className='evo-layered';
-  wrap.innerHTML='<img class="evo-layer evo-base" src="/assets/evo_head_base_clean.png" alt=""><img class="evo-layer evo-screen" src="/assets/evo_face_screen.png" alt=""><img class="evo-layer evo-logo" src="/assets/evo_forehead_logo.png" alt=""><img class="evo-layer evo-eyes" data-evo-layer="eyes-normal" src="/assets/evo_eyes.png" alt=""><img class="evo-layer evo-brows" data-evo-layer="brows-normal" src="/assets/evo_brows.png" alt=""><img class="evo-layer evo-mouth" data-evo-layer="mouth-normal" src="/assets/evo_mouth.png" alt="">';
+  // The previous multi-layer stack was visually wrong because several extracted
+  // assets still contained overlapping face/logo pixels. Use the original,
+  // self-contained SVG character until genuinely isolated layers are available.
   var fallback=document.createElement('img');
   fallback.className='evo-svg evo-fallback';
   fallback.src='/assets/evo-character.svg';
   fallback.alt='EVO sağlık asistanı';
-  wrap.appendChild(fallback);
-  root.appendChild(wrap);
-  layerEls={
-    eyes:{normal:wrap.querySelector('[data-evo-layer="eyes-normal"]')},
-    brows:{normal:wrap.querySelector('[data-evo-layer="brows-normal"]')},
-    mouth:{normal:wrap.querySelector('[data-evo-layer="mouth-normal"]')}
-  };
-  var assetEls=[].slice.call(wrap.querySelectorAll('.evo-layer'));
-  var ready=0;
-  assetEls.forEach(function(img){img.addEventListener('load',function(){ready++;if(ready===assetEls.length){layered=true;fallback.style.display='none';setEvoState('idle')}});img.addEventListener('error',function(){img.style.display='none'})});
+  root.appendChild(fallback);
+  face=fallback;
+  layered=true;
+  setEvoState('idle');
 }
 function showEvoHearts(){
   if(!root||root.classList.contains('evo-off'))return;
@@ -211,29 +208,13 @@ function appendStyles(){
 #evo-fixed.evo-returning{animation:none!important;transition:left .68s cubic-bezier(.22,.61,.36,1),top .68s cubic-bezier(.22,.61,.36,1),right .68s cubic-bezier(.22,.61,.36,1),bottom .68s cubic-bezier(.22,.61,.36,1);will-change:left,top,right,bottom}
 #evo-fixed.evo-off{display:none}
 #evo-fixed .evo-svg{width:118px;height:100px;display:block;pointer-events:none}
-#evo-fixed .evo-layered{position:relative;width:118px;height:100px;display:block;pointer-events:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16))}
-#evo-fixed .evo-layer{position:absolute;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
-#evo-fixed .evo-base{left:0;top:0;width:100%;height:100%;object-fit:contain}
-#evo-fixed .evo-screen{left:18.6%;top:32.3%;width:62.2%;height:55.2%}
-#evo-fixed .evo-logo{left:39.7%;top:12.4%;width:20.4%;height:28.5%}
-#evo-fixed .evo-eyes{left:25.6%;top:47.9%;width:47%;height:auto}
-#evo-fixed .evo-brows{left:28.3%;top:42.9%;width:41.8%;height:auto}
-#evo-fixed .evo-mouth{left:40.9%;top:69.1%;width:17.3%;height:auto}
-#evo-fixed .evo-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-#evo-fixed[data-evo-state="blink"] .evo-eyes{transform:scaleY(.18);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="happy"] .evo-eyes{transform:scale(1.03);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="happy"] .evo-brows{transform:translateY(-1px)}
-#evo-fixed[data-evo-state="happy"] .evo-mouth{transform:scale(1.08,.92);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="surprised"] .evo-eyes{transform:scale(1.12);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="surprised"] .evo-brows{transform:translateY(-3px) scale(1.05);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="surprised"] .evo-mouth{transform:scale(.78,1.22);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="thinking"] .evo-brows{transform:translateY(-1px) rotate(-4deg);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="serious"] .evo-brows{transform:translateY(2px) scaleY(.88);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="serious"] .evo-mouth{transform:translateY(1px) scaleY(.82);transform-origin:50% 50%}
-#evo-fixed[data-evo-state="thinking"] .evo-layered{animation:evoThink 1.6s ease-in-out infinite}
-#evo-fixed[data-evo-state="talking"] .evo-mouth{animation:evoMouthTalk .24s ease-in-out infinite alternate}
-@keyframes evoThink{0%,100%{transform:translateX(0)}50%{transform:translateX(2px) rotate(.8deg)}}
-@keyframes evoMouthTalk{from{transform:scaleY(.82)}to{transform:scaleY(1.05)}}
+#evo-fixed .evo-svg{width:118px;height:100px;display:block;pointer-events:none;filter:drop-shadow(0 10px 18px rgba(0,110,160,.16))}
+#evo-fixed .evo-fallback{position:absolute;inset:0;width:118px;height:100px;object-fit:contain}
+#evo-fixed[data-evo-state="thinking"] .evo-fallback{animation:evoThink .9s ease-in-out infinite}
+#evo-fixed[data-evo-state="talking"] .evo-fallback{animation:evoTalk .24s ease-in-out infinite alternate}
+#evo-fixed[data-evo-state="happy"] .evo-fallback{transform:scale(1.035)}
+@keyframes evoThink{0%,100%{transform:translateX(0) rotate(0)}50%{transform:translateX(2px) rotate(1deg)}}
+@keyframes evoTalk{from{transform:translateY(0)}to{transform:translateY(-1.5px)}}
 #evo-fixed .label{position:absolute;right:2px;top:-34px;background:rgba(255,255,255,.96);padding:6px 10px;border-radius:999px;color:#005082;font:600 10px Poppins,sans-serif;white-space:nowrap;box-shadow:0 6px 20px rgba(0,80,130,.16);pointer-events:none}
 .evo-heart{position:absolute;left:50%;top:15%;font-size:20px;line-height:1;pointer-events:none;z-index:4;opacity:0;animation:evoHeartFloat 1.45s cubic-bezier(.18,.72,.28,1) forwards;filter:drop-shadow(0 4px 8px rgba(220,50,100,.22))}
 @keyframes evoHeartFloat{0%{opacity:0;transform:translate(-50%,8px) scale(.35) rotate(-10deg)}12%{opacity:1;transform:translate(-50%,0) scale(1.05) rotate(0)}100%{opacity:0;transform:translate(calc(-50% + var(--heart-x)), -78px) scale(.78) rotate(var(--heart-r))}}
@@ -257,7 +238,7 @@ function appendStyles(){
 #evo-panel textarea{flex:1;min-width:0;border:1px solid #cfe1e5;border-radius:14px;padding:10px;resize:none;font:16px/1.35 Poppins,sans-serif;-webkit-text-size-adjust:100%;touch-action:manipulation;outline:none;box-sizing:border-box;max-height:120px}
 #evo-panel .send{width:42px;border:0;border-radius:14px;background:#005082;color:#fff;cursor:pointer}
 #evo-hide{margin:0 10px 5px;border:0;background:transparent;color:#557;font:10px Poppins;cursor:pointer}
-@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:10px;bottom:128px;width:104px;height:88px}#evo-fixed .evo-svg{width:104px;height:88px}#evo-fixed .label{top:-30px;right:0;padding:5px 8px;font-size:9px}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
+@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:10px;bottom:128px;width:104px;height:88px}#evo-fixed .evo-svg{width:104px;height:88px}.evo-label-placeholder{}#evo-fixed .label{top:-30px;right:0;padding:5px 8px;font-size:9px}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
 `;
   document.head.appendChild(s);
 }
