@@ -18,6 +18,59 @@
   ];
   const SUPPORTED = new Set(LANGS.map(x => x.code));
   const DEFAULT_LANG = 'tr';
+
+  // Floating UI layer manager: the last clicked interactive surface stays on top.
+  // This is intentionally language-independent and works on every localized page.
+  function bindLayerPriority() {
+    if (document.documentElement.dataset.layerPriorityBound === '1') return;
+    document.documentElement.dataset.layerPriorityBound = '1';
+    const HEADER_Z = '2147483645';
+    const EVO_Z = '2147483647';
+    const BASE_HEADER_Z = '1000';
+    const BASE_EVO_Z = '2147483646';
+    const header = () => document.querySelector('header');
+    const evo = () => ({ root: document.getElementById('evo-fixed'), panel: document.getElementById('evo-panel') });
+
+    function bringHeaderToFront() {
+      const h = header();
+      if (h) h.style.setProperty('z-index', HEADER_Z, 'important');
+      const { root, panel } = evo();
+      if (root) root.style.setProperty('z-index', BASE_EVO_Z, 'important');
+      if (panel) panel.style.setProperty('z-index', BASE_EVO_Z, 'important');
+    }
+
+    function bringEvoToFront() {
+      const h = header();
+      if (h) h.style.setProperty('z-index', BASE_HEADER_Z, 'important');
+      const { root, panel } = evo();
+      if (root) root.style.setProperty('z-index', EVO_Z, 'important');
+      if (panel) panel.style.setProperty('z-index', EVO_Z, 'important');
+    }
+
+    document.addEventListener('pointerdown', event => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+      if (target.closest('#evo-fixed, #evo-panel')) {
+        bringEvoToFront();
+      } else if (target.closest('header, #navMenu, .lang-content')) {
+        bringHeaderToFront();
+      }
+    }, true);
+
+    // EVO can be created after site.js has loaded; keep its default layer correct.
+    const observer = new MutationObserver(() => {
+      const { root, panel } = evo();
+      if (root && !root.dataset.layerManaged) {
+        root.dataset.layerManaged = '1';
+        root.style.setProperty('z-index', BASE_EVO_Z, 'important');
+      }
+      if (panel && !panel.dataset.layerManaged) {
+        panel.dataset.layerManaged = '1';
+        panel.style.setProperty('z-index', BASE_EVO_Z, 'important');
+      }
+    });
+    observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
+  }
   const RUNTIME_I18N = {
     fr: {
       "menu.press":"Dans la presse",
@@ -153,6 +206,8 @@
     if (window.renderBlogCards) window.renderBlogCards(currentLang, translations);
     if (window.renderBlogPost) window.renderBlogPost(currentLang, translations);
   }
+
+  bindLayerPriority();
 
   function renderLanguageMenu() {
     const menu = document.getElementById('langMenuContent') || document.getElementById('lm');
