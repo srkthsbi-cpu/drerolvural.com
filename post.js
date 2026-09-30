@@ -17,9 +17,9 @@
   const normalize = l => LANGS.includes(String(l||'').toLowerCase()) ? String(l).toLowerCase() : 'tr';
   const getLang = () => normalize(new URLSearchParams(location.search).get('lang') || (typeof window.siteLanguage==='function' ? window.siteLanguage() : localStorage.getItem('siteLanguage') || document.documentElement.lang || 'tr'));
   async function readJSON(url){ const r=await fetch(url,{cache:'no-store',headers:{Accept:'application/json'}}); if(!r.ok) throw new Error(`HTTP ${r.status}`); const text=await r.text(); try{return JSON.parse(text);}catch(e){throw new Error(`Invalid JSON from ${url}`);} }
-  function siteBase(){ const script=Array.from(document.scripts).find(s=>/(?:^|\/)site\.js(?:\?|$)/.test(s.src)); return script?new URL('./',script.src):new URL('./',document.baseURI); }
-  function assetUrl(path){ return new URL(String(path).replace(/^\//,''),siteBase()).href; }
-  function apiUrl(path){ return new URL(String(path).replace(/^\//,''),siteBase()).href; }
+  function rootUrl(path){ return new URL(String(path).replace(/^\//,''), location.origin + '/').href; }
+  function assetUrl(path){ return rootUrl(path); }
+  function apiUrl(path){ return rootUrl(path); }
   async function loadPost(slug){
     const candidates=[slug, decodeURIComponent(slug||'')].filter(Boolean);
     // Static content is the reliable first render path. This prevents a
