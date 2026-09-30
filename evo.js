@@ -59,34 +59,20 @@ function setEvoState(state){
 }
 async function buildLayeredCharacter(){
   if(!root)return;
-  // Use the original vector EVO inline so its real eye/brow/mouth animations
-  // remain active. The raster composite is intentionally not used for motion.
-  try{
-    var r=await fetch('/assets/evo30-clean-final.svg?v=20260930-11',{cache:'no-store'});
-    if(!r.ok)throw new Error('EVO SVG yüklenemedi');
-    var markup=await r.text();
-    var holder=document.createElement('div');
-    holder.className='evo-vector-holder';
-    holder.innerHTML=markup;
-    var svg=holder.querySelector('svg.evo-svg');
-    if(!svg)throw new Error('EVO SVG bulunamadı');
-    svg.setAttribute('aria-hidden','true');
-    svg.removeAttribute('role');
-    root.appendChild(holder);
-    face=svg;
-    layered=true;
-    setEvoState('idle');
-  }catch(e){
-    var fallback=document.createElement('img');
-    fallback.className='evo-svg evo-fallback';
-    fallback.src='/assets/evo30-composite.svg';
-    fallback.alt='EVO sağlık asistanı';
-    root.appendChild(fallback);
-    face=fallback;
-    layered=true;
-    setEvoState('idle');
-  }
+  // En basit ve en stabil çözüm: EVO'yu tek parça, gerçek SVG karakter
+  // olarak kullanıyoruz. Böylece 30 parçalı raster/composite sürümündeki
+  // hizalama ve animasyonsuz görünüm sorunları tamamen ortadan kalkar.
+  var img=document.createElement('img');
+  img.className='evo-svg evo-fallback';
+  img.src='/assets/evo-character.svg?v=20260930-12';
+  img.alt='EVO sağlık asistanı';
+  img.draggable=false;
+  root.appendChild(img);
+  face=img;
+  layered=true;
+  setEvoState('idle');
 }
+
 function showEvoHearts(){
   if(!root||root.classList.contains('evo-off'))return;
   if(layered)setEvoState('happy');
