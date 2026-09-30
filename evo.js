@@ -78,7 +78,7 @@ function buildLayeredCharacter(){
   // Inline fetch/fallback yok: böylece eski bozuk fallback karakteri asla gösterilmez.
   var img=document.createElement('img');
   img.className='evo-svg evo-claude';
-  img.src='/assets/evo-layer1-new.png?v=20260930-35';
+  img.src='/assets/evo-layer1-fixed.png?v=20260930-36';
   img.alt='EVO sağlık asistanı';
   img.draggable=false;
   root.appendChild(img);
@@ -311,7 +311,7 @@ function appendStyles(){
 #evo-panel textarea{flex:1;min-width:0;border:1px solid #cfe1e5;border-radius:14px;padding:10px;resize:none;font:16px/1.35 Poppins,sans-serif;-webkit-text-size-adjust:100%;touch-action:manipulation;outline:none;box-sizing:border-box;max-height:120px}
 #evo-panel .send{width:42px;border:0;border-radius:14px;background:#005082;color:#fff;cursor:pointer}
 #evo-hide{margin:0 10px 5px;border:0;background:transparent;color:#557;font:10px Poppins;cursor:pointer}
-@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:8px;bottom:158px;width:118px;height:96px}#evo-fixed .evo-svg{width:118px;height:auto;max-height:96px}.evo-label-placeholder{}#evo-fixed .label{top:-2px;right:-8px;padding:5px 8px;font-size:9px;z-index:20}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
+@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:8px;bottom:158px;width:118px;height:96px}#evo-fixed .evo-svg{width:118px;height:96px;object-fit:contain;max-height:none}.evo-label-placeholder{}#evo-fixed .label{top:-2px;right:-8px;padding:5px 8px;font-size:9px;z-index:20}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
 `;
   document.head.appendChild(s);
 }
