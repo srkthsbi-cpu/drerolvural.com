@@ -42,21 +42,7 @@ function renderChat(){
 }
 function setEvoState(state){
   if(!layered)return;
-  var states={
-    idle:{eyes:'normal',brows:'normal',mouth:'normal'},
-    blink:{eyes:'blink',brows:'normal',mouth:'normal'},
-    happy:{eyes:'happy',brows:'normal',mouth:'happy'},
-    surprised:{eyes:'surprised',brows:'surprised',mouth:'surprised'},
-    thinking:{eyes:'normal',brows:'curious',mouth:'normal'},
-    talking:{eyes:'normal',brows:'normal',mouth:'talk1'},
-    serious:{eyes:'normal',brows:'sad',mouth:'normal'}
-  };
-  var s=states[state]||states.idle;
-  ['eyes','brows','mouth'].forEach(function(k){
-    var map=layerEls[k]; if(!map)return;
-    Object.keys(map).forEach(function(name){map[name].style.display=name===s[k]?'block':'none'});
-  });
-  if(root)root.dataset.evoState=state;
+  if(root)root.dataset.evoState=state||'idle';
 }
 function buildLayeredCharacter(){
   if(!root)return;
@@ -234,6 +220,16 @@ function appendStyles(){
 #evo-fixed .evo-brows{left:28.3%;top:42.9%;width:41.8%;height:auto}
 #evo-fixed .evo-mouth{left:40.9%;top:69.1%;width:17.3%;height:auto}
 #evo-fixed .evo-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+#evo-fixed[data-evo-state="blink"] .evo-eyes{transform:scaleY(.18);transform-origin:50% 50%}
+#evo-fixed[data-evo-state="happy"] .evo-eyes{transform:scale(1.03);transform-origin:50% 50%}
+#evo-fixed[data-evo-state="happy"] .evo-brows{transform:translateY(-1px)}
+#evo-fixed[data-evo-state="happy"] .evo-mouth{transform:scale(1.08,.92);transform-origin:50% 50%}
+#evo-fixed[data-evo-state="surprised"] .evo-eyes{transform:scale(1.12);transform-origin:50% 50%}
+#evo-fixed[data-evo-state="surprised"] .evo-brows{transform:translateY(-3px) scale(1.05);transform-origin:50% 50%}
+#evo-fixed[data-evo-state="surprised"] .evo-mouth{transform:scale(.78,1.22);transform-origin:50% 50%}
+#evo-fixed[data-evo-state="thinking"] .evo-brows{transform:translateY(-1px) rotate(-4deg);transform-origin:50% 50%}
+#evo-fixed[data-evo-state="serious"] .evo-brows{transform:translateY(2px) scaleY(.88);transform-origin:50% 50%}
+#evo-fixed[data-evo-state="serious"] .evo-mouth{transform:translateY(1px) scaleY(.82);transform-origin:50% 50%}
 #evo-fixed[data-evo-state="thinking"] .evo-layered{animation:evoThink 1.6s ease-in-out infinite}
 #evo-fixed[data-evo-state="talking"] .evo-mouth{animation:evoMouthTalk .24s ease-in-out infinite alternate}
 @keyframes evoThink{0%,100%{transform:translateX(0)}50%{transform:translateX(2px) rotate(.8deg)}}
