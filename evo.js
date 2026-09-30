@@ -84,7 +84,7 @@ function buildLayeredCharacter(){
   root.appendChild(img);
   var faceFx=document.createElement('div');
   faceFx.className='evo-face-fx';
-  faceFx.innerHTML='<i class="evo-brow evo-brow-l"></i><i class="evo-brow evo-brow-r"></i><span class="evo-eye evo-eye-l"><i class="evo-pupil"></i></span><span class="evo-eye evo-eye-r"><i class="evo-pupil"></i></span><i class="evo-mouth"></i>';
+  faceFx.innerHTML='<i class="evo-cleanline evo-cleanline-l"></i><i class="evo-cleanline evo-cleanline-r"></i><i class="evo-cleanline evo-cleanline-m"></i><i class="evo-brow evo-brow-l"></i><i class="evo-brow evo-brow-r"></i><span class="evo-eye evo-eye-l"><i class="evo-pupil"></i></span><span class="evo-eye evo-eye-r"><i class="evo-pupil"></i></span><i class="evo-mouth"></i>';
   root.appendChild(faceFx);
   face=img;
   layered=true;
@@ -272,6 +272,7 @@ function appendStyles(){
 @keyframes evoTalk{from{transform:translateY(0) scale(1)}to{transform:translateY(-1.5px) scale(1.015)}}
 @keyframes evoHappy{0%,100%{transform:scale(1)}50%{transform:scale(1.055) translateY(-2px)}}
 #evo-fixed .evo-face-fx{position:absolute;left:50%;top:50%;width:100%;height:auto;aspect-ratio:4/3;transform:translate(-50%,-50%);z-index:5;pointer-events:none;overflow:visible}
+#evo-fixed .evo-cleanline{position:absolute;height:4px;background:rgba(5,18,38,.96);border-radius:999px;z-index:1;pointer-events:none}#evo-fixed .evo-cleanline-l{left:27%;top:48%;width:20%}#evo-fixed .evo-cleanline-r{right:27%;top:48%;width:20%}#evo-fixed .evo-cleanline-m{left:39%;top:67%;width:22%}
 #evo-fixed .evo-brow{position:absolute;top:45%;width:18%;height:10px;border-top:4px solid #39e7ff;border-radius:50% 50% 0 0;filter:drop-shadow(0 0 4px rgba(57,231,255,.85));transform-origin:center;box-sizing:border-box}
 #evo-fixed .evo-brow-l{left:28%;transform:rotate(-10deg)}
 #evo-fixed .evo-brow-r{right:28%;transform:rotate(10deg)}
