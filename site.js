@@ -50,7 +50,7 @@
       setHeaderZ(String(BASE_Z));
       setEvoZ(nextZ());
       const n = nav();
-      if (n && n.classList.contains('active')) n.style.setProperty('z-index', String(BASE_Z + 1), 'important');
+      if (n && n.classList.contains('active')) n.style.setProperty('z-index', String(BASE_Z), 'important');
     }
 
     function bringMenuToFront() {
