@@ -279,11 +279,12 @@
 
   function setupForms() {
     const form = document.getElementById('contactForm');
-    const success = document.getElementById('successMessage');
     if (!form || form.dataset.bound === '1') return;
     form.dataset.bound = '1';
 
-    // Spam protection: FormSubmit reCAPTCHA + honeypot + browser-side validation.
+    // İletişim formu bilinçli olarak native POST kullanır.
+    // FormSubmit, tarayıcıdan yapılan normal POST'u destekler; AJAX/CORS
+    // katmanı iOS Safari'de gereksiz hata üretmemesi için devre dışıdır.
     if (!form.querySelector('input[name="_honey"]')) {
       const honey = document.createElement('input');
       honey.type = 'text';
@@ -294,104 +295,15 @@
       honey.style.cssText = 'display:none!important;position:absolute!important;left:-9999px!important;height:0!important;width:0!important;opacity:0!important';
       form.appendChild(honey);
     }
-    if (!form.querySelector('input[name="_captcha"]')) {
-      const captcha = document.createElement('input');
-      captcha.type = 'hidden';
-      captcha.name = '_captcha';
-      captcha.value = 'true';
-      form.appendChild(captcha);
-    } else {
-      form.querySelector('input[name="_captcha"]').value = 'true';
+
+    let next = form.querySelector('[name="_next"]');
+    if (!next) {
+      next = document.createElement('input');
+      next.type = 'hidden';
+      next.name = '_next';
+      form.appendChild(next);
     }
-    if (!form.querySelector('input[name="_url"]')) {
-      const url = document.createElement('input');
-      url.type = 'hidden';
-      url.name = '_url';
-      url.value = location.href.split('#')[0];
-      form.appendChild(url);
-    }
-
-    const startedAt = Date.now();
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-
-      const nameField = form.querySelector('[name="ad_soyad"]');
-      const phoneField = form.querySelector('[name="telefon"]');
-      const messageField = form.querySelector('[name="mesaj"]');
-      const honey = form.querySelector('[name="_honey"]');
-      const name = String(nameField?.value || '').trim();
-      const phone = String(phoneField?.value || '').trim();
-      const message = String(messageField?.value || '').trim();
-      const digits = phone.replace(/\D/g, '');
-      const hasUrl = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|co|ru|cn|xyz)\b)/i.test(message);
-
-      if (honey?.value) return;
-      if (Date.now() - startedAt < 2500) {
-        alert(currentLang === 'tr' ? 'Lütfen formu birkaç saniye içinde doldurup tekrar deneyin.' : 'Please take a few seconds to complete the form and try again.');
-        return;
-      }
-      if (name.length < 2) {
-        alert(currentLang === 'tr' ? 'Lütfen adınızı ve soyadınızı girin.' : 'Please enter your full name.');
-        nameField?.focus();
-        return;
-      }
-      if (digits.length < 7 || digits.length > 15) {
-        alert(currentLang === 'tr' ? 'Lütfen geçerli bir telefon numarası girin.' : 'Please enter a valid phone number.');
-        phoneField?.focus();
-        return;
-      }
-      if (message.length < 10 || message.length > 3000) {
-        alert(currentLang === 'tr' ? 'Lütfen mesajınızı daha ayrıntılı yazın.' : 'Please enter a message between 10 and 3000 characters.');
-        messageField?.focus();
-        return;
-      }
-      if (hasUrl && /(crossword|lawyers?\s+group|legal\s+lexington)/i.test(message)) {
-        return;
-      }
-
-      const last = Number(sessionStorage.getItem('contactFormLastSubmit') || 0);
-      if (Date.now() - last < 60000) {
-        alert(currentLang === 'tr' ? 'Lütfen yeni bir mesaj göndermeden önce biraz bekleyin.' : 'Please wait a little before sending another message.');
-        return;
-      }
-
-      const button = form.querySelector('button[type="submit"]');
-      if (button) { button.disabled = true; button.dataset.originalText = button.textContent; button.textContent = currentLang === 'tr' ? 'Gönderiliyor…' : 'Sending…'; }
-
-      try {
-        const endpoint = (form.action || 'https://formsubmit.co/srkthsbi@gmail.com').replace('https://formsubmit.co/', 'https://formsubmit.co/ajax/');
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { Accept: 'application/json' }
-        });
-        if (!response.ok) throw new Error('Form gönderilemedi');
-        const result = await response.json().catch(() => null);
-        if (result && result.success === false) throw new Error(result.message || 'Form gönderilemedi');
-        sessionStorage.setItem('contactFormLastSubmit', String(Date.now()));
-        form.reset();
-        form.style.display = 'none';
-        if (success) success.style.display = 'block';
-      } catch (err) {
-        console.error('FormSubmit AJAX failed; falling back to native POST.', err);
-        // FormSubmit'in AJAX/CORS isteği başarısız olursa kullanıcıya hata
-        // göstermeden normal POST'a düş. Böylece iOS Safari'de de gönderim
-        // FormSubmit'in kendi sunucusu üzerinden tamamlanabilir.
-        let next = form.querySelector('[name="_next"]');
-        if (!next) {
-          next = document.createElement('input');
-          next.type = 'hidden';
-          next.name = '_next';
-          form.appendChild(next);
-        }
-        next.value = location.origin + location.pathname + '?contact=sent';
-        form.dataset.fallback = '1';
-        HTMLFormElement.prototype.submit.call(form);
-        return;
-      } finally {
-        if (button) { button.disabled = false; button.textContent = button.dataset.originalText || button.textContent; }
-      }
-    });
+    next.value = location.origin + '/iletisim?contact=sent';
   }
 
   document.addEventListener('click', event => {
