@@ -98,11 +98,11 @@ function appendStyles(){
 #evo-panel .ex{border:0;background:transparent;color:#fff;font-size:25px;cursor:pointer}
 #evo-msgs{flex:1;overflow:auto;padding:15px}.em{max-width:86%;padding:10px 13px;border-radius:16px;margin:7px 0;font-size:13px;line-height:1.45}.em.bot{background:#e8f7fa;color:#17485a}.em.user{margin-left:auto;background:#005082;color:#fff}
 #evo-panel .ed{padding:7px 14px;font-size:9px;color:#667;background:#f2fafb}
-#evo-panel form{display:flex;padding:10px;gap:7px;border-top:1px solid #dcecef}
-#evo-panel textarea{flex:1;border:1px solid #cfe1e5;border-radius:14px;padding:10px;resize:none;font:12px Poppins,sans-serif}
+#evo-panel form{display:flex;padding:10px;gap:7px;border-top:1px solid #dcecef;align-items:flex-end;flex-shrink:0}
+#evo-panel textarea{flex:1;min-width:0;border:1px solid #cfe1e5;border-radius:14px;padding:10px;resize:none;font:16px/1.35 Poppins,sans-serif;-webkit-text-size-adjust:100%;touch-action:manipulation;outline:none;box-sizing:border-box;max-height:120px}
 #evo-panel .send{width:42px;border:0;border-radius:14px;background:#005082;color:#fff;cursor:pointer}
 #evo-hide{margin:0 10px 5px;border:0;background:transparent;color:#557;font:10px Poppins;cursor:pointer}
-@media(max-width:600px){#evo-fixed{right:10px;bottom:128px;width:104px;height:88px}#evo-fixed .evo-svg{width:104px;height:88px}#evo-fixed .label{top:-30px;right:0;padding:5px 8px;font-size:9px}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
+@media(max-width:600px){#evo-panel textarea{font-size:16px!important;line-height:1.4}#evo-fixed{right:10px;bottom:128px;width:104px;height:88px}#evo-fixed .evo-svg{width:104px;height:88px}#evo-fixed .label{top:-30px;right:0;padding:5px 8px;font-size:9px}#evo-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(600px,calc(100vh - 20px))}}
 `;
   document.head.appendChild(s);
 }
