@@ -310,17 +310,17 @@ fbq('track', 'PageView');
 </div>
 </div>
 </div>
-<!-- FORMSUBMIT İLETİŞİM FORMU -->
+<!-- KENDİ SİSTEMİMİZDEKİ İLETİŞİM FORMU -->
 <div class="contact-form">
 <h2><span data-i18n="Bize Mesaj Gönderin">Bize Mesaj Gönderin</span></h2>
 <br/>
 <div class="success-message" id="successMessage">
                     Teşekkürler! Mesajınız başarıyla iletildi. En kısa sürede sizinle iletişime geçeceğiz.
                 </div>
-<form action="https://formsubmit.co/ajax/srkthsbi@gmail.com" id="contactForm" method="POST">
-<input name="_next" type="hidden" value="https://drerolvural.com/iletisim?contact=sent"/>
-<input name="_captcha" type="hidden" value="false"/>
-<input name="_template" type="hidden" value="table"/>
+<form action="/api/contact" id="contactForm" method="POST">
+
+
+
 <input data-i18n-placeholder="Adınız Soyadınız" name="ad_soyad" placeholder="Adınız Soyadınız" required="" type="text"/>
 <input data-i18n-placeholder="Telefon Numaranız" name="telefon" placeholder="Telefon Numaranız" required="" type="tel"/>
 <textarea data-i18n-placeholder="Mesajınız veya sormak istedikleriniz..." name="mesaj" placeholder="Mesajınız veya sormak istedikleriniz..." required="" rows="5"></textarea>
@@ -372,6 +372,6 @@ fbq('track', 'PageView');
         // Burada ikinci bir submit listener çalıştırmıyoruz; aksi halde iOS'ta
         // aynı form iki kez yakalanıp sahte hata uyarısı gösterebiliyordu.
     </script>
-<script defer="" src="site.js?v=20260930-5"></script>
+<script defer="" src="site.js?v=20260930-7"></script>
 </body>
 </html>
