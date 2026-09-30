@@ -3410,6 +3410,43 @@ export default {
         let evoData = {faq:[]};
         if (dataRes.ok) { try { evoData = await dataRes.json(); } catch (_) {} }
 
+        // EVO soru kaydı: her kullanıcı sorusunu D1'e kaydet ve site e-postasına bildirim gönder.
+        try {
+          await env.DB.prepare(\
+            \`CREATE TABLE IF NOT EXISTS evo_questions (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              question TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              ip TEXT,
+              user_agent TEXT
+            )\`
+          ).run();
+          await env.DB.prepare(
+            'INSERT INTO evo_questions(question,created_at,ip,user_agent) VALUES(?,?,?,?)'
+          ).bind(
+            message,
+            new Date().toISOString(),
+            request.headers.get('CF-Connecting-IP') || 'unknown',
+            request.headers.get('User-Agent') || ''
+          ).run();
+
+          const notifyEmail = env.EVO_NOTIFY_EMAIL || 'info@drerolvural.com';
+          const notifyForm = new FormData();
+          notifyForm.append('_subject', 'EVO\'ya yeni soru soruldu');
+          notifyForm.append('_captcha', 'false');
+          notifyForm.append('_template', 'table');
+          notifyForm.append('EVO sorusu', message);
+          notifyForm.append('Tarih', new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }));
+          notifyForm.append('Kaynak', 'drerolvural.com / EVO');
+          await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(notifyEmail), {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: notifyForm
+          });
+        } catch (_) {
+          // E-posta bildirimi başarısız olsa bile EVO cevabı kullanıcıya dönmeye devam eder.
+        }
+
         const normalized = message.toLocaleLowerCase('tr-TR');
         const localFaq = Array.isArray(evoData.faq) ? evoData.faq.find(x => x && (normalized.includes(String(x.q||'').toLocaleLowerCase('tr-TR')) || String(x.q||'').toLocaleLowerCase('tr-TR').split(/\\s+/).some(w => w.length>4 && normalized.includes(w)))) : null;
 
