@@ -48,6 +48,8 @@ es:{morning:'¡Buenos días! Soy EVO. ¿Cómo puedo ayudarle?',day:'¡Buenas tar
 };
 function evoLang(){var l=(document.documentElement&&document.documentElement.lang)||get('siteLanguage')||'tr';l=String(l).toLowerCase().split('-')[0];return EVO_I18N[l]?l:'tr';}
 function evoText(k){return (EVO_I18N[evoLang()]||EVO_I18N.tr)[k]||EVO_I18N.tr[k]||k;}
+const EVO_COMMANDS={tr:{remove:'Tamam. EVO bu cihazda kaldırılıyor.',hide:'Tamam. Konuşma penceresini kapatıyorum. Sohbetiniz korunacak.'},en:{remove:'Okay. EVO is being removed from this device.',hide:'Okay. I’m closing the chat window. Your conversation will be kept.'},de:{remove:'In Ordnung. EVO wird von diesem Gerät entfernt.',hide:'In Ordnung. Ich schließe das Chatfenster. Ihre Unterhaltung bleibt erhalten.'},ar:{remove:'حسناً. سيتم إزالة EVO من هذا الجهاز.',hide:'حسناً. سأغلق نافذة المحادثة. ستبقى محادثتك محفوظة.'},ru:{remove:'Хорошо. EVO будет удалён с этого устройства.',hide:'Хорошо. Я закрываю окно чата. Ваша беседа будет сохранена.'},az:{remove:'Oldu. EVO bu cihazdan silinir.',hide:'Oldu. Söhbət pəncərəsini bağlayıram. Söhbətiniz qorunacaq.'},sq:{remove:'Në rregull. EVO po hiqet nga kjo pajisje.',hide:'Në rregull. Po mbyll dritaren e bisedës. Biseda juaj do të ruhet.'},nl:{remove:'Prima. EVO wordt van dit apparaat verwijderd.',hide:'Prima. Ik sluit het chatvenster. Uw gesprek blijft bewaard.'},es:{remove:'De acuerdo. EVO se eliminará de este dispositivo.',hide:'De acuerdo. Cierro la ventana de chat. Su conversación se conservará.'}};
+function evoCommand(k){var d=EVO_COMMANDS[evoLang()]||EVO_COMMANDS.tr;return d[k]||EVO_COMMANDS.tr[k];}
 function getTimeGreeting(){
   var now=new Date();
   var parts=new Intl.DateTimeFormat(evoLang()==='tr'?'tr-TR':evoLang(),{timeZone:'Europe/Istanbul',hour:'numeric',hour12:false}).formatToParts(now);
@@ -349,12 +351,12 @@ async function build(){
       return;
     }
     if(/evo[’']?yu\s+(kaldır|sil)/i.test(q)){
-      addMsg('Tamam. EVO bu cihazda kaldırılıyor.','bot');
+      addMsg(evoCommand('remove'),'bot');
       setTimeout(removeEvo,350);
       return;
     }
     if(/evo[’']?yu\s+(gizle|kapat|sakla)/i.test(q)){
-      addMsg('Tamam. Konuşma penceresini kapatıyorum. Sohbetiniz korunacak.','bot');
+      addMsg(evoCommand('hide'),'bot');
       setTimeout(closeChat,350);
       return;
     }
