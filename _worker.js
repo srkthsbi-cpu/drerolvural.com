@@ -3401,79 +3401,121 @@ export default {
 
     /* EVO AI ASSISTANT API */
     if (url.pathname === '/api/evo' && request.method === 'POST') {
+      const baseHeaders = {
+        'content-type':'application/json; charset=utf-8',
+        'cache-control':'no-store, no-cache, must-revalidate, max-age=0',
+        'X-Content-Type-Options':'nosniff'
+      };
+
       try {
         const body = await request.json();
         const message = String(body?.message || '').trim().slice(0, 1200);
-        if (!message) return new Response(JSON.stringify({error:'Soru boş olamaz.'}), {status:400, headers:{'content-type':'application/json;charset=utf-8','cache-control':'no-store'}});
+        if (!message) {
+          return new Response(JSON.stringify({error:'Soru boş olamaz.'}), {status:400, headers:baseHeaders});
+        }
 
-        const baseHeaders = {'content-type':'application/json;charset=utf-8','cache-control':'no-store','X-Content-Type-Options':'nosniff'};
-        const dataRes = await env.ASSETS.fetch(new Request(new URL('/data/evo.json', request.url), request));
+        /*
+         * EVO önce yerel bilgi bankasından cevap verebilir. Böylece D1,
+         * e-posta bildirimi veya harici AI servisi geçici olarak çalışmasa
+         * bile kullanıcıya "yanıt veremiyor" hatası gösterilmez.
+         */
+        const normalized = message.toLocaleLowerCase('tr-TR');
+        const fallbackFaq = [
+          {keys:['bmi nedir','vki nedir'], a:'BMI (Vücut Kitle İndeksi), yetişkinlerde boy ve kilo arasındaki ilişkiyi değerlendirmede kullanılan bir ölçüttür. Tek başına tanı veya tedavi kararı vermez.'},
+          {keys:['bmi nasıl hesaplanır','vki nasıl hesaplanır'], a:'BMI, kilogram cinsinden vücut ağırlığının metre cinsinden boyun karesine bölünmesiyle hesaplanır. Sitedeki BMI hesaplayıcısını kullanabilirsiniz.'},
+          {keys:['obezite nedir'], a:'Obezite, sağlık üzerinde olumsuz etkileri olabilen fazla yağ dokusunun birikimiyle ilişkili kronik bir durumdur. Nedenleri ve tedavisi kişiden kişiye değişebilir.'},
+          {keys:['obezite neden olur','obezite neden oluşur'], a:'Obezite; beslenme, fiziksel aktivite, genetik, uyku, çevresel ve metabolik faktörlerin birlikte etkisiyle gelişebilir. Tek bir nedene indirgenemez.'},
+          {keys:['tüp mide nedir','sleeve gastrektomi nedir'], a:'Tüp mide (sleeve gastrektomi), midenin bir bölümünün cerrahi olarak çıkarılmasıyla mide hacminin azaltılmasını amaçlayan bariatrik cerrahi yöntemidir. Uygunluk kişisel hekim değerlendirmesi gerektirir.'},
+          {keys:['gastrik bypass nedir','gastric bypass nedir'], a:'Gastrik bypass, mide hacmini küçültmenin yanında ince bağırsağın besinlerle temas eden bölümünü değiştiren bariatrik cerrahi yöntemlerden biridir. Hangi yöntemin uygun olduğu kişisel değerlendirmeyle belirlenir.'},
+          {keys:['diyabet nedir'], a:'Tip 2 diyabet, kan şekeri düzenlenmesinde bozulmayla ilişkili kronik bir hastalıktır. Kişisel tedavi ve ilaç kararları hekim değerlendirmesi gerektirir.'},
+          {keys:['insülin direnci nedir'], a:'İnsülin direnci, hücrelerin insülinin etkisine yeterince yanıt vermemesiyle ilişkili metabolik bir durumdur. Değerlendirme klinik bilgiler ve gerekli laboratuvar sonuçları birlikte ele alınarak yapılır.'},
+          {keys:['ameliyat kimlere uygulanır','kimler ameliyat olabilir'], a:'Bariatrik cerrahi uygunluğu BMI, eşlik eden hastalıklar, önceki tedaviler, genel sağlık durumu ve başka klinik faktörlerin birlikte değerlendirilmesini gerektirir. EVO kişisel ameliyat kararı vermez.'},
+          {keys:['ameliyat sonrası beslenme','ameliyattan sonra beslenme'], a:'Bariatrik cerrahi sonrası beslenme genellikle aşamalı olarak ilerler ve sıvı, protein, porsiyon ve vitamin-mineral gereksinimleri kişiye göre planlanır. Kişisel plan sağlık ekibi tarafından verilmelidir.'},
+          {keys:['vitamin gerekir mi','ameliyattan sonra vitamin'], a:'Bazı bariatrik cerrahi yöntemlerinden sonra vitamin ve mineral takviyeleri gerekebilir. Hangi takviyenin ve dozun kullanılacağı ameliyat türü ve laboratuvar sonuçlarına göre sağlık ekibi tarafından belirlenmelidir.'},
+          {keys:['ne zaman acile','acile ne zaman'], a:'Şiddetli göğüs ağrısı, ciddi nefes darlığı, bilinç değişikliği, bayılma, ciddi kanama veya yaşamı tehdit eden başka belirtilerde çevrimiçi bilgi beklemek yerine acil sağlık hizmetlerine başvurun.'}
+        ];
+        let localFaq = null;
+        for (const item of fallbackFaq) {
+          if (item.keys.some(k => normalized.includes(k))) { localFaq = item.a; break; }
+        }
+
+        if (/^(naber|merhaba|selam|hi|hello|hey)\b/i.test(normalized)) {
+          return new Response(JSON.stringify({
+            answer:'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet, tüp mide ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?',
+            source:'local'
+          }), {status:200, headers:baseHeaders});
+        }
+
         let evoData = {faq:[]};
-        if (dataRes.ok) { try { evoData = await dataRes.json(); } catch (_) {} }
-
-        // EVO soru kaydı: her kullanıcı sorusunu D1'e kaydet ve site e-postasına bildirim gönder.
         try {
-          await env.DB.prepare(`CREATE TABLE IF NOT EXISTS evo_questions (
+          if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
+            const dataRes = await env.ASSETS.fetch(new Request(new URL('/data/evo.json', request.url), request));
+            if (dataRes.ok) evoData = await dataRes.json();
+          }
+        } catch (_) {}
+
+        if (!localFaq && Array.isArray(evoData.faq)) {
+          const item = evoData.faq.find(x => {
+            const q = String(x?.q || '').toLocaleLowerCase('tr-TR');
+            return q === normalized || q.split(/\s+/).some(w => w.length > 4 && normalized.includes(w));
+          });
+          localFaq = item?.a || null;
+        }
+
+        // Soru kaydı ve bildirim tamamen ikincildir; başarısız olması cevabı etkilemez.
+        try {
+          if (env.DB) {
+            await env.DB.prepare(`CREATE TABLE IF NOT EXISTS evo_questions (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               question TEXT NOT NULL,
               created_at TEXT NOT NULL,
               ip TEXT,
               user_agent TEXT
-            )`)
-            .run();
-          await env.DB.prepare(
-            'INSERT INTO evo_questions(question,created_at,ip,user_agent) VALUES(?,?,?,?)'
-          ).bind(
-            message,
-            new Date().toISOString(),
-            request.headers.get('CF-Connecting-IP') || 'unknown',
-            request.headers.get('User-Agent') || ''
-          ).run();
-
-          const notifyEmail = env.EVO_NOTIFY_EMAIL || 'srkthsbi@gmail.com';
-          const notifyForm = new FormData();
-          notifyForm.append('_subject', 'EVO\'ya yeni soru soruldu');
-          notifyForm.append('_captcha', 'false');
-          notifyForm.append('_template', 'table');
-          notifyForm.append('EVO sorusu', message);
-          notifyForm.append('Tarih', new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }));
-          notifyForm.append('Kaynak', 'drerolvural.com / EVO');
-          await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(notifyEmail), {
-            method: 'POST',
-            headers: { 'Accept': 'application/json' },
-            body: notifyForm
-          });
-        } catch (_) {
-          // E-posta bildirimi başarısız olsa bile EVO cevabı kullanıcıya dönmeye devam eder.
-        }
-
-        const normalized = message.toLocaleLowerCase('tr-TR');
-        const localFaq = Array.isArray(evoData.faq) ? evoData.faq.find(x => x && (normalized.includes(String(x.q||'').toLocaleLowerCase('tr-TR')) || String(x.q||'').toLocaleLowerCase('tr-TR').split(/\\s+/).some(w => w.length>4 && normalized.includes(w)))) : null;
+            )`).run();
+            await env.DB.prepare(
+              'INSERT INTO evo_questions(question,created_at,ip,user_agent) VALUES(?,?,?,?)'
+            ).bind(
+              message,
+              new Date().toISOString(),
+              request.headers.get('CF-Connecting-IP') || 'unknown',
+              request.headers.get('User-Agent') || ''
+            ).run();
+          }
+        } catch (_) {}
 
         if (!env.OPENAI_API_KEY) {
-          const answer = localFaq?.a || 'EVO şu anda genel bilgi modunda. Obezite, diyabet, BMI, tüp mide ve genel sağlık hakkında soru sorabilirsiniz.';
-          return new Response(JSON.stringify({answer, source:'knowledge-base'}), {status:200, headers:baseHeaders});
+          return new Response(JSON.stringify({
+            answer: localFaq || 'EVO genel sağlık bilgisi verebilir. Obezite, BMI, diyabet, tüp mide veya bariatrik cerrahi hakkında sorunuzu yazabilirsiniz.',
+            source:'knowledge-base'
+          }), {status:200, headers:baseHeaders});
         }
 
         const instructions = 'Sen EVO\'sun: Doç. Dr. Erol Vural web sitesinin genel sağlık bilgilendirme asistanısın. Türkçe, kısa, anlaşılır ve sakin konuş. Obezite, diyabet, BMI, genel sağlık, beslenme ve bariatrik cerrahi hakkında genel ve güvenli bilgi ver. Tanı koyma; kişiye özel tedavi, ilaç dozu veya ameliyat uygunluğu hakkında kesin karar verme; garanti veya kesin sonuç vaat etme. Kullanıcı kişisel sağlık bilgileri verse bile bunu tanı koymak için kullanma. Acil belirtilerde acil sağlık hizmetlerine başvurulmasını söyle. Gerekirse hekim değerlendirmesinin gerekli olduğunu açıkça belirt. Kendini doktor veya insan gibi tanıtma; EVO adlı dijital asistan olduğunu söyle. Reklam, üstünlük veya başarı garantisi içeren ifadeler kullanma. Aşağıdaki Erol Vural bilgi bankasını öncelikli kaynak olarak kullan; bilgi bankasında olmayan tıbbi ayrıntıları kesin gerçek gibi sunma.\\n\\nEVO BİLGİ BANKASI:\\n'+JSON.stringify(evoData).slice(0,30000);
-        const aiRes = await fetch('https://api.openai.com/v1/responses', {
-          method:'POST',
-          headers:{'Authorization':'Bearer '+env.OPENAI_API_KEY,'Content-Type':'application/json'},
-          body:JSON.stringify({model:env.EVO_MODEL || 'gpt-5.6-luna',instructions,input:message,max_output_tokens:700})
-        });
-        if (!aiRes.ok) {
-          const answer = localFaq?.a || 'Şu anda bağlantıda kısa süreli bir sorun var. Lütfen sorunuzu tekrar deneyin.';
-          return new Response(JSON.stringify({answer,source:'fallback'}), {status:200,headers:baseHeaders});
-        }
-        const ai = await aiRes.json();
-        let answer = String(ai.output_text || '');
-        if (!answer && Array.isArray(ai.output)) {
-          answer = ai.output.flatMap(o=>Array.isArray(o.content)?o.content:[]).map(x=>x.text||'').filter(Boolean).join('\\n');
-        }
-        if (!answer) answer = localFaq?.a || 'Şu anda cevap oluşturamadım. Lütfen sorunuzu yeniden yazın.';
-        return new Response(JSON.stringify({answer,source:'ai'}), {status:200,headers:baseHeaders});
-      } catch (e) {
-        return new Response(JSON.stringify({answer:'EVO şu anda yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin.'}), {status:200,headers:{'content-type':'application/json;charset=utf-8','cache-control':'no-store'}});
+        try {
+          const aiRes = await fetch('https://api.openai.com/v1/responses', {
+            method:'POST',
+            headers:{'Authorization':'Bearer '+env.OPENAI_API_KEY,'Content-Type':'application/json'},
+            body:JSON.stringify({model:env.EVO_MODEL || 'gpt-5.6-luna',instructions,input:message,max_output_tokens:700})
+          });
+          if (aiRes.ok) {
+            const ai = await aiRes.json();
+            let answer = String(ai.output_text || '');
+            if (!answer && Array.isArray(ai.output)) {
+              answer = ai.output.flatMap(o=>Array.isArray(o.content)?o.content:[]).map(x=>x.text||'').filter(Boolean).join('\n');
+            }
+            if (answer) return new Response(JSON.stringify({answer,source:'ai'}), {status:200,headers:baseHeaders});
+          }
+        } catch (_) {}
+
+        return new Response(JSON.stringify({
+          answer: localFaq || 'Şu anda bağlantıda kısa süreli bir sorun var. Genel sağlık sorunuz varsa tekrar yazabilirsiniz.',
+          source:'fallback'
+        }), {status:200,headers:baseHeaders});
+      } catch (_) {
+        return new Response(JSON.stringify({
+          answer:'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Sorunuzu tekrar yazabilirsiniz.',
+          source:'safe-fallback'
+        }), {status:200,headers:baseHeaders});
       }
     }
 
