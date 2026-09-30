@@ -132,7 +132,19 @@ function build(){
   panel.querySelector('#evo-hide').onclick=function(e){e.preventDefault();closeChat()};
   root.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openEvo()}});
   if(ta){
-    ta.addEventListener('focus',function(){});
+    ta.addEventListener('focus',function(){
+      // iOS Safari can still zoom a focused textarea even at 16px depending
+      // on the page viewport. Temporarily lock the viewport while EVO is active.
+      var vp=document.querySelector('meta[name="viewport"]');
+      if(vp){
+        if(!vp.dataset.evoOriginal) vp.dataset.evoOriginal=vp.getAttribute('content')||'width=device-width,initial-scale=1';
+        vp.setAttribute('content','width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no');
+      }
+    });
+    ta.addEventListener('blur',function(){
+      var vp=document.querySelector('meta[name="viewport"]');
+      if(vp&&vp.dataset.evoOriginal) vp.setAttribute('content',vp.dataset.evoOriginal);
+    });
   }
   panel.querySelector('form').onsubmit=async function(e){
     e.preventDefault();
