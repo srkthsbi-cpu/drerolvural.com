@@ -280,7 +280,7 @@ function appendStyles(){
 #evo-fixed .evo-eye-l{left:29%}#evo-fixed .evo-eye-r{right:29%;animation-delay:.12s}
 #evo-fixed .evo-pupil{position:absolute;left:50%;top:50%;width:34%;height:54%;border-radius:50%;background:#030814;transform:translate(-50%,-50%);box-shadow:none}
 #evo-fixed .evo-pupil:after{display:none}
-#evo-fixed .evo-mouth{position:absolute;left:40%;top:73%;width:20%;height:12px;border-bottom:4px solid #39e7ff;border-radius:0 0 50% 50%;filter:drop-shadow(0 0 4px rgba(57,231,255,.9));transform-origin:center;background:transparent;}
+#evo-fixed .evo-mouth{position:absolute;left:40%;top:69%;width:20%;height:12px;border-bottom:4px solid #39e7ff;border-radius:0 0 50% 50%;filter:drop-shadow(0 0 4px rgba(57,231,255,.9));transform-origin:center;background:transparent;}
 #evo-fixed[data-evo-state="talking"] .evo-mouth{animation:evoMouth .18s ease-in-out infinite alternate}
 #evo-fixed[data-evo-state="happy"] .evo-mouth{animation:evoSmile .7s ease-in-out 2}
 #evo-fixed[data-evo-state="thinking"] .evo-brow-l{animation:evoBrowL .9s ease-in-out infinite}
