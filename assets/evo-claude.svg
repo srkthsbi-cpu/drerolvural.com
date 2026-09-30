@@ -16,13 +16,13 @@
 </style></defs>
 <g class="stage">
 <!-- Exact Claude base assets: shell, screen, ears -->
-<svg x="43" y="22" width="414" height="296" viewBox="0 0 414 296"><image href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
-<svg x="115" y="95" width="270" height="168" viewBox="0 296 338 210"><image href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
-<svg class="ear" x="16" y="95" width="92" height="113" viewBox="0 506 155 191"><image href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
-<svg class="ear" x="397" y="95" width="95" height="113" viewBox="0 697 163 194"><image href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
+<svg x="43" y="22" width="414" height="296" viewBox="0 0 414 296"><image preserveAspectRatio="none" href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
+<svg x="115" y="95" width="270" height="168" viewBox="0 296 338 210"><image preserveAspectRatio="none" href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
+<svg class="ear" x="16" y="95" width="92" height="113" viewBox="0 506 155 191"><image preserveAspectRatio="none" href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
+<svg class="ear" x="397" y="95" width="95" height="113" viewBox="0 697 163 194"><image preserveAspectRatio="none" href="/assets/evo-base-sprite.webp" x="0" y="0" width="414" height="891"/></svg>
 <!-- Code-controlled face -->
 <g class="brow" fill="none" stroke="#45f5eb" stroke-width="6" stroke-linecap="round" opacity=".95"><path d="M137 183 Q162 169 187 183"/><path d="M275 183 Q300 169 325 183"/></g>
-<g class="eye"><svg x="127" y="187" width="70" height="70" viewBox="0 0 106 105"><image href="/assets/evo-eyes-sprite.webp" x="0" y="0" width="223" height="626"/></svg></g>
-<g class="eye r"><svg x="265" y="189" width="70" height="70" viewBox="106 0 106 105"><image href="/assets/evo-eyes-sprite.webp" x="0" y="0" width="223" height="626"/></svg></g>
+<g class="eye"><svg x="127" y="187" width="70" height="70" viewBox="0 0 106 105"><image preserveAspectRatio="none" href="/assets/evo-eyes-sprite.webp" x="0" y="0" width="223" height="626"/></svg></g>
+<g class="eye r"><svg x="265" y="189" width="70" height="70" viewBox="106 0 106 105"><image preserveAspectRatio="none" href="/assets/evo-eyes-sprite.webp" x="0" y="0" width="223" height="626"/></svg></g>
 <path class="mouth" d="M205 255 Q231 271 257 255" fill="none" stroke="#e9ffff" stroke-width="6" stroke-linecap="round" filter="drop-shadow(0 0 5px #34e8ff)"/>
 </g></svg>
