@@ -4406,9 +4406,9 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
     if (env.MEDIA) {
       const pathname = url.pathname.replace(/\\+/g, '/');
 
-      if (/^\\/banner[123]\\.png$/i.test(pathname) && env.DB) {
+      if (/^\/banner[123]\.png$/i.test(pathname) && env.DB) {
         try {
-          const match = pathname.match(/^\\/banner([123])\\.png$/i);
+          const match = pathname.match(/^\/banner([123])\.png$/i);
           const position = Number(match[1]);
           const row = await env.DB
             .prepare('SELECT desktop_file,mobile_file FROM banners WHERE position=?')
@@ -4417,7 +4417,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
 
           const candidates = [row?.desktop_file, row?.mobile_file]
             .filter(Boolean)
-            .map(x => String(x).replace(/^\\/+/, ''));
+            .map(x => String(x).replace(/^\/+/, ''));
 
           for (const candidate of candidates) {
             const key = candidate.startsWith('media/')
@@ -4435,7 +4435,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
         } catch (_) {}
       }
 
-      if (/^\\/logo2\\.png$/i.test(pathname)) {
+      if (/^\/logo2\.png$/i.test(pathname)) {
         for (const key of [
           'international-assets/logo2.png',
           'international-assets/EVLogo1-01.png',
@@ -4454,7 +4454,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
         }
       }
 
-      if (/^\\/[^/]+\\.(?:png|jpe?g|webp|gif|svg)$/i.test(pathname)) {
+      if (/^\/[^/]+\.(?:png|jpe?g|webp|gif|svg)$/i.test(pathname)) {
         const name = pathname.slice(1);
         for (const key of ['international-assets/'+name, name]) {
           try {
