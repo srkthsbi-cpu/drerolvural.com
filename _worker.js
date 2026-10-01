@@ -3787,11 +3787,42 @@ export default {
 
     if (
       url.pathname === '/erol_admin' ||
-      url.pathname === '/erol_admin/'
+      url.pathname === '/erol_admin/' ||
+      url.pathname === '/erol_admin/index.html'
     ) {
       const adminUrl = new URL('/erol_admin/index.html', request.url);
       const adminResponse = await env.ASSETS.fetch(new Request(adminUrl, request));
-      if (!adminResponse.ok) return adminResponse;
+
+      // The repository currently does not contain a physical erol_admin/index.html.
+      // Keep the admin entry point functional from the Worker instead of returning a Pages 404.
+      if (!adminResponse.ok) {
+        const html = `<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Erol Admin</title>
+<style>
+body{margin:0;background:#f4f8fa;color:#10232b;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;display:grid;place-items:center}
+.card{width:min(420px,calc(100% - 32px));background:#fff;border:1px solid #dce7eb;border-radius:24px;padding:28px;box-shadow:0 16px 50px rgba(16,35,43,.10)}
+h1{margin:0 0 8px}p{color:#6d7d84}label{display:block;margin:16px 0 7px;font-weight:700}input{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #cbd9de;border-radius:12px;font-size:16px}button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:13px;background:#009bb4;color:#fff;font-weight:800;font-size:15px}#status{min-height:22px;margin-top:14px;font-size:14px}#panel{display:none}.links{display:grid;gap:10px;margin-top:20px}.link{display:block;padding:14px;border-radius:13px;background:#eef7f9;color:#12343d;text-decoration:none;font-weight:700}
+</style></head><body><main class="card">
+<section id="login"><h1>Erol Admin</h1><p>Yönetim paneline giriş yapın.</p>
+<form id="form"><label>Kullanıcı adı</label><input id="username" autocomplete="username" required>
+<label>Şifre</label><input id="password" type="password" autocomplete="current-password" required>
+<button>Giriş Yap</button></form><div id="status"></div></section>
+<section id="panel"><h1>Admin Paneli</h1><p id="welcome"></p><div class="links">
+<a class="link" href="/erol_admin/evo.html">🤖 EVO Sohbetleri</a>
+<a class="link" href="/" target="_blank">🌐 Siteyi Aç</a>
+</div><button id="logout">Çıkış Yap</button><div id="panelStatus"></div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+async function api(path,opts){const r=await fetch('/api/'+path,{credentials:'same-origin',...opts,headers:{'Content-Type':'application/json',...(opts&&opts.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'İşlem başarısız.');return d}
+async function check(){try{const d=await api('auth/me',{method:'GET'});if(d.authenticated){$('login').style.display='none';$('panel').style.display='block';$('welcome').textContent='Hoş geldiniz, '+d.username+'.'}}catch(e){}}
+$('form').addEventListener('submit',async e=>{e.preventDefault();$('status').textContent='Giriş yapılıyor…';try{const d=await api('auth/login',{method:'POST',body:JSON.stringify({username:$('username').value.trim(),password:$('password').value})});$('login').style.display='none';$('panel').style.display='block';$('welcome').textContent='Hoş geldiniz, '+d.username+'.';$('status').textContent=''}catch(e){$('status').textContent=e.message}})
+$('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'POST',body:'{}'});location.reload()});check();
+</script></body></html>`;
+        return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
+      }
+
       const contentType = adminResponse.headers.get('content-type') || '';
       if (!contentType.includes('text/html')) return adminResponse;
       const textHtml = await adminResponse.text();
@@ -3802,7 +3833,6 @@ export default {
       headers.set('cache-control','no-store');
       return new Response(injected,{status:adminResponse.status,headers});
     }
-
 
     /* SITEMAP */
 
