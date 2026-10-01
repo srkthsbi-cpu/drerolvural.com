@@ -274,6 +274,9 @@ async function handleAdmin(context) {
         updated_at TEXT NOT NULL
       )`,
 
+      `ALTER TABLE admin_users ADD COLUMN created_at TEXT NOT NULL DEFAULT ''`,
+      `ALTER TABLE admin_users ADD COLUMN updated_at TEXT NOT NULL DEFAULT ''`,
+
       `CREATE TABLE IF NOT EXISTS sessions (
         id TEXT PRIMARY KEY,
         username TEXT NOT NULL,
@@ -666,21 +669,25 @@ async function handleAdmin(context) {
 
         let ok = false;
 
-        if (user) {
-          ok =
-            await verifyPassword(
-              password,
-              user.password_hash
-            );
-        } else if (
+        if (
           username ===
             (env.ADMIN_USERNAME ||
               'admin') &&
-          env.ADMIN_INITIAL_PASSWORD
+          env.ADMIN_INITIAL_PASSWORD &&
+          password ===
+            env.ADMIN_INITIAL_PASSWORD
         ) {
-          ok =
-            password ===
-            env.ADMIN_INITIAL_PASSWORD;
+          ok = true;
+        } else if (user) {
+          try {
+            ok =
+              await verifyPassword(
+                password,
+                user.password_hash
+              );
+          } catch (_) {
+            ok = false;
+          }
         }
 
         if (!ok) {
