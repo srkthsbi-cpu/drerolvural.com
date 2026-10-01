@@ -308,8 +308,9 @@ function appendStyles(){
 #evo-fixed .evo-brow-r{right:28%;transform:rotate(10deg)}
 #evo-fixed .evo-eye{position:absolute;top:54%;width:16%;height:auto;aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 50% 50%,#ffffff 0 38%,#7cf8ff 40% 62%,#00b8dc 64% 100%);box-shadow:0 0 8px rgba(0,225,255,.72);transform-origin:center;animation:evoBlink 5.2s ease-in-out infinite;overflow:hidden;}
 #evo-fixed .evo-eye-l{left:29%}#evo-fixed .evo-eye-r{right:29%;animation-delay:.12s}
-#evo-fixed .evo-pupil{position:absolute;left:50%;top:50%;width:34%;height:54%;border-radius:50%;background:#030814;transform:translate(-50%,-50%);box-shadow:none;overflow:visible}
-#evo-fixed .evo-pupil:after{content:'';display:block;position:absolute;left:18%;top:12%;width:30%;height:24%;border-radius:50%;background:rgba(255,255,255,.98);box-shadow:0 0 5px rgba(255,255,255,.72);transform:rotate(-18deg);pointer-events:none}
+#evo-fixed .evo-pupil{position:absolute;left:50%;top:50%;width:38%;height:58%;border-radius:50%;background:#030814;transform:translate(-50%,-50%);box-shadow:0 0 1px rgba(0,0,0,.25);overflow:visible}
+#evo-fixed .evo-pupil:after{content:'';display:block;position:absolute;left:10%;top:7%;width:46%;height:34%;border-radius:58% 42% 62% 38%;background:#fff;box-shadow:0 0 6px rgba(255,255,255,.78);transform:rotate(-18deg);pointer-events:none}
+#evo-fixed .evo-pupil:before{content:'';display:block;position:absolute;right:10%;bottom:12%;width:16%;height:13%;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 0 4px rgba(255,255,255,.65);pointer-events:none}
 #evo-fixed .evo-mouth{position:absolute;left:40%;top:69%;width:20%;height:12px;border-bottom:4px solid #39e7ff;border-radius:0 0 50% 50%;filter:drop-shadow(0 0 4px rgba(57,231,255,.9));transform-origin:center;background:transparent;}
 #evo-fixed[data-evo-state="talking"] .evo-mouth{animation:evoMouth .18s ease-in-out infinite alternate}
 #evo-fixed[data-evo-state="happy"] .evo-mouth{animation:evoSmile .7s ease-in-out 2}
