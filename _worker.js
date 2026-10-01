@@ -374,9 +374,9 @@ async function handleAdmin(context) {
         key TEXT PRIMARY KEY,
         hits INTEGER NOT NULL DEFAULT 0,
         window_started_at INTEGER NOT NULL
-      ),
+      )`,
 
-      CREATE TABLE IF NOT EXISTS audit_logs (
+      `CREATE TABLE IF NOT EXISTS audit_logs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
         action TEXT NOT NULL,
@@ -3918,7 +3918,7 @@ export default {
       return securityJson({ error: 'Method not allowed.' }, 405);
     }
 
-    if (/^(?:wp-admin|wp-login\\.php|xmlrpc\\.php|phpmyadmin|pma|\\.git(?:\\/|$)|\\.env(?:\\.|$)|server-status|cgi-bin)(?:\\/|$)/i.test(pathname.replace(/^\\/+/, ''))) {
+    if (/^(?:wp-admin|wp-login\.php|xmlrpc\.php|phpmyadmin|pma|\.git(?:\/|$)|\.env(?:\\.|$)|server-status|cgi-bin)(?:\/|$)/i.test(pathname.replace(/^\/+/, ''))) {
       return securityJson({ error: 'Not found.' }, 404);
     }
 
