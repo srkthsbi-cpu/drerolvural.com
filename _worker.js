@@ -3925,6 +3925,447 @@ export default {
     // the asset fallback below keeps future clean article URLs from becoming 404s.
 
 
+    /* SITEMAP */
+
+    if (
+      url.pathname ===
+      '/sitemap.xml'
+    ) {
+      return handleSitemap({
+        request,
+        env,
+        ctx
+      });
+    }
+
+
+    /* PUBLIC API */
+
+    if (
+      url.pathname ===
+        '/api/public' ||
+      url.pathname.startsWith(
+        '/api/public/'
+      )
+    ) {
+      return handlePublic({
+        request,
+        env,
+        ctx
+      });
+    }
+
+
+    /* EVO AI ASSISTANT API — Cloudflare Workers AI / Gemma 4 */
+    if (url.pathname === '/api/evo' && request.method === 'POST') {
+      const baseHeaders = {
+        'content-type':'application/json; charset=utf-8',
+        'cache-control':'no-store, no-cache, must-revalidate, max-age=0',
+        'X-Content-Type-Options':'nosniff'
+      };
+
+      try {
+        const payload = await request.json().catch(() => ({}));
+        const message = String(payload.message || '').trim().slice(0, 4000);
+        const languageNames = {tr:'Turkish',en:'English',de:'German',fr:'French',ar:'Arabic',ru:'Russian',az:'Azerbaijani',sq:'Albanian',nl:'Dutch',es:'Spanish'};
+        const requestedLanguage = String(payload.language || 'tr').toLowerCase().split('-')[0];
+        const responseLanguage = languageNames[requestedLanguage] ? requestedLanguage : 'tr';
+        const languageName = languageNames[responseLanguage];
+        const history = Array.isArray(payload.history) ? payload.history.slice(-8).map(x => ({role: x && x.role === 'assistant' ? 'assistant' : 'user', content: String(x && x.content || '').trim().slice(0, 1200)})).filter(x => x.content) : [];
+        const conversationId = String(payload.conversationId || '').trim().slice(0,120);
+        const saveEvoTurn = async (answer, source) => {
+          try {
+            if (!env.DB || !conversationId || !message || !String(answer || '').trim()) return;
+            const createdAt = new Date().toISOString();
+            const existing = await env.DB.prepare(
+              'SELECT conversation_id FROM evo_conversations WHERE conversation_id=?'
+            ).bind(conversationId).first();
+            await env.DB.prepare(
+              `INSERT OR IGNORE INTO evo_conversations
+               (conversation_id,language,started_at,last_at,message_count,ip)
+               VALUES(?,?,?,?,0,?)`
+            ).bind(conversationId,responseLanguage,createdAt,createdAt,request.headers.get('CF-Connecting-IP') || 'unknown').run();
+            await env.DB.prepare(
+              `UPDATE evo_conversations SET ip=COALESCE(ip,?) WHERE conversation_id=?`
+            ).bind(request.headers.get('CF-Connecting-IP') || 'unknown',conversationId).run();
+
+            await env.DB.prepare(
+              `INSERT INTO evo_messages
+               (conversation_id,role,message,language,created_at)
+               VALUES(?,?,?,?,?)`
+            ).bind(conversationId,'user',message,responseLanguage,createdAt).run();
+            await env.DB.prepare(
+              `INSERT INTO evo_messages
+               (conversation_id,role,message,language,created_at)
+               VALUES(?,?,?,?,?)`
+            ).bind(conversationId,'assistant',String(answer).trim(),responseLanguage,new Date().toISOString()).run();
+            await env.DB.prepare(
+              `UPDATE evo_conversations
+               SET last_at=?,message_count=(SELECT COUNT(*) FROM evo_messages WHERE conversation_id=?)
+               WHERE conversation_id=?`
+            ).bind(new Date().toISOString(),conversationId,conversationId).run();
+
+            if (!existing && env.GMAIL_CLIENT_ID && env.GMAIL_CLIENT_SECRET && env.GMAIL_REFRESH_TOKEN) {
+              const notify = async () => {
+                try {
+                  const accessToken = await getGmailAccessToken(env);
+                  const to = env.GMAIL_TO_EMAIL || 'srkthsbi@gmail.com';
+                  const subject = 'Yeni EVO Sohbeti — ' + conversationId.slice(0,12);
+                  const adminUrl = new URL('/erol_admin/evo.html', request.url).href;
+                  const html =
+                    '<h2>Yeni EVO sohbeti</h2>' +
+                    '<p>Yeni bir EVO sohbeti başlatıldı.</p>' +
+                    '<p><strong>Dil:</strong> ' + escapeHtml(responseLanguage) + '</p>' +
+                    '<p><strong>Sohbet ID:</strong> ' + escapeHtml(conversationId) + '</p>' +
+                    '<p><a href="' + escapeHtml(adminUrl) + '">EVO sohbetlerini admin panelinde aç</a></p>' +
+                    '<p><small>Gizlilik nedeniyle sağlık konuşmasının içeriği e-postaya eklenmemiştir.</small></p>';
+                  const mimeMessage = [
+                    'To: ' + to,
+                    'Subject: ' + mimeSubject(subject),
+                    'MIME-Version: 1.0',
+                    'Content-Type: text/html; charset=UTF-8',
+                    'Content-Transfer-Encoding: 8bit',
+                    '',
+                    html
+                  ].join('\\r\\n');
+                  await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{
+                    method:'POST',
+                    headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
+                    body:JSON.stringify({raw:base64UrlUtf8(mimeMessage)})
+                  });
+                } catch (mailError) {
+                  console.error(JSON.stringify({type:'evo_email_exception',conversationId,error:String(mailError?.message||mailError).slice(0,1000)}));
+                }
+              };
+              if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(notify());
+              else await notify();
+            }
+          } catch (e) {
+            console.error(JSON.stringify({type:'evo_storage_exception',conversationId,error:String(e?.message||e).slice(0,1000)}));
+          }
+        };
+
+        if (!message) {
+          return new Response(JSON.stringify({error:responseLanguage==='tr'?'Soru boş olamaz.':responseLanguage==='en'?'The question cannot be empty.':'Please enter a question.'}), {status:400, headers:baseHeaders});
+        }
+
+        const normalized = message.toLocaleLowerCase('tr-TR');
+        const sensitiveHealth = /(?:kilo|kilom|kiloyum|boyum|boy\\s*\\d|bmi|vki|vücut\\s*kitle|tahlil|kan\\s*değeri|kan\\s*şekeri|şekerim|diyabet|insülin|tansiyon|kolesterol|hastalık|hastayım|teşhis|tanı|ameliyat|operasyon|ilaç|ilaçlar|reçete|mr|tomografi|ultrason|endoskopi|biyopsi|patoloji|rapor|semptom|belirti|ağrı|hamileyim|gebeyim|alerji|alerjim|kan\\s*grubu|nabız|ateş|depresyon|anksiyete|psikiyatr|obezite|tüp\\s*mide|gastrik\\s*bypass|bypass)/i.test(normalized);
+        if (sensitiveHealth && payload.privacyConsent !== true) {
+          const privacyAnswers={tr:'Bu mesaj kişisel sağlık bilgileri içerebilir. Yanıt oluşturabilmem için önce gizlilik onayını vermeniz gerekiyor.',en:'This message may contain personal health information. I need your privacy consent before generating a response.',de:'Diese Nachricht kann persönliche Gesundheitsdaten enthalten. Vor der Antwort ist Ihre Datenschutzzustimmung erforderlich.',fr:'Ce message peut contenir des informations personnelles de santé. Votre consentement à la confidentialité est nécessaire avant de générer une réponse.',ar:'قد تحتوي هذه الرسالة على معلومات صحية شخصية. أحتاج إلى موافقتك على الخصوصية قبل إنشاء الرد.',ru:'Это сообщение может содержать персональные медицинские данные. Перед ответом необходимо ваше согласие на обработку данных.',az:'Bu mesaj şəxsi sağlamlıq məlumatları ehtiva edə bilər. Cavab yaratmazdan əvvəl məxfilik razılığınız lazımdır.',sq:'Ky mesazh mund të përmbajë të dhëna personale shëndetësore. Para përgjigjes kërkohet pëlqimi juaj për privatësinë.',nl:'Dit bericht kan persoonlijke gezondheidsgegevens bevatten. Uw privacytoestemming is nodig voordat ik antwoord kan geven.',es:'Este mensaje puede contener información personal de salud. Necesito su consentimiento de privacidad antes de generar una respuesta.'}; return new Response(JSON.stringify({needsPrivacyConsent:true,answer:privacyAnswers[responseLanguage]||privacyAnswers.tr}), {status:200, headers:baseHeaders});
+        }
+        const fallbackFaq = [
+          {keys:['bmi nedir','vki nedir'], a:'BMI (Vücut Kitle İndeksi), yetişkinlerde boy ve kilo arasındaki ilişkiyi değerlendirmede kullanılan bir ölçüttür. Tek başına tanı veya tedavi kararı vermez.'},
+          {keys:['bmi nasıl hesaplanır','vki nasıl hesaplanır'], a:'BMI, kilogram cinsinden vücut ağırlığının metre cinsinden boyun karesine bölünmesiyle hesaplanır. Sitedeki BMI hesaplayıcısını kullanabilirsiniz.'},
+          {keys:['obezite nedir'], a:'Obezite, sağlık üzerinde olumsuz etkileri olabilen fazla yağ dokusunun birikimiyle ilişkili kronik bir durumdur. Nedenleri ve tedavisi kişiden kişiye değişebilir.'},
+          {keys:['obezite neden olur','obezite neden oluşur'], a:'Obezite; beslenme, fiziksel aktivite, genetik, uyku, çevresel ve metabolik faktörlerin birlikte etkisiyle gelişebilir. Tek bir nedene indirgenemez.'},
+          {keys:['tüp mide nedir','sleeve gastrektomi nedir'], a:'Tüp mide (sleeve gastrektomi), midenin bir bölümünün cerrahi olarak çıkarılmasıyla mide hacminin azaltılmasını amaçlayan bariatrik cerrahi yöntemidir. Uygunluk kişisel hekim değerlendirmesi gerektirir.'},
+          {keys:['gastrik bypass nedir','gastric bypass nedir'], a:'Gastrik bypass, mide hacmini küçültmenin yanında ince bağırsağın besinlerle temas eden bölümünü değiştiren bariatrik cerrahi yöntemlerden biridir. Hangi yöntemin uygun olduğu kişisel değerlendirmeyle belirlenir.'},
+          {keys:['diyabet nedir'], a:'Tip 2 diyabet, kan şekeri düzenlenmesinde bozulmayla ilişkili kronik bir hastalıktır. Kişisel tedavi ve ilaç kararları hekim değerlendirmesi gerektirir.'},
+          {keys:['insülin direnci nedir'], a:'İnsülin direnci, hücrelerin insülinin etkisine yeterince yanıt vermemesiyle ilişkili metabolik bir durumdur. Değerlendirme klinik bilgiler ve gerekli laboratuvar sonuçları birlikte ele alınarak yapılır.'},
+          {keys:['ameliyat kimlere uygulanır','kimler ameliyat olabilir'], a:'Bariatrik cerrahi uygunluğu BMI, eşlik eden hastalıklar, önceki tedaviler, genel sağlık durumu ve başka klinik faktörlerin birlikte değerlendirilmesini gerektirir. EVO kişisel ameliyat kararı vermez.'},
+          {keys:['ameliyat sonrası beslenme','ameliyattan sonra beslenme'], a:'Bariatrik cerrahi sonrası beslenme genellikle aşamalı olarak ilerler ve sıvı, protein, porsiyon ve vitamin-mineral gereksinimleri kişiye göre planlanır. Kişisel plan sağlık ekibi tarafından verilmelidir.'},
+          {keys:['vitamin gerekir mi','ameliyattan sonra vitamin'], a:'Bazı bariatrik cerrahi yöntemlerinden sonra vitamin ve mineral takviyeleri gerekebilir. Hangi takviyenin ve dozun kullanılacağı ameliyat türü ve laboratuvar sonuçlarına göre sağlık ekibi tarafından belirlenmelidir.'},
+          {keys:['ne zaman acile','acile ne zaman'], a:'Şiddetli göğüs ağrısı, ciddi nefes darlığı, bilinç değişikliği, bayılma, ciddi kanama veya yaşamı tehdit eden başka belirtilerde çevrimiçi bilgi beklemek yerine acil sağlık hizmetlerine başvurun.'}
+        ];
+
+        let localFaq = null;
+        for (const item of fallbackFaq) {
+          if (item.keys.some(k => normalized.includes(k))) {
+            localFaq = item.a;
+            break;
+          }
+        }
+
+        if (/^(naber|merhaba|selam|hi|hello|hey)\b/i.test(normalized)) {
+          const greetings={tr:'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet, tüp mide ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?',en:'Hello! I’m EVO 👋 I can provide general information about obesity, BMI, diabetes, sleeve gastrectomy and bariatric surgery. How can I help?',de:'Hallo! Ich bin EVO 👋 Ich kann allgemeine Informationen zu Adipositas, BMI, Diabetes, Schlauchmagen und bariatrischer Chirurgie geben. Wie kann ich helfen?',fr:'Bonjour ! Je suis EVO 👋 Je peux fournir des informations générales sur l’obésité, l’IMC, le diabète, la sleeve gastrectomie et la chirurgie bariatrique. Comment puis-je vous aider ?',ar:'مرحباً! أنا EVO 👋 يمكنني تقديم معلومات صحية عامة حول السمنة ومؤشر كتلة الجسم والسكري وتكميم المعدة وجراحات السمنة. كيف يمكنني مساعدتك؟',ru:'Здравствуйте! Я EVO 👋 Я могу предоставить общую информацию об ожирении, ИМТ, диабете, продольной резекции желудка и бариатрической хирургии. Чем могу помочь?',az:'Salam! Mən EVO 👋 Piylənmə, BKİ, diabet, sleeve qastrektomiya və bariatrik cərrahiyyə haqqında ümumi məlumat verə bilərəm. Sizə necə kömək edə bilərəm?',sq:'Përshëndetje! Jam EVO 👋 Mund të jap informacion të përgjithshëm për obezitetin, BMI-në, diabetin, gastrektominë në mëngë dhe kirurgjinë bariatrike. Si mund t’ju ndihmoj?',nl:'Hallo! Ik ben EVO 👋 Ik kan algemene informatie geven over obesitas, BMI, diabetes, sleeve-gastrectomie en bariatrische chirurgie. Hoe kan ik u helpen?',es:'¡Hola! Soy EVO 👋 Puedo ofrecer información general sobre obesidad, IMC, diabetes, gastrectomía en manga y cirugía bariátrica. ¿Cómo puedo ayudarle?'};
+          const answer = greetings[responseLanguage]||greetings.tr;
+          await saveEvoTurn(answer,'local');
+          return new Response(JSON.stringify({answer,source:'local'}), {status:200, headers:baseHeaders});
+        }
+
+        let evoData = {faq:[]};
+        try {
+          if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
+            const dataRes = await env.ASSETS.fetch(new Request(new URL('/data/evo.json', request.url), request));
+            if (dataRes.ok) evoData = await dataRes.json();
+          }
+        } catch (_) {}
+
+        // Yerel bilgi bankasında bulunan sorular Cloudflare AI kotası tüketmeden cevaplanır.
+        if (localFaq && responseLanguage==='tr') {
+          await saveEvoTurn(localFaq,'knowledge-base');
+          return new Response(JSON.stringify({answer:localFaq,source:'knowledge-base'}), {status:200, headers:baseHeaders});
+        }
+
+        // D1 soru kaydı ikincildir; başarısız olması EVO cevabını engellemez.
+        try {
+          if (env.DB) {
+            await env.DB.prepare(`CREATE TABLE IF NOT EXISTS evo_questions (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              question TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              ip TEXT,
+              user_agent TEXT
+            )`).run();
+            await env.DB.prepare(
+              'INSERT INTO evo_questions(question,created_at,ip,user_agent) VALUES(?,?,?,?)'
+            ).bind(
+              message,
+              new Date().toISOString(),
+              request.headers.get('CF-Connecting-IP') || 'unknown',
+              request.headers.get('User-Agent') || ''
+            ).run();
+          }
+        } catch (_) {}
+
+        const instructions = 'Sen EVO\'sun: Doç. Dr. Erol Vural web sitesinin genel sağlık bilgilendirme asistanısın. Türkçe, kısa, anlaşılır ve sakin konuş. Kullanıcının her sorusunda "Merhaba", "Ben EVO" veya kendini yeniden tanıtan girişler yapma; doğrudan soruya cevap ver. Yalnızca kullanıcı selamlaşırsa kısa bir selam ver. Önceki mesajları dikkate al ve konuşmayı doğal biçimde sürdür. Obezite, diyabet, BMI, genel sağlık, beslenme ve bariatrik cerrahi hakkında genel ve güvenli bilgi ver. Tanı koyma; kişiye özel tedavi, ilaç dozu veya ameliyat uygunluğu hakkında kesin karar verme; garanti veya kesin sonuç vaat etme. Kullanıcı kişisel sağlık bilgileri verse bile bunu tanı koymak için kullanma. Acil belirtilerde acil sağlık hizmetlerine başvurulmasını söyle. Gerekirse hekim değerlendirmesinin gerekli olduğunu açıkça belirt. Kendini doktor veya insan gibi tanıtma; EVO adlı dijital asistan olduğunu söyle. Reklam, üstünlük veya başarı garantisi içeren ifadeler kullanma. Kullanıcı Doç. Dr. Erol Vural, web sitesi, iletişim, sosyal medya, basında çıkan haberler, eğitim/mesleki geçmiş veya site bölümleri hakkında soru sorarsa sağlık uyarısı eklemek yerine doğrudan soruya cevap ver. Bu tür sorularda uydurma bilgi üretme; bilgi bankasında doğrulanmış bilgi yoksa bunu açıkça belirt ve kullanıcıyı sitedeki ilgili bölüme yönlendir. Kullanıcı bir sosyal medya hesabının adresini sorarsa yalnızca doğrulanmış bir hesap bilgisini paylaş; tahmin ederek kullanıcı adı oluşturma. Basında çıkan haberler sorulursa, doğrulanmış içerik yoksa Basında Biz bölümünde seçilmiş içeriklerin bulunduğunu söyle; haber başlığı, tarih veya yayın kuruluşu uydurma. Aşağıdaki Erol Vural bilgi bankasını öncelikli kaynak olarak kullan. Bilgi bankasında olmayan tıbbi ayrıntıları kesin gerçek gibi sunma.\n\nDOĞRULANMIŞ SİTE BAĞLAMI: Bu site Doç. Dr. Erol Vural\'ın metabolik ve bariatrik cerrahi odaklı web sitesidir. Sitede Hakkımda, Hizmetler ve Basında Biz bölümleri bulunur. Uzmanlık başlıkları arasında obezite cerrahisi, tüp mide, metabolik cerrahi ve revizyon cerrahisi yer alır. Güncel iletişim ve sosyal medya bilgileri için sitenin ilgili bölümündeki bağlantıları esas al.';
+
+        // Cloudflare Workers AI: Google Gemma 4 26B A4B IT.
+        // AI binding'i Cloudflare Pages/Worker ayarlarında "AI" adıyla bağlanmalıdır.
+        if (env.AI && typeof env.AI.run === 'function') {
+          try {
+            const aiRes = await env.AI.run('@cf/google/gemma-4-26b-a4b-it', {
+              messages: [
+                {role:'system', content:instructions + '\n\nAlways answer in '+languageName+' even if previous messages use another language. For French, use “IMC (indice de masse corporelle)” instead of “BMI” and prefer French medical terminology such as “gastrectomie en manchon”. Keep “EVO” as the assistant brand name.\n\nEVO BİLGİ BANKASI:\n' + JSON.stringify(evoData).slice(0,30000)},
+                ...history,
+                {role:'user', content:message}
+              ],
+              chat_template_kwargs: {enable_thinking:false}
+            }, {rejectIfBusy:true});
+
+            let answer = '';
+            if (typeof aiRes === 'string') {
+              answer = aiRes;
+            } else if (aiRes && typeof aiRes.response === 'string') {
+              answer = aiRes.response;
+            } else if (aiRes && Array.isArray(aiRes.choices)) {
+              answer = String(aiRes.choices?.[0]?.message?.content || '');
+            } else if (aiRes && typeof aiRes.output_text === 'string') {
+              answer = aiRes.output_text;
+            }
+
+            if (answer.trim()) {
+              if (responseLanguage === 'fr') {
+                answer = answer
+                  .replace(/\bBMI\b/gi, 'IMC')
+                  .replace(/\bbody mass index\b/gi, 'indice de masse corporelle')
+                  .replace(/\bsleeve gastrectomy\b/gi, 'gastrectomie en manchon');
+              }
+              await saveEvoTurn(answer.trim(),'cloudflare-ai');
+              return new Response(JSON.stringify({
+                answer:answer.trim(),
+                source:'cloudflare-ai',
+                model:'@cf/google/gemma-4-26b-a4b-it'
+              }), {status:200, headers:baseHeaders});
+            }
+          } catch (_) {}
+        }
+
+        const fallbackAnswer = responseLanguage === 'fr'
+          ? 'La connexion à l’intelligence artificielle rencontre actuellement un problème temporaire. Vous pouvez réessayer votre question sur l’obésité, l’IMC, le diabète, la gastrectomie en manchon ou la chirurgie bariatrique.'
+          : 'Şu anda yapay zekâ bağlantısında kısa süreli bir sorun var. Obezite, BMI, diyabet, tüp mide veya bariatrik cerrahi hakkında sorunuzu tekrar yazabilirsiniz.';
+        await saveEvoTurn(fallbackAnswer,'fallback');
+        return new Response(JSON.stringify({
+          answer: fallbackAnswer,
+          source:'fallback'
+        }), {status:200, headers:baseHeaders});
+      } catch (_) {
+        const safeFallbackAnswer = responseLanguage === 'fr'
+          ? 'Bonjour ! Je suis EVO 👋 Je peux fournir des informations générales sur l’obésité, l’IMC, le diabète et la chirurgie bariatrique. Vous pouvez réessayer votre question.'
+          : 'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Sorunuzu tekrar yazabilirsiniz.';
+        await saveEvoTurn(safeFallbackAnswer,'safe-fallback');
+        return new Response(JSON.stringify({
+          answer: safeFallbackAnswer,
+          source:'safe-fallback'
+        }), {status:200, headers:baseHeaders});
+      }
+    }
+
+    /* ADMIN API */
+
+    if (
+      url.pathname ===
+        '/api' ||
+      url.pathname.startsWith(
+        '/api/'
+      )
+    ) {
+      return handleAdmin({
+        request,
+        env,
+        ctx
+      });
+    }
+
+
+    /* R2 MEDIA */
+
+    if (
+      url.pathname.startsWith(
+        '/media/'
+      )
+    ) {
+
+      const key =
+        url.pathname
+          .slice(
+            '/media/'.length
+          )
+          .split('/')
+          .filter(Boolean);
+
+      return handleMedia({
+        request,
+        env,
+        ctx,
+        params: {
+          key
+        }
+      });
+    }
+
+
+    /* =====================================================
+       R2 OVERRIDE — international-assets
+       ===================================================== */
+    if (url.pathname.startsWith('/international-assets/') && env.MEDIA) {
+      const key=url.pathname.slice(1); const obj=await env.MEDIA.get(key);
+      if (obj) { const headers=new Headers(); obj.writeHttpMetadata(headers); headers.set('etag',obj.httpEtag); headers.set('cache-control','public, max-age=31536000, immutable'); return new Response(obj.body,{headers}); }
+    }
+
+    /* =====================================================
+       PUBLIC IMAGE RECOVERY
+       =====================================================
+       The public site historically used root-level image URLs while
+       uploaded assets live in R2. Recover those URLs directly from R2.
+       ===================================================== */
+    if (env.MEDIA) {
+      const pathname = url.pathname.replace(/\\+/g, '/');
+
+      if (/^\/banner([123])\.png$/i.test(pathname)) {
+        try {
+          const position = Number(pathname.match(/^\/banner([123])\.png$/i)[1]);
+          const listed = await env.MEDIA.list({
+            prefix: 'banners/' + position + '-desktop-',
+            limit: 100
+          });
+          const objects = (listed.objects || []).sort((a,b) =>
+            String(b.uploaded || '').localeCompare(String(a.uploaded || ''))
+          );
+
+          for (const item of objects) {
+            const obj = await env.MEDIA.get(item.key);
+            if (obj) {
+              const h = new Headers();
+              obj.writeHttpMetadata(h);
+              h.set('etag', obj.httpEtag);
+              h.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+              return new Response(obj.body,{status:200,headers:h});
+            }
+          }
+        } catch (_) {}
+      }
+
+      if (/^\/logo2\.png$/i.test(pathname)) {
+        try {
+          const listed = await env.MEDIA.list({
+            prefix: 'international-assets/',
+            limit: 1000
+          });
+          const objects = (listed.objects || []).filter(o =>
+            /(?:^|\/)(?:logo2|logo|evlogo|erol).*\.(?:png|jpe?g|webp|svg)$/i.test(o.key)
+          ).sort((a,b) =>
+            String(b.uploaded || '').localeCompare(String(a.uploaded || ''))
+          );
+
+          for (const item of objects) {
+            const obj = await env.MEDIA.get(item.key);
+            if (obj) {
+              const h = new Headers();
+              obj.writeHttpMetadata(h);
+              h.set('etag', obj.httpEtag);
+              h.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+              return new Response(obj.body,{status:200,headers:h});
+            }
+          }
+        } catch (_) {}
+      }
+
+      if (/^\/[^/]+\.(?:png|jpe?g|webp|gif|svg)$/i.test(pathname)) {
+        try {
+          const name = pathname.slice(1);
+          const listed = await env.MEDIA.list({
+            prefix: 'international-assets/',
+            limit: 1000
+          });
+          const target = name.toLowerCase();
+          const objects = (listed.objects || []).filter(o =>
+            String(o.key).split('/').pop().toLowerCase() === target
+          );
+
+          for (const item of objects) {
+            const obj = await env.MEDIA.get(item.key);
+            if (obj) {
+              const h = new Headers();
+              obj.writeHttpMetadata(h);
+              h.set('etag', obj.httpEtag);
+              h.set('cache-control','no-store, no-cache, must-revalidate, max-age=0');
+              return new Response(obj.body,{status:200,headers:h});
+            }
+          }
+        } catch (_) {}
+      }
+    }
+
+    /* =====================================================
+       INTERNATIONAL HEALTH-TOURISM HTML ROUTING
+       =====================================================
+       Serve these nested documents explicitly as HTML. Cloudflare Pages can
+       otherwise expose nested .html assets as downloadable files on some
+       clients (notably iOS Safari). Both the clean path and the .html path
+       are normalized here before the generic asset layer.
+       ===================================================== */
+    const healthTourismPages = {
+      '/saglik-turizmi': '/saglik-turizmi.html',
+      '/en/health-tourism': '/en/health-tourism.html',
+      '/de/gesundheitstourismus': '/de/gesundheitstourismus.html',
+      '/ar/alsiyaaha-alssihiyya': '/ar/alsiyaaha-alssihiyya.html',
+      '/ru/medturizm': '/ru/medturizm.html',
+      '/az/saglamliq-turizmi': '/az/saglamliq-turizmi.html',
+      '/sq/turizmi-shendetesor': '/sq/turizmi-shendetesor.html',
+      '/nl/medisch-toerisme': '/nl/medisch-toerisme.html',
+      '/es/turismo-sanitario': '/es/turismo-sanitario.html'
+    };
+
+    const healthAssetPath =
+      healthTourismPages[cleanPathname] ||
+      healthTourismPages[cleanPathname.replace(/\.html$/, '')];
+
+    if (healthAssetPath) {
+      const assetUrl = new URL(healthAssetPath, request.url);
+      const assetResponse = await env.ASSETS.fetch(
+        new Request(assetUrl, request)
+      );
+      if (assetResponse.ok) {
+        const h = new Headers(assetResponse.headers);
+        h.set('Content-Type', 'text/html; charset=utf-8');
+        h.delete('Content-Disposition');
+        h.delete('Content-Length');
+        h.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        h.set('Pragma', 'no-cache');
+        h.set('X-Content-Type-Options', 'nosniff');
+        return enhanceHtmlResponse(
+          new Response(assetResponse.body, {
+            status: 200,
+            headers: h
+          })
+        );
+      }
+    }
+
+
+
     /* ADMIN SITE UPDATE PANEL */
     if (url.pathname === '/erol_admin/site-guncelle' || url.pathname === '/erol_admin/site-guncelle/' || url.pathname === '/erol_admin/site-guncelle.html') {
       const html = '<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Siteyi Güncelle — Erol Admin</title><style>body{margin:0;background:#f3f7f9;color:#12313a;font-family:system-ui,sans-serif}.wrap{max-width:1200px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center}.tabs{display:flex;gap:8px;overflow:auto;margin:18px 0}.tabs button,button,.btn{border:0;border-radius:11px;padding:11px 14px;background:#009bb4;color:#fff;font-weight:800;cursor:pointer;text-decoration:none}.tabs .active{background:#005082}.panel{display:none}.panel.active{display:block}.card{background:#fff;border:1px solid #dce7eb;border-radius:18px;padding:18px;margin-bottom:16px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #cbdde2;border-radius:10px;font:inherit}.field textarea{min-height:130px}.wide{grid-column:1/-1}.lang{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.item{border:1px solid #dce7eb;border-radius:14px;padding:14px;margin:10px 0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.ghost{background:#e9f1f4;color:#17404b}.small{color:#71838a;font-size:12px}.preview{max-width:220px;max-height:120px;object-fit:cover;border-radius:9px;margin-top:8px}.toast{position:fixed;right:16px;bottom:16px;background:#12313a;color:#fff;padding:13px 16px;border-radius:12px;display:none}@media(max-width:700px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}</style></head><body><div class="wrap"><div class="top"><div><h1>Siteyi Güncelle</h1><div class="small">Banner, makale, dil ve temel site ayarları</div></div><div class="actions"><a class="btn ghost" href="/erol_admin/">Admin Paneli</a><a class="btn ghost" href="/" target="_blank">Siteyi Aç</a><button id="logout">Çıkış</button></div></div><div class="tabs"><button class="active" data-t="settings">Site Ayarları</button><button data-t="banners">Bannerlar</button><button data-t="posts">Makaleler</button></div><section id="settings" class="panel active"><div class="card"><h2>Site Ayarları</h2><div class="grid"><div class="field"><label>Site başlığı TR</label><input id="sttr"></div><div class="field"><label>Site başlığı EN</label><input id="sten"></div><div class="field"><label>Açıklama TR</label><input id="sdtr"></div><div class="field"><label>Açıklama EN</label><input id="sden"></div><div class="field"><label>Telefon</label><input id="phone"></div><div class="field"><label>WhatsApp</label><input id="wa"></div><div class="field"><label>E-posta</label><input id="email"></div><div class="field"><label>Instagram</label><input id="ig"></div><div class="field"><label>Facebook</label><input id="fb"></div></div><div class="actions"><button id="saveSettings" type="button">Kaydet</button></div></div></section><section id="banners" class="panel"><div class="card"><div class="lang"><h2>Bannerlar</h2><span>Dil:</span><select id="blang"></select></div><div id="bannerList">Yükleniyor…</div></div></section><section id="posts" class="panel"><div class="card"><div class="lang"><h2>Makaleler</h2><span>Dil:</span><select id="plang"></select><button id="newPost" type="button">+ Yeni Makale</button></div><div id="postList">Yükleniyor…</div><div id="editor"></div></div></section></div><div id="toast" class="toast"></div><script>const L=[["tr","Türkçe"],["en","English"],["de","Deutsch"],["fr","Français"],["ar","العربية"],["ru","Русский"],["az","Azərbaycan"],["sq","Shqip"],["nl","Nederlands"],["es","Español"]];let csrf="",S={},B=[],P=[],E=null;const $=x=>document.getElementById(x);function esc(v){return String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",\'"\':"&quot;"}[c]))}async function api(p,o={}){let h={"Content-Type":"application/json",...(o.headers||{})};if(csrf)h["X-CSRF-Token"]=csrf;let r=await fetch("/api/"+p,{credentials:"same-origin",...o,headers:h}),d=await r.json().catch(()=>({}));if(r.status===401){location.href="/erol_admin/";throw Error("Oturum süresi doldu")}if(!r.ok)throw Error(d.error||d.detail||"İşlem başarısız");return d}function toast(x){$("toast").textContent=x;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",2200)}function fill(id){$(id).innerHTML=L.map(x=>"<option value="+x[0]+">"+x[1]+"</option>").join("")}async function init(){let m=await api("auth/me");if(!m.authenticated){location.href="/erol_admin/";return}csrf=m.csrf;fill("blang");fill("plang");await Promise.all([loadS(),loadB(),loadP()])}async function loadS(){S=await api("settings");$("sttr").value=(S.site_title||{}).tr||"";$("sten").value=(S.site_title||{}).en||"";$("sdtr").value=(S.site_description||{}).tr||"";$("sden").value=(S.site_description||{}).en||"";$("phone").value=S.phone||"";$("wa").value=S.whatsapp||"";$("email").value=S.email||"";$("ig").value=S.instagram||"";$("fb").value=S.facebook||""}async function saveSettings(){try{await api("settings",{method:"PUT",body:JSON.stringify({site_title:{tr:$("sttr").value,en:$("sten").value},site_description:{tr:$("sdtr").value,en:$("sden").value},phone:$("phone").value,whatsapp:$("wa").value,email:$("email").value,instagram:$("ig").value,facebook:$("fb").value})});toast("Site ayarları kaydedildi")}catch(e){toast(e.message||"Site ayarları kaydedilemedi")}}async function loadB(){B=await api("banners");renderB()}$("blang").addEventListener("change",renderB);function renderB(){let l=$("blang").value;$("bannerList").innerHTML=B.map(b=>"<div class=item><b>Banner "+b.position+"</b><div class=grid><div class=field><label>Başlık</label><input id=bt"+b.position+" value="+esc((b.title||{})[l]||"").replace(/\"/g,"&quot;")+"></div><div class=field><label>Alt metin</label><input id=ba"+b.position+" value="+esc((b.alt||{})[l]||"").replace(/\"/g,"&quot;")+"></div><div class=\'field wide\'><label>Açıklama</label><textarea id=bd"+b.position+">"+esc((b.description||{})[l]||"")+"</textarea></div><div class=field><label>Buton</label><input id=bb"+b.position+" value="+esc((b.button_text||{})[l]||"").replace(/\"/g,"&quot;")+"></div><div class=field><label>URL</label><input id=bu"+b.position+" value="+esc(b.button_url||"").replace(/\"/g,"&quot;")+"></div></div><img class=preview src="+JSON.stringify(b.desktop_file||"")+"><div class=actions><label class=\'btn ghost\'>Masaüstü<input hidden type=file accept=\'image/*\' onchange=\'upB("+b.position+","desktop",this)\'></label><label class=\'btn ghost\'>Mobil<input hidden type=file accept=\'image/*\' onchange=\'upB("+b.position+","mobile",this)\'></label><button onclick=\'saveB("+b.position+")\'>Bannerı Kaydet</button></div></div>").join("")}async function saveB(n){let b=B.find(x=>x.position===n),l=$("blang").value;b.title=b.title||{};b.alt=b.alt||{};b.description=b.description||{};b.button_text=b.button_text||{};b.title[l]=$( "bt"+n).value;b.alt[l]=$( "ba"+n).value;b.description[l]=$( "bd"+n).value;b.button_text[l]=$( "bb"+n).value;b.button_url=$( "bu"+n).value;await api("banners",{method:"PUT",body:JSON.stringify(b)});toast("Banner kaydedildi");loadB()}async function upB(n,v,i){let f=i.files[0];if(!f)return;let d=new FormData;d.append("file",f);d.append("position",n);d.append("variant",v);let r=await fetch("/api/banners/upload",{method:"POST",credentials:"same-origin",headers:{"X-CSRF-Token":csrf},body:d});if(!r.ok){let x=await r.json().catch(()=>({}));toast(x.error||"Yükleme başarısız");return}toast("Görsel yüklendi");loadB()}async function loadP(){P=await api("posts");renderP()}$("plang").addEventListener("change",renderP);function renderP(){let l=$("plang").value;$("postList").innerHTML=P.map(p=>"<div class=item><b>"+esc((p.title||{})[l]||p.id)+"</b><div class=small>"+(p.published?"Yayında":"Taslak")+"</div><button onclick=\'editP("+JSON.stringify(p.id)+")\'>Düzenle</button></div>").join("")}function newPost(){E={id:"",published:false,featured:false,icon:"fa-file-medical",title:{},description:{},content:{},slug:{},meta_title:{},meta_description:{},keywords:{},cover_file:""};editor()}function editP(id){E=P.find(p=>p.id===id);editor()}function editor(){let l=$("plang").value,p=E;$("editor").innerHTML="<div class=item><h2>"+(p.id?"Makale Düzenle":"Yeni Makale")+"</h2><div class=lang>Dil:<select id=el>"+L.map(x=>"<option value="+x[0]+" "+(x[0]===l?"selected":"")+">"+x[1]+"</option>").join("")+"</select></div><div class=grid><div class=field><label>Başlık</label><input id=pt value="+JSON.stringify(p.title[l]||"")+"></div><div class=field><label>Slug</label><input id=ps value="+JSON.stringify(p.slug[l]||"")+"></div><div class=\'field wide\'><label>Açıklama</label><textarea id=pd>"+esc(p.description[l]||"")+"</textarea></div><div class=\'field wide\'><label>Makale</label><textarea id=pc style=\'min-height:320px\'>"+esc(p.content[l]||"")+"</textarea></div><div class=field><label>Meta başlık</label><input id=pm value="+JSON.stringify(p.meta_title[l]||"")+"></div><div class=field><label>Meta açıklama</label><textarea id=pmd>"+esc(p.meta_description[l]||"")+"</textarea></div><div class=field><label>Keywords</label><input id=pk value="+JSON.stringify(p.keywords[l]||"")+"></div><div class=field><label>Kapak görseli</label><input id=pcover value="+JSON.stringify(p.cover_file||"")+"></div></div><div class=actions><label><input type=checkbox id=pub "+(p.published?"checked":"")+"> Yayında</label><label><input type=checkbox id=feat "+(p.featured?"checked":"")+"> Öne çıkan</label><button onclick=\'saveP()\'>Makaleyi Kaydet</button></div></div>";$("el").onchange=()=>{$("plang").value=$("el").value;editor()}}function collect(){let l=$("el").value;["title","description","content","slug","meta_title","meta_description","keywords"].forEach(k=>E[k]=E[k]||{});E.title[l]=$( "pt").value;E.description[l]=$( "pd").value;E.content[l]=$( "pc").value;E.slug[l]=$( "ps").value;E.meta_title[l]=$( "pm").value;E.meta_description[l]=$( "pmd").value;E.keywords[l]=$( "pk").value;E.published=$( "pub").checked;E.featured=$( "feat").checked;E.cover_file=$( "pcover").value}async function saveP(){try{collect();let p=E.id?"posts/"+encodeURIComponent(E.id):"posts";let d=await api(p,{method:E.id?"PUT":"POST",body:JSON.stringify(E)});toast("Makale kaydedildi");await loadP();if(!E.id)E.id=d.id;editor()}catch(e){toast(e.message||"Makale kaydedilemedi")}}document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",function(){document.querySelectorAll(".tabs button").forEach(function(x){x.classList.remove("active")});document.querySelectorAll(".panel").forEach(function(x){x.classList.remove("active")});b.classList.add("active");$(b.getAttribute("data-t")).classList.add("active")}));$("saveSettings").addEventListener("click",saveSettings);$("newPost").addEventListener("click",newPost);$("logout").addEventListener("click",async function(){try{await api("auth/logout",{method:"POST",body:"{}"})}finally{location.href="/erol_admin/"}});init().catch(e=>{toast(e.message);setTimeout(()=>location.href="/erol_admin/",1000)});</script></body></html>';
@@ -4009,6 +4450,71 @@ $('site').onclick=()=>window.open('/','_blank','noopener');$('logout').onclick=a
 </script></body></html>`;
       return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
     }
+
+    /* =====================================================
+       STATIC / EXTENSIONLESS HTML ROUTING
+       =====================================================
+       IMPORTANT: Do not fetch `/article.html` here. Cloudflare Pages
+       canonicalizes HTML files to their extensionless pretty URL, so doing
+       ASSETS.fetch(`/article.html`) from the Worker can produce a redirect
+       back to `/article`, which re-enters this Worker and can create a
+       redirect loop. Let the Pages asset layer resolve `/article` to the
+       matching root-level `article.html` directly.
+    */
+
+    let response = null;
+
+    /* =====================================================
+       CLEAN BLOG ARTICLE ROUTING
+       /blog/<slug> is the public canonical form for the site's
+       featured/dynamic articles. Internally render blog-post.html
+       with the slug while keeping the clean browser URL.
+       ===================================================== */
+    if (url.pathname.startsWith('/blog/') && url.pathname !== '/blog/') {
+      const slug = cleanPathname.slice('/blog/'.length);
+      if (slug && !slug.includes('.')) {
+        const serverArticle = await renderServerBlogArticle(request, env, slug);
+        if (serverArticle) return serverArticle;
+        const notFoundUrl = new URL('/404.html', request.url);
+        const notFound = await env.ASSETS.fetch(new Request(notFoundUrl, request));
+        const h = new Headers(notFound.headers);
+        h.set('X-Robots-Tag', 'noindex, nofollow');
+        h.set('Cache-Control', 'no-store, max-age=0');
+        h.delete('Content-Disposition');
+        return enhanceHtmlResponse(new Response(notFound.body, { status: 404, headers: h }));
+      }
+    }
+
+    /* =====================================================
+       UNIVERSAL CLEAN HTML ROUTING
+       =====================================================
+       Every extensionless page is checked against the real .html asset
+       before the generic Pages asset resolver runs. This covers root and
+       nested pages and prevents Safari from receiving blank/downloadable
+       responses for HTML documents.
+       ===================================================== */
+    const requestedFile = cleanPathname === '/' ? '' : cleanPathname;
+    const requestedHasExtension = !!requestedFile && requestedFile.split('/').pop().includes('.');
+    if (!response && requestedFile && !requestedHasExtension) {
+      const htmlAssetUrl = new URL(requestedFile + '.html', request.url);
+      const htmlAssetResponse = await env.ASSETS.fetch(new Request(htmlAssetUrl, request));
+      const htmlAssetType = (htmlAssetResponse.headers.get('content-type') || '').toLowerCase();
+      if (htmlAssetResponse.ok && htmlAssetType.includes('text/html') && !(htmlAssetResponse.headers.get('content-disposition') || '').toLowerCase().includes('attachment')) {
+        const h = new Headers(htmlAssetResponse.headers);
+        h.set('Content-Type', 'text/html; charset=utf-8');
+        h.delete('Content-Disposition');
+        h.delete('Content-Length');
+        h.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        h.set('Pragma', 'no-cache');
+        h.set('X-Content-Type-Options', 'nosniff');
+        response = enhanceHtmlResponse(new Response(htmlAssetResponse.body, {
+          status: 200,
+          headers: h
+        }));
+      }
+    }
+
+
 
     // Robust clean-URL fallback: if the asset layer cannot resolve an
     // extensionless article and returns 404/octet-stream, try the real
