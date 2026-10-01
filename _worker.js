@@ -370,7 +370,13 @@ async function handleAdmin(context) {
         window_started_at INTEGER NOT NULL
       )`,
 
-      `CREATE TABLE IF NOT EXISTS audit_logs (
+      `CREATE TABLE IF NOT EXISTS api_rate_limits (
+        key TEXT PRIMARY KEY,
+        hits INTEGER NOT NULL DEFAULT 0,
+        window_started_at INTEGER NOT NULL
+      ),
+
+      CREATE TABLE IF NOT EXISTS audit_logs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
         action TEXT NOT NULL,
@@ -3809,6 +3815,7 @@ function enhanceHtmlResponse(response){
   headers.delete('content-length');
   headers.set('Cache-Control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('CDN-Cache-Control','no-store');
+  const secured = securityHeaders(headers);
   return new HTMLRewriter()
     .on('head',{element(e){ e.append('<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261001-4">',{html:true});
       e.append(`<style id="drerolvural-global-qa">${GLOBAL_HTML_CSS}</style>`,{html:true});
@@ -3818,7 +3825,7 @@ function enhanceHtmlResponse(response){
       e.append(`<script id="drerolvural-global-qa-js">${GLOBAL_HTML_JS}</script>`,{html:true});
       e.append(`<script id="drerolvural-evo-js" src="/evo.js?v=20260930-48" defer></script>`,{html:true});
     }})
-    .transform(new Response(response.body,{status:response.status,statusText:response.statusText,headers}));
+    .transform(new Response(response.body,{status:response.status,statusText:response.statusText,headers:secured}));
 }
 
 function legacyNotFoundResponse(request, reason = 'legacy-url-not-found') {
@@ -3870,6 +3877,29 @@ async function renderServerBlogArticle(request, env, slug) {
   return new Response(html,{status:200,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store, max-age=0, must-revalidate','X-Content-Type-Options':'nosniff'}});
 }
 
+function securityHeaders(headers) {
+  const h = new Headers(headers || {});
+  h.set('X-Content-Type-Options', 'nosniff');
+  h.set('X-Frame-Options', 'SAMEORIGIN');
+  h.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  h.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  h.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  h.set('X-Permitted-Cross-Domain-Policies', 'none');
+  h.set('Cross-Origin-Opener-Policy', 'same-origin');
+  h.set('Origin-Agent-Cluster', '?1');
+  return h;
+}
+
+function securityJson(data, status = 403) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: securityHeaders({
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store'
+    })
+  });
+}
+
 export default {
 
   async fetch(
@@ -3880,6 +3910,33 @@ export default {
 
     const url =
       new URL(request.url);
+
+    const method = request.method.toUpperCase();
+    const pathname = url.pathname;
+
+    if (!['GET', 'HEAD', 'POST', 'PUT', 'DELETE'].includes(method)) {
+      return securityJson({ error: 'Method not allowed.' }, 405);
+    }
+
+    if (/^(?:wp-admin|wp-login\\.php|xmlrpc\\.php|phpmyadmin|pma|\\.git(?:\\/|$)|\\.env(?:\\.|$)|server-status|cgi-bin)(?:\\/|$)/i.test(pathname.replace(/^\\/+/, ''))) {
+      return securityJson({ error: 'Not found.' }, 404);
+    }
+
+    if (pathname.startsWith('/api/')) {
+      const length = Number(request.headers.get('content-length') || 0);
+      const isUpload = pathname === '/api/banners/upload';
+      const maxBytes = isUpload ? 12 * 1024 * 1024 : pathname === '/api/evo' ? 64 * 1024 : 1024 * 1024;
+      if (length > maxBytes) {
+        return securityJson({ error: 'Request body too large.' }, 413);
+      }
+    }
+
+    if (pathname.startsWith('/api/') && ['POST','PUT','DELETE'].includes(method)) {
+      const origin = request.headers.get('Origin');
+      if (origin && origin !== url.origin) {
+        return securityJson({ error: 'Invalid origin.' }, 403);
+      }
+    }
 
     // Normalize trailing slashes before every legacy/GSC route decision.
     const cleanPathname = url.pathname.replace(/\/+$/, '') || '/';
@@ -4054,6 +4111,21 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
       };
 
       try {
+        if (env.DB) {
+          const rateKey = 'evo:' + (request.headers.get('CF-Connecting-IP') || 'unknown');
+          const rateNow = Math.floor(Date.now() / 1000);
+          const rateRow = await env.DB.prepare('SELECT hits,window_started_at FROM api_rate_limits WHERE key=?').bind(rateKey).first();
+          if (!rateRow || rateNow - Number(rateRow.window_started_at) >= 60) {
+            await env.DB.prepare('INSERT OR REPLACE INTO api_rate_limits(key,hits,window_started_at) VALUES(?,?,?)').bind(rateKey,1,rateNow).run();
+          } else if (Number(rateRow.hits) >= 20) {
+            return new Response(JSON.stringify({error:'Çok fazla EVO isteği. Lütfen biraz sonra tekrar deneyin.'}), {
+              status:429,
+              headers:{...baseHeaders,'Retry-After':'60'}
+            });
+          } else {
+            await env.DB.prepare('UPDATE api_rate_limits SET hits=hits+1 WHERE key=?').bind(rateKey).run();
+          }
+        }
         const payload = await request.json().catch(() => ({}));
         const message = String(payload.message || '').trim().slice(0, 4000);
         const languageNames = {tr:'Turkish',en:'English',de:'German',fr:'French',ar:'Arabic',ru:'Russian',az:'Azerbaijani',sq:'Albanian',nl:'Dutch',es:'Spanish'};
@@ -4550,12 +4622,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
        404 FALLBACK + PUBLIC SECURITY HEADERS
        ===================================================== */
 
-    const outHeaders = new Headers(response.headers);
-    outHeaders.set('X-Content-Type-Options', 'nosniff');
-    outHeaders.set('X-Frame-Options', 'SAMEORIGIN');
-    outHeaders.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-    outHeaders.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-    outHeaders.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    const outHeaders = securityHeaders(response.headers);
 
     // Some missing extensionless legacy paths can otherwise be exposed as
     // downloadable octet-streams by the asset layer. Never allow that.
