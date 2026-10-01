@@ -85,6 +85,7 @@
     // EVO, hamburger menu and language menu always use the same z-index
     // stack. The last layer the user touches is always the front-most one.
     const BASE_Z = 2000000000;
+    const MENU_Z = 2147483000;
     let layerCounter = 0;
 
     const header = () => document.querySelector('header');
@@ -124,7 +125,7 @@
       } else if (type === 'menu') {
         // On mobile the nav is portaled directly under <body>, so its own
         // z-index is what controls its position above the EVO layer.
-        setZ(n, z);
+        setZ(n, MENU_Z);
         // Keep the hamburger/header itself just behind the opened nav.
         setZ(h, String(BASE_Z));
       } else if (type === 'lang') {
@@ -398,7 +399,12 @@
         nav.style.setProperty('width', '100vw', 'important');
         nav.style.setProperty('max-width', '100vw', 'important');
       }
-      if (window.__bringLayer) window.__bringLayer('menu');
+      if (window.__bringLayer) {
+        window.__bringLayer('menu');
+        // Re-apply after layout/portal changes so iOS Safari cannot keep the
+        // nav inside an older stacking layer after it is moved under <body>.
+        requestAnimationFrame(() => window.__bringLayer('menu'));
+      }
     } else {
       nav.classList.remove('active');
       nav.classList.remove('mobile-menu-portal');
