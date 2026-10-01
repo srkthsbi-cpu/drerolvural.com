@@ -19,6 +19,61 @@
   const SUPPORTED = new Set(LANGS.map(x => x.code));
   const DEFAULT_LANG = 'tr';
 
+  // Form durum mesajları için bağımsız fallback. Dil dosyası geç yüklenmiş
+  // olsa bile kullanıcıya başka bir dilde Türkçe metin gösterilmesini önler.
+  const CONTACT_UI_I18N = {
+    tr: {
+      sending: 'Gönderiliyor…',
+      success: 'Teşekkürler! Mesajınız başarıyla iletildi. En kısa sürede sizinle iletişime geçeceğiz.',
+      error: 'Mesaj gönderilemedi. Lütfen tekrar deneyin veya WhatsApp üzerinden iletişime geçin.'
+    },
+    en: {
+      sending: 'Sending…',
+      success: 'Thank you! Your message has been sent successfully. We will contact you as soon as possible.',
+      error: 'The message could not be sent. Please try again or contact us via WhatsApp.'
+    },
+    de: {
+      sending: 'Wird gesendet…',
+      success: 'Vielen Dank! Ihre Nachricht wurde erfolgreich übermittelt. Wir werden uns schnellstmöglich bei Ihnen melden.',
+      error: 'Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns über WhatsApp.'
+    },
+    fr: {
+      sending: 'Envoi en cours…',
+      success: 'Merci ! Votre message a été envoyé avec succès. Nous vous contacterons dans les plus brefs délais.',
+      error: 'Le message n’a pas pu être envoyé. Veuillez réessayer ou nous contacter via WhatsApp.'
+    },
+    ar: {
+      sending: 'جارٍ الإرسال…',
+      success: 'شكرًا لك! تم إرسال رسالتك بنجاح. سنتواصل معك في أقرب وقت ممكن.',
+      error: 'تعذر إرسال الرسالة. يرجى المحاولة مرة أخرى أو التواصل معنا عبر واتساب.'
+    },
+    ru: {
+      sending: 'Отправка…',
+      success: 'Спасибо! Ваше сообщение успешно отправлено. Мы свяжемся с вами как можно скорее.',
+      error: 'Не удалось отправить сообщение. Попробуйте еще раз или свяжитесь с нами через WhatsApp.'
+    },
+    az: {
+      sending: 'Göndərilir…',
+      success: 'Təşəkkür edirik! Mesajınız uğurla göndərildi. Ən qısa zamanda sizinlə əlaqə saxlayacağıq.',
+      error: 'Mesaj göndərilə bilmədi. Zəhmət olmasa yenidən cəhd edin və ya WhatsApp vasitəsilə bizimlə əlaqə saxlayın.'
+    },
+    sq: {
+      sending: 'Dërgohet…',
+      success: 'Faleminderit! Mesazhi juaj u dërgua me sukses. Do t’ju kontaktojmë sa më shpejt.',
+      error: 'Mesazhi nuk u dërgua. Ju lutemi provoni përsëri ose na kontaktoni përmes WhatsApp.'
+    },
+    nl: {
+      sending: 'Verzenden…',
+      success: 'Bedankt! Uw bericht is succesvol verzonden. We nemen zo snel mogelijk contact met u op.',
+      error: 'Het bericht kon niet worden verzonden. Probeer het opnieuw of neem contact met ons op via WhatsApp.'
+    },
+    es: {
+      sending: 'Enviando…',
+      success: '¡Gracias! Su mensaje se ha enviado correctamente. Nos pondremos en contacto con usted lo antes posible.',
+      error: 'No se pudo enviar el mensaje. Inténtelo de nuevo o contáctenos por WhatsApp.'
+    }
+  };
+
   // Global floating-layer manager: EVO, hamburger and language menu share one
   // global stack. Every new interaction increments the layer, so the last
   // clicked surface is always visually above the other two.
@@ -447,7 +502,7 @@
         const btn=form.querySelector('button[type="submit"]');
         const success=document.getElementById('successMessage');
         const original=btn ? btn.innerHTML : '';
-        if(btn){btn.disabled=true;btn.innerHTML='Gönderiliyor…';}
+        if(btn){btn.disabled=true;btn.innerHTML=String((CONTACT_UI_I18N[currentLang]||CONTACT_UI_I18N.tr).sending);}
         try{
           const payload={};
           new FormData(form).forEach((value,key)=>{
@@ -468,11 +523,11 @@
           form.style.display='none';
           if(success){
             success.style.display='block';
-            success.textContent=String(getPath(translations,'contact.success') || 'Teşekkürler! Mesajınız başarıyla iletildi. En kısa sürede sizinle iletişime geçeceğiz.');
+            success.textContent=String((CONTACT_UI_I18N[currentLang]||CONTACT_UI_I18N.tr).success);
           }
         }catch(error){
           console.error('Contact form error:',error);
-          alert('Mesaj gönderilemedi. Lütfen tekrar deneyin veya WhatsApp üzerinden iletişime geçin.');
+          alert(String((CONTACT_UI_I18N[currentLang]||CONTACT_UI_I18N.tr).error));
         }finally{
           if(btn){btn.disabled=false;btn.innerHTML=original;}
         }
