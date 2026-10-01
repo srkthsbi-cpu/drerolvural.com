@@ -943,7 +943,7 @@ async function handleAdmin(context) {
         const referer = String(request.headers.get('Referer') || '');
         let source = 'contact';
         try {
-          const rp = new URL(referer).pathname.replace(/\\/+$/, '') || '/';
+          const rp = new URL(referer).pathname.replace(/\/+$/, '') || '/';
           if (rp === '/' || rp === '/index.html') source = 'home';
           else if (rp === '/iletisim' || rp === '/iletisim.html') source = 'contact';
         } catch (_) {}
