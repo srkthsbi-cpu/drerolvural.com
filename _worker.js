@@ -4398,6 +4398,80 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
     }
 
     /* =====================================================
+       PUBLIC IMAGE RECOVERY
+       =====================================================
+       Recover legacy root-level images from R2 when a Pages static
+       asset is missing. This keeps existing public URLs unchanged.
+       ===================================================== */
+    if (env.MEDIA) {
+      const pathname = url.pathname.replace(/\\+/g, '/');
+
+      if (/^\\/banner[123]\\.png$/i.test(pathname) && env.DB) {
+        try {
+          const match = pathname.match(/^\\/banner([123])\\.png$/i);
+          const position = Number(match[1]);
+          const row = await env.DB
+            .prepare('SELECT desktop_file,mobile_file FROM banners WHERE position=?')
+            .bind(position)
+            .first();
+
+          const candidates = [row?.desktop_file, row?.mobile_file]
+            .filter(Boolean)
+            .map(x => String(x).replace(/^\\/+/, ''));
+
+          for (const candidate of candidates) {
+            const key = candidate.startsWith('media/')
+              ? candidate.slice('media/'.length)
+              : candidate;
+            const obj = await env.MEDIA.get(key);
+            if (obj) {
+              const h = new Headers();
+              obj.writeHttpMetadata(h);
+              h.set('etag', obj.httpEtag);
+              h.set('cache-control','public, max-age=31536000, immutable');
+              return new Response(obj.body,{status:200,headers:h});
+            }
+          }
+        } catch (_) {}
+      }
+
+      if (/^\\/logo2\\.png$/i.test(pathname)) {
+        for (const key of [
+          'international-assets/logo2.png',
+          'international-assets/EVLogo1-01.png',
+          'logo2.png'
+        ]) {
+          try {
+            const obj = await env.MEDIA.get(key);
+            if (obj) {
+              const h = new Headers();
+              obj.writeHttpMetadata(h);
+              h.set('etag', obj.httpEtag);
+              h.set('cache-control','public, max-age=31536000, immutable');
+              return new Response(obj.body,{status:200,headers:h});
+            }
+          } catch (_) {}
+        }
+      }
+
+      if (/^\\/[^/]+\\.(?:png|jpe?g|webp|gif|svg)$/i.test(pathname)) {
+        const name = pathname.slice(1);
+        for (const key of ['international-assets/'+name, name]) {
+          try {
+            const obj = await env.MEDIA.get(key);
+            if (obj) {
+              const h = new Headers();
+              obj.writeHttpMetadata(h);
+              h.set('etag', obj.httpEtag);
+              h.set('cache-control','public, max-age=31536000, immutable');
+              return new Response(obj.body,{status:200,headers:h});
+            }
+          } catch (_) {}
+        }
+      }
+    }
+
+    /* =====================================================
        INTERNATIONAL HEALTH-TOURISM HTML ROUTING
        =====================================================
        Serve these nested documents explicitly as HTML. Cloudflare Pages can
