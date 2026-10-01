@@ -245,6 +245,16 @@
       if (value !== null && value !== undefined) setText(el, value);
     });
 
+    // İletişim formu başarı mesajı da sayfa ilk açıldığında/yenilendiğinde
+    // seçili dile göre güncellensin. Böylece ?contact=sent ile gelen
+    // sayfalarda HTML'deki Türkçe metin görünmez.
+    const contactSuccess = document.getElementById('successMessage');
+    if (contactSuccess) {
+      contactSuccess.textContent = String(
+        (CONTACT_UI_I18N[currentLang] || CONTACT_UI_I18N[DEFAULT_LANG]).success
+      );
+    }
+
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
       const value = getPath(translations, el.getAttribute('data-i18n-placeholder'));
       if (value !== null && value !== undefined) el.setAttribute('placeholder', String(value));
