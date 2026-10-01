@@ -81,12 +81,10 @@
     if (document.documentElement.dataset.layerPriorityBound === '1') return;
     document.documentElement.dataset.layerPriorityBound = '1';
 
-    // Global layer manager:
-    // EVO, hamburger menu and language menu always use the same z-index
-    // stack. The last layer the user touches is always the front-most one.
-    const BASE_Z = 2000000000;
-    const MENU_Z = 2147483000;
-    let layerCounter = 0;
+    // One global stack. EVO's CSS uses the 32-bit z-index ceiling, so keep
+    // every competing layer below that ceiling and raise only the last-touched layer.
+    const BASE_Z = 2147480000;
+    const TOP_Z = 2147483646;
 
     const header = () => document.querySelector('header');
     const nav = () => document.getElementById('navMenu');
@@ -96,43 +94,32 @@
       panel: document.getElementById('evo-panel')
     });
 
-    function nextZ() {
-      layerCounter += 1;
-      return String(BASE_Z + layerCounter);
-    }
-
     function setZ(el, z) {
-      if (el) el.style.setProperty('z-index', z, 'important');
+      if (el) el.style.setProperty('z-index', String(z), 'important');
     }
 
     function bring(type) {
-      const z = nextZ();
       const e = evo();
       const h = header();
       const n = nav();
       const l = lang();
 
-      // Reset the three competing layers first.
-      setZ(h, String(BASE_Z));
-      setZ(n, String(BASE_Z));
-      setZ(l, String(BASE_Z));
-      setZ(e.root, String(BASE_Z));
-      setZ(e.panel, String(BASE_Z));
+      // Reset all competing layers to the same low stack level.
+      setZ(h, BASE_Z);
+      setZ(n, BASE_Z);
+      setZ(l, BASE_Z);
+      setZ(e.root, BASE_Z);
+      setZ(e.panel, BASE_Z);
 
+      // The last touched layer gets the single highest usable z-index.
       if (type === 'evo') {
-        setZ(e.root, z);
-        setZ(e.panel, z);
+        setZ(e.root, TOP_Z);
+        setZ(e.panel, TOP_Z);
       } else if (type === 'menu') {
-        // On mobile the nav is portaled directly under <body>, so its own
-        // z-index is what controls its position above the EVO layer.
-        setZ(n, MENU_Z);
-        // Keep the hamburger/header itself just behind the opened nav.
-        setZ(h, String(BASE_Z));
+        setZ(n, TOP_Z);
       } else if (type === 'lang') {
-        // The language dropdown remains inside the header stacking context.
-        // Therefore the header must be raised together with the dropdown.
-        setZ(h, z);
-        setZ(l, String(BASE_Z + layerCounter + 1));
+        setZ(h, TOP_Z);
+        setZ(l, TOP_Z);
       }
     }
 
@@ -146,8 +133,6 @@
       return null;
     }
 
-    // Capture both pointerdown and click. pointerdown makes the transition
-    // immediate; click catches dynamically rendered menu items as well.
     const activateLayer = event => {
       const type = layerFromTarget(event.target instanceof Element ? event.target : null);
       if (type) bring(type);
