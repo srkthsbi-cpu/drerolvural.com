@@ -84,6 +84,82 @@ async function handleAdmin(context) {
     return data.access_token;
   }
 
+  function decodeBase64UrlUtf8(value) {
+    try {
+      const s = String(value || '').replace(/-/g, '+').replace(/_/g, '/');
+      const padded = s + '='.repeat((4 - s.length % 4) % 4);
+      const bytes = Uint8Array.from(atob(padded), ch => ch.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function gmailHeader(payload, name) {
+    const wanted = String(name || '').toLowerCase();
+    const h = (payload?.headers || []).find(x => String(x.name || '').toLowerCase() === wanted);
+    return h ? String(h.value || '') : '';
+  }
+
+  function stripHtml(value) {
+    return String(value || '')
+      .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')
+      .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')
+      .replace(/<br\\s*\\/?>(?=.)/gi, '\\n')
+      .replace(/<\\/p>/gi, '\\n')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;/gi, "'")
+      .replace(/\\s+/g, ' ')
+      .trim();
+  }
+
+  function gmailBody(payload) {
+    if (!payload) return '';
+    const mime = String(payload.mimeType || '');
+    if (payload.body?.data && (mime === 'text/plain' || mime === 'text/html')) {
+      const decoded = decodeBase64UrlUtf8(payload.body.data);
+      return mime === 'text/html' ? stripHtml(decoded) : decoded;
+    }
+    const parts = Array.isArray(payload.parts) ? payload.parts : [];
+    for (const preferred of ['text/plain', 'text/html']) {
+      for (const part of parts) {
+        if (String(part.mimeType || '') === preferred) {
+          const found = gmailBody(part);
+          if (found) return found;
+        }
+      }
+    }
+    for (const part of parts) {
+      const found = gmailBody(part);
+      if (found) return found;
+    }
+    return '';
+  }
+
+  async function gmailRequest(env, path, options = {}) {
+    const accessToken = await getGmailAccessToken(env);
+    const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/' + path, {
+      ...options,
+      headers: {
+        'Authorization': 'Bearer ' + accessToken,
+        'Accept': 'application/json',
+        ...(options.headers || {})
+      }
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const reason = data?.error?.errors?.[0]?.reason || '';
+      const message = data?.error?.message || 'Gmail API isteği başarısız.';
+      throw new Error(reason ? message + ' (' + reason + ')' : message);
+    }
+    return data;
+  }
+
   function base64UrlUtf8(value) {
     const bytes = new TextEncoder().encode(value);
     let binary = '';
@@ -1158,6 +1234,65 @@ async function handleAdmin(context) {
           logs:
             l?.results || []
         });
+      }
+
+      if (
+        path === 'gmail-messages' &&
+        method === 'GET'
+      ) {
+        try {
+          const limit = Math.min(Math.max(Number(new URL(request.url).searchParams.get('limit') || 25), 1), 50);
+          const data = await gmailRequest(env, 'messages?maxResults=' + limit + '&q=' + encodeURIComponent('in:inbox'));
+          const refs = Array.isArray(data.messages) ? data.messages : [];
+          const rows = await Promise.all(refs.map(async ref => {
+            const msg = await gmailRequest(env, 'messages/' + encodeURIComponent(ref.id) + '?format=metadata&metadataHeaders=From&metadataHeaders=To&metadataHeaders=Subject&metadataHeaders=Date');
+            return {
+              id: msg.id,
+              threadId: msg.threadId,
+              from: gmailHeader(msg.payload, 'From'),
+              to: gmailHeader(msg.payload, 'To'),
+              subject: gmailHeader(msg.payload, 'Subject') || '(Konu yok)',
+              date: gmailHeader(msg.payload, 'Date'),
+              snippet: String(msg.snippet || ''),
+              labelIds: Array.isArray(msg.labelIds) ? msg.labelIds : []
+            };
+          }));
+          return json(rows);
+        } catch (e) {
+          return json({
+            error: String(e?.message || e),
+            code: 'GMAIL_INBOX_ERROR'
+          }, 502);
+        }
+      }
+
+      if (
+        path.startsWith('gmail-messages/') &&
+        method === 'GET'
+      ) {
+        const id = decodeURIComponent(path.slice('gmail-messages/'.length)).trim();
+        if (!id || id.length > 200) {
+          return json({ error: 'Geçerli Gmail mesaj kimliği gerekli.' }, 400);
+        }
+        try {
+          const msg = await gmailRequest(env, 'messages/' + encodeURIComponent(id) + '?format=full');
+          return json({
+            id: msg.id,
+            threadId: msg.threadId,
+            from: gmailHeader(msg.payload, 'From'),
+            to: gmailHeader(msg.payload, 'To'),
+            subject: gmailHeader(msg.payload, 'Subject') || '(Konu yok)',
+            date: gmailHeader(msg.payload, 'Date'),
+            snippet: String(msg.snippet || ''),
+            body: gmailBody(msg.payload),
+            labelIds: Array.isArray(msg.labelIds) ? msg.labelIds : []
+          });
+        } catch (e) {
+          return json({
+            error: String(e?.message || e),
+            code: 'GMAIL_MESSAGE_ERROR'
+          }, 502);
+        }
       }
 
       if (
@@ -3794,6 +3929,12 @@ export default {
       return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
     }
 
+    /* ADMIN GMAIL INBOX */
+    if (url.pathname === '/erol_admin/gmail' || url.pathname === '/erol_admin/gmail/') {
+      const html = '<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>info@drerolvural.com — Gelen Kutusu</title><style>body{font-family:system-ui;margin:0;background:#f4f7f9;color:#10232b}.wrap{max-width:1180px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.top a,button{padding:11px 14px;border:0;border-radius:12px;background:#005082;color:#fff;text-decoration:none;font-weight:800;cursor:pointer}.ghost{background:#e7eef1;color:#17313a}.grid{display:grid;grid-template-columns:390px 1fr;gap:16px;margin-top:18px}.card{background:#fff;border:1px solid #dce5e9;border-radius:18px;overflow:hidden}.list{max-height:calc(100vh - 160px);overflow:auto}.item{padding:15px;border-bottom:1px solid #edf1f3;cursor:pointer}.item:hover,.item.active{background:#eef8fa}.item b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta{font-size:12px;color:#718087;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.detail{padding:22px;min-height:520px}.subject{font-size:22px;font-weight:800;margin-bottom:10px}.body{white-space:pre-wrap;line-height:1.65;margin-top:20px}.empty{padding:40px;text-align:center;color:#718087}.error{padding:20px;color:#a12626;background:#fff1f1;border-radius:12px}@media(max-width:800px){.grid{grid-template-columns:1fr}.list{max-height:360px}}</style></head><body><div class="wrap"><div class="top"><div><h1>📧 info@drerolvural.com</h1><div class="meta">Gelen e-postalar — yalnızca admin oturumu ile görüntülenir.</div></div><div><a class="ghost" href="/erol_admin/">Admin Paneli</a> <a class="ghost" href="/erol_admin/mesajlar">Form Mesajları</a> <button onclick="loadList()">Yenile</button></div></div><div class="grid"><div class="card"><div id="list" class="list"><div class="empty">Yükleniyor…</div></div></div><div class="card"><div id="detail" class="detail"><div class="empty">Soldan bir e-posta seçin.</div></div></div></div></div><script>let items=[];const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));async function api(path){const r=await fetch("/api/"+path,{credentials:"same-origin"});const d=await r.json().catch(()=>({}));if(r.status===401){location.href="/erol_admin/";return null}if(!r.ok)throw Error(d.error||"Gmail alınamadı");return d}function show(i){const x=items[i];document.getElementById("detail").innerHTML='<div class="subject">'+esc(x.subject)+'</div><div class="meta"><b>Kimden:</b> '+esc(x.from)+'<br><b>Kime:</b> '+esc(x.to||'info@drerolvural.com')+'<br><b>Tarih:</b> '+esc(x.date)+'</div><div class="body">'+esc(x.body||x.snippet||'')+'</div>'}async function loadList(){try{const r=await api("gmail-messages?limit=25");if(!r)return;items=r;document.getElementById("list").innerHTML=items.length?items.map((x,i)=>'<div class="item" onclick="show('+i+')"><b>'+esc(x.subject)+'</b><div class="meta">'+esc(x.from)+' · '+esc(x.date)+'</div><div class="meta">'+esc(x.snippet)+'</div></div>').join(""):'<div class="empty">Gelen kutusunda e-posta yok.</div>'}catch(e){document.getElementById("list").innerHTML='<div class="error">'+esc(e.message)+'</div>'}}loadList();</script></body></html>';
+      return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
+    }
+
     /* ADMIN FORM MESSAGE CENTER */
     if (url.pathname === '/erol_admin/mesajlar' || url.pathname === '/erol_admin/mesajlar/') {
       const html = '<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Form Mesajları</title><style>body{font-family:system-ui;margin:0;background:#f4f7f9;color:#10232b}.wrap{max-width:1100px;margin:auto;padding:24px}.tabs{display:flex;gap:8px;margin:18px 0}.tabs button,.top a{padding:11px 14px;border:0;border-radius:12px;background:#e7eef1;color:#17313a;text-decoration:none;font-weight:700}.tabs .active{background:#005082;color:#fff}.card{background:#fff;border:1px solid #dce5e9;border-radius:18px;overflow:hidden}.item{padding:16px;border-bottom:1px solid #edf1f3;cursor:pointer}.meta{font-size:12px;color:#718087;margin-top:5px}.detail{padding:20px;white-space:pre-wrap;line-height:1.6}.empty{padding:40px;text-align:center;color:#718087}</style></head><body><div class="wrap"><div class="top"><h1>📨 Form Mesajları</h1><a href="/erol_admin/">Admin Paneli</a> <a href="/erol_admin/site-guncelle">Siteyi Güncelle</a> <a href="/erol_admin/evo.html">EVO</a></div><div class="tabs"><button class="active" data-source="home">🏠 Ana Sayfa Formları</button><button data-source="contact">📞 İletişim Formları</button></div><div class="card"><div id="list" class="empty">Yükleniyor…</div><div id="detail"></div></div></div><script>let source="home",items=[];const esc=s=>String(s||"").replace(/[&<>"\x27]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","\x27":"&#39;"}[c]));async function load(){const r=await fetch("/api/contact-messages?source="+source,{credentials:"same-origin"});if(r.status===401){location.href="/erol_admin/";return}items=await r.json();list.innerHTML=items.length?items.map((x,i)=>`<div class="item" onclick="show(${i})"><b>${esc(x.name)}</b><div class="meta">${esc(x.phone)} · ${new Date(x.created_at).toLocaleString("tr-TR")}</div></div>`).join(""):"<div class=\"empty\">Henüz mesaj yok.</div>"}function show(i){const x=items[i];detail.innerHTML=`<div class="detail"><h2>${esc(x.name)}</h2><b>Telefon:</b> ${esc(x.phone)}\n<b>Kaynak:</b> ${x.source==="home"?"Ana Sayfa":"İletişim"}\n<b>Tarih:</b> ${new Date(x.created_at).toLocaleString("tr-TR")}\n\n${esc(x.message)}</div>`}document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");source=b.dataset.source;load()});load();</script></body></html>';
@@ -3846,7 +3987,7 @@ h1{margin:0 0 8px}p{color:#6d7d84}label{display:block;margin:16px 0 7px;font-wei
 <label>Şifre</label><input id="password" type="password" autocomplete="current-password" required>
 <button>Giriş Yap</button></form><div id="status"></div></section>
 <section id="panel"><h1>Admin Paneli</h1><p id="welcome"></p><div class="links">
-<a class="link" href="/erol_admin/site-guncelle">⚙️ Siteyi Güncelle</a><a class="link" href="/erol_admin/mesajlar">📨 Form Mesajları</a><a class="link" href="/erol_admin/evo.html">🤖 EVO Sohbetleri</a>
+<a class="link" href="/erol_admin/site-guncelle">⚙️ Siteyi Güncelle</a><a class="link" href="/erol_admin/gmail">📧 info@drerolvural.com Gelen Kutusu</a><a class="link" href="/erol_admin/mesajlar">📨 Ana Sayfa & İletişim Formları</a><a class="link" href="/erol_admin/evo.html">🤖 EVO Sohbetleri</a>
 <a class="link" href="/" target="_blank">🌐 Siteyi Aç</a>
 </div><button id="logout">Çıkış Yap</button><div id="panelStatus"></div></section>
 </main>
@@ -3864,7 +4005,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
       if (!contentType.includes('text/html')) return adminResponse;
       const textHtml = await adminResponse.text();
       const injected = textHtml.replace(/<\/body>/i,
-        `<div style="position:fixed;right:18px;bottom:18px;z-index:99999;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><a href="/erol_admin/site-guncelle" style="background:#005082;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">⚙️ Siteyi Güncelle</a><a href="/erol_admin/mesajlar" style="background:#17313a;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">📨 Form Mesajları</a><a href="/erol_admin/evo.html" style="background:#009bb4;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">🤖 EVO Sohbetleri</a></div></body>`);
+        `<div style="position:fixed;right:18px;bottom:18px;z-index:99999;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><a href="/erol_admin/site-guncelle" style="background:#005082;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">⚙️ Siteyi Güncelle</a><a href="/erol_admin/gmail" style="background:#d94841;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">📧 info@drerolvural.com</a><a href="/erol_admin/mesajlar" style="background:#17313a;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">📨 Form Mesajları</a><a href="/erol_admin/evo.html" style="background:#009bb4;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">🤖 EVO Sohbetleri</a></div></body>`);
       const headers = new Headers(adminResponse.headers);
       headers.set('content-type','text/html; charset=utf-8');
       headers.set('cache-control','no-store');
