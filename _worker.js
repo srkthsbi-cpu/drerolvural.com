@@ -3970,30 +3970,42 @@ export default {
       url.pathname === '/erol_admin/' ||
       url.pathname === '/erol_admin/index.html'
     ) {
-      // Always use the Worker admin shell; stale Pages admin assets cannot override it.
       const html = `<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Erol Admin</title>
+<title>Erol Vural — Yönetim Paneli</title>
 <style>
-body{margin:0;background:#f4f8fa;color:#10232b;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;display:grid;place-items:center}
-.card{width:min(420px,calc(100% - 32px));background:#fff;border:1px solid #dce7eb;border-radius:24px;padding:28px;box-shadow:0 16px 50px rgba(16,35,43,.10)}
-h1{margin:0 0 8px}p{color:#6d7d84}label{display:block;margin:16px 0 7px;font-weight:700}input{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #cbd9de;border-radius:12px;font-size:16px}button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:13px;background:#009bb4;color:#fff;font-weight:800;font-size:15px}#status{min-height:22px;margin-top:14px;font-size:14px}#panel{display:none}.links{display:grid;gap:10px;margin-top:20px}.link{display:block;padding:14px;border-radius:13px;background:#eef7f9;color:#12343d;text-decoration:none;font-weight:700}
-</style></head><body><main class="card">
-<section id="login"><h1>Erol Admin</h1><p>Yönetim paneline giriş yapın.</p>
-<form id="form"><label>Kullanıcı adı</label><input id="username" autocomplete="username" required>
-<label>Şifre</label><input id="password" type="password" autocomplete="current-password" required>
-<button>Giriş Yap</button></form><div id="status"></div></section>
-<section id="panel"><h1>Admin Paneli</h1><p id="welcome"></p><div class="links">
-<a class="link" href="/erol_admin/site-guncelle">⚙️ Siteyi Güncelle</a><a class="link" href="/erol_admin/gmail">📧 info@drerolvural.com Gelen Kutusu</a><a class="link" href="/erol_admin/mesajlar?source=home">🏠 Ana Sayfa Formları</a><a class="link" href="/erol_admin/mesajlar?source=contact">📞 İletişim Formları</a><a class="link" href="/erol_admin/evo.html">🤖 EVO Sohbetleri</a>
-<a class="link" href="/" target="_blank">🌐 Siteyi Aç</a>
-</div><button id="logout">Çıkış Yap</button><div id="panelStatus"></div></section>
-</main>
+:root{--navy:#005082;--teal:#009bb4;--ink:#10232b;--muted:#6b7d84;--bg:#f3f7f9;--line:#dce7eb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{width:min(1080px,calc(100% - 28px));margin:0 auto;padding:28px 0 40px}
+header{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:18px;box-shadow:0 8px 28px rgba(16,35,43,.06)}
+h1{margin:0;font-size:26px}header p{margin:6px 0 0;color:var(--muted)}.badge{font-size:11px;font-weight:800;background:#e8f7fa;color:var(--navy);padding:7px 10px;border-radius:999px;white-space:nowrap}
+.login{width:min(430px,100%);margin:12vh auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 12px 40px rgba(16,35,43,.08)}
+label{display:block;font-weight:750;font-size:13px;margin:16px 0 7px}input{width:100%;padding:13px;border:1px solid #cbdde2;border-radius:12px;font:inherit}
+button,.card{border-radius:16px}button{border:0;padding:12px 16px;background:var(--navy);color:#fff;font-weight:800;cursor:pointer}button:hover{filter:brightness(.96)}
+.login button{width:100%;margin-top:18px}.status{min-height:22px;margin-top:12px;color:#a12626;font-size:13px}
+#panel{display:none}.actions{display:flex;gap:10px;flex-wrap:wrap}.actions button{background:#edf4f6;color:#17313a}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.card{display:block;background:#fff;border:1px solid var(--line);padding:20px;text-decoration:none;color:inherit;box-shadow:0 7px 24px rgba(16,35,43,.05);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(16,35,43,.09)}
+.icon{font-size:25px}.card h2{font-size:18px;margin:10px 0 5px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+@media(max-width:700px){.wrap{width:min(100% - 20px,1080px);padding-top:10px}header{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.actions{width:100%}.actions button{flex:1}}
+</style></head><body>
+<div id="login" class="login"><h1>Yönetim Paneli</h1><p style="color:var(--muted)">Doç. Dr. Erol Vural web sitesi</p>
+<form id="form"><label>Kullanıcı adı</label><input id="username" autocomplete="username" required><label>Şifre</label><input id="password" type="password" autocomplete="current-password" required><button type="submit">Giriş Yap</button></form><div id="status" class="status"></div></div>
+<div id="panel" class="wrap"><header><div><h1>Admin Paneli</h1><p id="welcome"></p></div><div class="actions"><button id="site" type="button">Siteyi Aç</button><button id="logout" type="button">Çıkış Yap</button></div></header>
+<div class="grid">
+<a class="card" href="/erol_admin/site-guncelle"><div class="icon">⚙️</div><h2>Siteyi Güncelle</h2><p>Site ayarları, bannerlar ve makaleleri yönetin.</p></a>
+<a class="card" href="/erol_admin/gmail"><div class="icon">📧</div><h2>info@drerolvural.com</h2><p>Gelen e-postaları görüntüleyin.</p></a>
+<a class="card" href="/erol_admin/mesajlar?source=home"><div class="icon">🏠</div><h2>Ana Sayfa Formları</h2><p>Ana sayfadan gelen form mesajlarını yönetin.</p></a>
+<a class="card" href="/erol_admin/mesajlar?source=contact"><div class="icon">📞</div><h2>İletişim Formları</h2><p>İletişim sayfasından gelen mesajları yönetin.</p></a>
+<a class="card" href="/erol_admin/evo.html"><div class="icon">🤖</div><h2>EVO Sohbetleri</h2><p>EVO konuşmalarını görüntüleyin.</p></a>
+</div></div>
 <script>
 const $=id=>document.getElementById(id);
-async function api(path,opts){const r=await fetch('/api/'+path,{credentials:'same-origin',...opts,headers:{'Content-Type':'application/json',...(opts&&opts.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'İşlem başarısız.');return d}
-async function check(){try{const d=await api('auth/me',{method:'GET'});if(d.authenticated){$('login').style.display='none';$('panel').style.display='block';$('welcome').textContent='Hoş geldiniz, '+d.username+'.'}}catch(e){}}
-$('form').addEventListener('submit',async e=>{e.preventDefault();$('status').textContent='Giriş yapılıyor…';try{const d=await api('auth/login',{method:'POST',body:JSON.stringify({username:$('username').value.trim(),password:$('password').value})});$('login').style.display='none';$('panel').style.display='block';$('welcome').textContent='Hoş geldiniz, '+d.username+'.';$('status').textContent=''}catch(e){$('status').textContent=e.message}})
-$('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'POST',body:'{}'});location.reload()});check();
+async function api(path,opts={}){const r=await fetch('/api/'+path,{credentials:'same-origin',...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'İşlem başarısız.');return d}
+async function check(){try{const d=await api('auth/me');if(d.authenticated)show(d.username)}catch(e){}}
+function show(u){$('login').style.display='none';$('panel').style.display='block';$('welcome').textContent='Hoş geldiniz, '+u+'.'}
+$('form').addEventListener('submit',async e=>{e.preventDefault();$('status').textContent='Giriş yapılıyor…';try{const d=await api('auth/login',{method:'POST',body:JSON.stringify({username:$('username').value.trim(),password:$('password').value})});show(d.username);$('status').textContent=''}catch(e){$('status').textContent=e.message}})
+$('site').onclick=()=>window.open('/','_blank','noopener');$('logout').onclick=async()=>{try{await api('auth/logout',{method:'POST',body:'{}'})}finally{location.reload()}};check();
 </script></body></html>`;
       return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
     }
