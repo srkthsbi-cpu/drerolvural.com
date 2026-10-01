@@ -3853,68 +3853,73 @@ export default {
         const history = Array.isArray(payload.history) ? payload.history.slice(-8).map(x => ({role: x && x.role === 'assistant' ? 'assistant' : 'user', content: String(x && x.content || '').trim().slice(0, 1200)})).filter(x => x.content) : [];
         const conversationId = String(payload.conversationId || '').trim().slice(0,120);
         const saveEvoTurn = async (answer, source) => {
-          if (!env.DB || !conversationId || !message || !String(answer || '').trim()) return;
-          const createdAt = new Date().toISOString();
-          const existing = await env.DB.prepare(
-            'SELECT conversation_id FROM evo_conversations WHERE conversation_id=?'
-          ).bind(conversationId).first();
-          await env.DB.prepare(
-            `INSERT OR IGNORE INTO evo_conversations
-             (conversation_id,language,started_at,last_at,message_count)
-             VALUES(?,?,?,?,0)`
-          ).bind(conversationId,responseLanguage,createdAt,createdAt).run();
-          await env.DB.prepare(
-            `INSERT INTO evo_messages
-             (conversation_id,role,message,language,created_at)
-             VALUES(?,?,?,?,?)`
-          ).bind(conversationId,'user',message,responseLanguage,createdAt).run();
-          await env.DB.prepare(
-            `INSERT INTO evo_messages
-             (conversation_id,role,message,language,created_at)
-             VALUES(?,?,?,?,?)`
-          ).bind(conversationId,'assistant',String(answer).trim(),responseLanguage,new Date().toISOString()).run();
-          await env.DB.prepare(
-            `UPDATE evo_conversations
-             SET last_at=?,message_count=(SELECT COUNT(*) FROM evo_messages WHERE conversation_id=?)
-             WHERE conversation_id=?`
-          ).bind(new Date().toISOString(),conversationId,conversationId).run();
+          try {
+            if (!env.DB || !conversationId || !message || !String(answer || '').trim()) return;
+            const createdAt = new Date().toISOString();
+            const existing = await env.DB.prepare(
+              'SELECT conversation_id FROM evo_conversations WHERE conversation_id=?'
+            ).bind(conversationId).first();
+            await env.DB.prepare(
+              `INSERT OR IGNORE INTO evo_conversations
+               (conversation_id,language,started_at,last_at,message_count)
+               VALUES(?,?,?,?,0)`
+            ).bind(conversationId,responseLanguage,createdAt,createdAt).run();
+            await env.DB.prepare(
+              `INSERT INTO evo_messages
+               (conversation_id,role,message,language,created_at)
+               VALUES(?,?,?,?,?)`
+            ).bind(conversationId,'user',message,responseLanguage,createdAt).run();
+            await env.DB.prepare(
+              `INSERT INTO evo_messages
+               (conversation_id,role,message,language,created_at)
+               VALUES(?,?,?,?,?)`
+            ).bind(conversationId,'assistant',String(answer).trim(),responseLanguage,new Date().toISOString()).run();
+            await env.DB.prepare(
+              `UPDATE evo_conversations
+               SET last_at=?,message_count=(SELECT COUNT(*) FROM evo_messages WHERE conversation_id=?)
+               WHERE conversation_id=?`
+            ).bind(new Date().toISOString(),conversationId,conversationId).run();
 
-          if (!existing && env.GMAIL_CLIENT_ID && env.GMAIL_CLIENT_SECRET && env.GMAIL_REFRESH_TOKEN) {
-            const notify = async () => {
-              try {
-                const accessToken = await getGmailAccessToken(env);
-                const to = env.GMAIL_TO_EMAIL || 'srkthsbi@gmail.com';
-                const subject = 'Yeni EVO Sohbeti — ' + conversationId.slice(0,12);
-                const adminUrl = new URL('/erol_admin/evo.html', request.url).href;
-                const html =
-                  '<h2>Yeni EVO sohbeti</h2>' +
-                  '<p>Yeni bir EVO sohbeti başlatıldı.</p>' +
-                  '<p><strong>Dil:</strong> ' + escapeHtml(responseLanguage) + '</p>' +
-                  '<p><strong>Sohbet ID:</strong> ' + escapeHtml(conversationId) + '</p>' +
-                  '<p><a href="' + escapeHtml(adminUrl) + '">EVO sohbetlerini admin panelinde aç</a></p>' +
-                  '<p><small>Gizlilik nedeniyle sağlık konuşmasının içeriği e-postaya eklenmemiştir.</small></p>';
-                const mimeMessage = [
-                  'To: ' + to,
-                  'Subject: ' + mimeSubject(subject),
-                  'MIME-Version: 1.0',
-                  'Content-Type: text/html; charset=UTF-8',
-                  'Content-Transfer-Encoding: 8bit',
-                  '',
-                  html
-                ].join('\\r\\n');
-                await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{
-                  method:'POST',
-                  headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
-                  body:JSON.stringify({raw:base64UrlUtf8(mimeMessage)})
-                });
-              } catch (mailError) {
-                console.error(JSON.stringify({type:'evo_email_exception',conversationId,error:String(mailError?.message||mailError).slice(0,1000)}));
-              }
-            };
-            if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(notify());
-            else await notify();
+            if (!existing && env.GMAIL_CLIENT_ID && env.GMAIL_CLIENT_SECRET && env.GMAIL_REFRESH_TOKEN) {
+              const notify = async () => {
+                try {
+                  const accessToken = await getGmailAccessToken(env);
+                  const to = env.GMAIL_TO_EMAIL || 'srkthsbi@gmail.com';
+                  const subject = 'Yeni EVO Sohbeti — ' + conversationId.slice(0,12);
+                  const adminUrl = new URL('/erol_admin/evo.html', request.url).href;
+                  const html =
+                    '<h2>Yeni EVO sohbeti</h2>' +
+                    '<p>Yeni bir EVO sohbeti başlatıldı.</p>' +
+                    '<p><strong>Dil:</strong> ' + escapeHtml(responseLanguage) + '</p>' +
+                    '<p><strong>Sohbet ID:</strong> ' + escapeHtml(conversationId) + '</p>' +
+                    '<p><a href="' + escapeHtml(adminUrl) + '">EVO sohbetlerini admin panelinde aç</a></p>' +
+                    '<p><small>Gizlilik nedeniyle sağlık konuşmasının içeriği e-postaya eklenmemiştir.</small></p>';
+                  const mimeMessage = [
+                    'To: ' + to,
+                    'Subject: ' + mimeSubject(subject),
+                    'MIME-Version: 1.0',
+                    'Content-Type: text/html; charset=UTF-8',
+                    'Content-Transfer-Encoding: 8bit',
+                    '',
+                    html
+                  ].join('\\r\\n');
+                  await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{
+                    method:'POST',
+                    headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
+                    body:JSON.stringify({raw:base64UrlUtf8(mimeMessage)})
+                  });
+                } catch (mailError) {
+                  console.error(JSON.stringify({type:'evo_email_exception',conversationId,error:String(mailError?.message||mailError).slice(0,1000)}));
+                }
+              };
+              if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(notify());
+              else await notify();
+            }
+          } catch (e) {
+            console.error(JSON.stringify({type:'evo_storage_exception',conversationId,error:String(e?.message||e).slice(0,1000)}));
           }
         };
+
         if (!message) {
           return new Response(JSON.stringify({error:responseLanguage==='tr'?'Soru boş olamaz.':responseLanguage==='en'?'The question cannot be empty.':'Please enter a question.'}), {status:400, headers:baseHeaders});
         }
