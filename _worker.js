@@ -3662,7 +3662,7 @@ function enhanceHtmlResponse(response){
   headers.set('Cache-Control','no-store, no-cache, must-revalidate, max-age=0');
   headers.set('CDN-Cache-Control','no-store');
   return new HTMLRewriter()
-    .on('head',{element(e){
+    .on('head',{element(e){ e.append('<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261001-2">',{html:true});
       e.append(`<style id="drerolvural-global-qa">${GLOBAL_HTML_CSS}</style>`,{html:true});
     }})
     .on('#healthy-cookie-banner',{element(e){ e.remove(); }})
