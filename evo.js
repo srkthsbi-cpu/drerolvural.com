@@ -9,6 +9,16 @@ var hiddenKey='drerolvural_evo_removed';
 // Yeni sürümde gizle yalnızca sohbet penceresini kapattığı için eski kilidi bir kez temizle.
 try{localStorage.removeItem('drerolvural_evo_hidden')}catch(e){}
 var chatKey='drerolvural_evo_chat';
+var conversationKey='drerolvural_evo_conversation_id';
+function getConversationId(){
+  var existing=get(conversationKey);
+  if(existing && /^[a-zA-Z0-9_-]{8,120}$/.test(existing)) return existing;
+  var id='';
+  try{ id=crypto.randomUUID(); }catch(e){ id='evo-'+Date.now()+'-'+Math.random().toString(36).slice(2); }
+  set(conversationKey,id);
+  return id;
+}
+var conversationId=getConversationId();
 var root, panel, msgs, ta, face;
 var drag={active:false,moved:false,pointerId:null,startX:0,startY:0,originX:0,originY:0};
 var evoTapCount=0,evoTapTimer=null,layered=false,layerEls={};
@@ -187,7 +197,7 @@ function sendQuestion(q,privacyConsent){
   setEvoState('thinking');
   msgs.appendChild(w);
   msgs.scrollTop=msgs.scrollHeight;
-  fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:q,language:evoLang(),privacyConsent:!!privacyConsent,history:[].slice.call(msgs.children).filter(function(d){return d.dataset.sensitive!=='1'}).map(function(d){return {role:d.classList.contains('user')?'user':'assistant',content:d.textContent||''}}).slice(-8)})})
+  fetch('/api/evo',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({conversationId:conversationId,message:q,language:evoLang(),privacyConsent:!!privacyConsent,history:[].slice.call(msgs.children).filter(function(d){return d.dataset.sensitive!=='1'}).map(function(d){return {role:d.classList.contains('user')?'user':'assistant',content:d.textContent||''}}).slice(-8)})})
   .then(function(r){return r.json()})
   .then(function(d){
     if(d.needsPrivacyConsent){
