@@ -3848,7 +3848,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
       if (!contentType.includes('text/html')) return adminResponse;
       const textHtml = await adminResponse.text();
       const injected = textHtml.replace(/<\/body>/i,
-        `<a href="/erol_admin/evo.html" style="position:fixed;right:18px;bottom:18px;z-index:99999;background:#009bb4;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">🤖 EVO Sohbetleri</a></body>`);
+        `<div style="position:fixed;right:18px;bottom:18px;z-index:99999;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><a href="/erol_admin/site-guncelle" style="background:#005082;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">⚙️ Siteyi Güncelle</a><a href="/erol_admin/evo.html" style="background:#009bb4;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">🤖 EVO Sohbetleri</a></div></body>`);
       const headers = new Headers(adminResponse.headers);
       headers.set('content-type','text/html; charset=utf-8');
       headers.set('cache-control','no-store');
