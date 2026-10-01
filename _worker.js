@@ -129,7 +129,7 @@ async function handleAdmin(context) {
       {
         name: 'PBKDF2',
         salt: unb64(salt),
-        iterations: 150000,
+        iterations: 100000,
         hash: 'SHA-256'
       },
       key,
@@ -141,7 +141,7 @@ async function handleAdmin(context) {
 
   async function hashPassword(password) {
     const salt = await randomToken();
-    return `pbkdf2$150000$${salt}$${await derive(password, salt)}`;
+    return `pbkdf2$100000$${salt}$${await derive(password, salt)}`;
   }
 
   async function verifyPassword(password, stored) {
