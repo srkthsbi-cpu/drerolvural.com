@@ -388,7 +388,14 @@ async function handleAdmin(context) {
     ];
 
     for (const q of stmts) {
-      await env.DB.prepare(q).run();
+      try {
+        await env.DB.prepare(q).run();
+      } catch (e) {
+        const msg = String(e?.message || e);
+        if (!/duplicate column name/i.test(msg)) {
+          throw e;
+        }
+      }
     }
   }
 
