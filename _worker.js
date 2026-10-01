@@ -351,11 +351,14 @@ async function handleAdmin(context) {
         message TEXT NOT NULL,
         ip_hash TEXT,
         user_agent TEXT,
+        source TEXT NOT NULL DEFAULT 'contact',
         status TEXT NOT NULL DEFAULT 'new',
         created_at TEXT NOT NULL,
         read_at TEXT,
         replied_at TEXT
       )`,
+
+      `ALTER TABLE contact_messages ADD COLUMN source TEXT NOT NULL DEFAULT 'contact'`,
 
       `CREATE INDEX IF NOT EXISTS idx_contact_messages_created
        ON contact_messages(created_at DESC)`,
@@ -937,12 +940,19 @@ async function handleAdmin(context) {
         const id = crypto.randomUUID();
         const createdAt = iso();
         const userAgent = String(request.headers.get('User-Agent') || '').slice(0, 500);
+        const referer = String(request.headers.get('Referer') || '');
+        let source = 'contact';
+        try {
+          const rp = new URL(referer).pathname.replace(/\\/+$/, '') || '/';
+          if (rp === '/' || rp === '/index.html') source = 'home';
+          else if (rp === '/iletisim' || rp === '/iletisim.html') source = 'contact';
+        } catch (_) {}
 
         await env.DB
           .prepare(
             `INSERT INTO contact_messages
-             (id,name,phone,message,ip_hash,user_agent,status,created_at)
-             VALUES(?,?,?,?,?,?,?,?)`
+             (id,name,phone,message,ip_hash,user_agent,source,status,created_at)
+             VALUES(?,?,?,?,?,?,?,?,?)`
           )
           .bind(
             id,
@@ -951,6 +961,7 @@ async function handleAdmin(context) {
             message,
             ipHash,
             userAgent,
+            source,
             'new',
             createdAt
           )
@@ -1153,12 +1164,11 @@ async function handleAdmin(context) {
         path === 'contact-messages' &&
         method === 'GET'
       ) {
-        const r = await env.DB
-          .prepare(
-            'SELECT id,name,phone,message,status,created_at,read_at,replied_at FROM contact_messages ORDER BY datetime(created_at) DESC LIMIT 200'
-          )
-          .all();
-
+        const source = new URL(request.url).searchParams.get('source');
+        const valid = source === 'home' || source === 'contact';
+        const r = valid
+          ? await env.DB.prepare('SELECT id,name,phone,message,source,status,created_at,read_at,replied_at FROM contact_messages WHERE source=? ORDER BY datetime(created_at) DESC LIMIT 200').bind(source).all()
+          : await env.DB.prepare('SELECT id,name,phone,message,source,status,created_at,read_at,replied_at FROM contact_messages ORDER BY datetime(created_at) DESC LIMIT 200').all();
         return json(r.results || []);
       }
 
@@ -3784,6 +3794,12 @@ export default {
       return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
     }
 
+    /* ADMIN FORM MESSAGE CENTER */
+    if (url.pathname === '/erol_admin/mesajlar' || url.pathname === '/erol_admin/mesajlar/') {
+      const html = '<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Form Mesajları</title><style>body{font-family:system-ui;margin:0;background:#f4f7f9;color:#10232b}.wrap{max-width:1100px;margin:auto;padding:24px}.tabs{display:flex;gap:8px;margin:18px 0}.tabs button,.top a{padding:11px 14px;border:0;border-radius:12px;background:#e7eef1;color:#17313a;text-decoration:none;font-weight:700}.tabs .active{background:#005082;color:#fff}.card{background:#fff;border:1px solid #dce5e9;border-radius:18px;overflow:hidden}.item{padding:16px;border-bottom:1px solid #edf1f3;cursor:pointer}.meta{font-size:12px;color:#718087;margin-top:5px}.detail{padding:20px;white-space:pre-wrap;line-height:1.6}.empty{padding:40px;text-align:center;color:#718087}</style></head><body><div class="wrap"><div class="top"><h1>📨 Form Mesajları</h1><a href="/erol_admin/">Admin Paneli</a> <a href="/erol_admin/site-guncelle">Siteyi Güncelle</a> <a href="/erol_admin/evo.html">EVO</a></div><div class="tabs"><button class="active" data-source="home">🏠 Ana Sayfa Formları</button><button data-source="contact">📞 İletişim Formları</button></div><div class="card"><div id="list" class="empty">Yükleniyor…</div><div id="detail"></div></div></div><script>let source="home",items=[];const esc=s=>String(s||"").replace(/[&<>"\x27]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","\x27":"&#39;"}[c]));async function load(){const r=await fetch("/api/contact-messages?source="+source,{credentials:"same-origin"});if(r.status===401){location.href="/erol_admin/";return}items=await r.json();list.innerHTML=items.length?items.map((x,i)=>`<div class="item" onclick="show(${i})"><b>${esc(x.name)}</b><div class="meta">${esc(x.phone)} · ${new Date(x.created_at).toLocaleString("tr-TR")}</div></div>`).join(""):"<div class=\"empty\">Henüz mesaj yok.</div>"}function show(i){const x=items[i];detail.innerHTML=`<div class="detail"><h2>${esc(x.name)}</h2><b>Telefon:</b> ${esc(x.phone)}\n<b>Kaynak:</b> ${x.source==="home"?"Ana Sayfa":"İletişim"}\n<b>Tarih:</b> ${new Date(x.created_at).toLocaleString("tr-TR")}\n\n${esc(x.message)}</div>`}document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");source=b.dataset.source;load()});load();</script></body></html>';
+      return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
+    }
+
     /* ADMIN UI PANEL RROTA */
 
     if (
@@ -3830,7 +3846,7 @@ h1{margin:0 0 8px}p{color:#6d7d84}label{display:block;margin:16px 0 7px;font-wei
 <label>Şifre</label><input id="password" type="password" autocomplete="current-password" required>
 <button>Giriş Yap</button></form><div id="status"></div></section>
 <section id="panel"><h1>Admin Paneli</h1><p id="welcome"></p><div class="links">
-<a class="link" href="/erol_admin/site-guncelle">⚙️ Siteyi Güncelle</a><a class="link" href="/erol_admin/evo.html">🤖 EVO Sohbetleri</a>
+<a class="link" href="/erol_admin/site-guncelle">⚙️ Siteyi Güncelle</a><a class="link" href="/erol_admin/mesajlar">📨 Form Mesajları</a><a class="link" href="/erol_admin/evo.html">🤖 EVO Sohbetleri</a>
 <a class="link" href="/" target="_blank">🌐 Siteyi Aç</a>
 </div><button id="logout">Çıkış Yap</button><div id="panelStatus"></div></section>
 </main>
