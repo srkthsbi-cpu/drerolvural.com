@@ -3918,7 +3918,7 @@ export default {
       return securityJson({ error: 'Method not allowed.' }, 405);
     }
 
-    if (/^(?:wp-admin|wp-login\.php|xmlrpc\.php|phpmyadmin|pma|\.git(?:\/|$)|\.env(?:\\.|$)|server-status|cgi-bin)(?:\/|$)/i.test(pathname.replace(/^\/+/, ''))) {
+    if (/^(?:wp-admin|wp-login\.php|xmlrpc\.php|phpmyadmin|pma|\.git(?:\/|$)|\.env(?:\.|$)|server-status|cgi-bin)(?:\/|$)/i.test(pathname.replace(/^\/+/, ''))) {
       return securityJson({ error: 'Not found.' }, 404);
     }
 
