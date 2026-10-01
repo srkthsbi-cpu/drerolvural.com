@@ -81,60 +81,79 @@
     if (document.documentElement.dataset.layerPriorityBound === '1') return;
     document.documentElement.dataset.layerPriorityBound = '1';
 
+    // Global layer manager:
+    // EVO, hamburger menu and language menu always use the same z-index
+    // stack. The last layer the user touches is always the front-most one.
     const BASE_Z = 2000000000;
     let layerCounter = 0;
+
     const header = () => document.querySelector('header');
     const nav = () => document.getElementById('navMenu');
     const lang = () => document.getElementById('langMenuContent');
-    const evo = () => ({ root: document.getElementById('evo-fixed'), panel: document.getElementById('evo-panel') });
+    const evo = () => ({
+      root: document.getElementById('evo-fixed'),
+      panel: document.getElementById('evo-panel')
+    });
 
     function nextZ() {
       layerCounter += 1;
       return String(BASE_Z + layerCounter);
     }
+
     function setZ(el, z) {
       if (el) el.style.setProperty('z-index', z, 'important');
     }
-    function setEvo(z) {
-      const e = evo();
-      setZ(e.root, z);
-      setZ(e.panel, z);
-    }
+
     function bring(type) {
       const z = nextZ();
       const e = evo();
       const h = header();
       const n = nav();
       const l = lang();
+
+      // Reset the three competing layers first.
+      setZ(h, String(BASE_Z));
+      setZ(n, String(BASE_Z));
+      setZ(l, String(BASE_Z));
+      setZ(e.root, String(BASE_Z));
+      setZ(e.panel, String(BASE_Z));
+
       if (type === 'evo') {
-        setEvo(z);
-        setZ(h, String(BASE_Z));
-        setZ(n, String(BASE_Z));
-        setZ(l, String(BASE_Z));
+        setZ(e.root, z);
+        setZ(e.panel, z);
       } else if (type === 'menu') {
+        // On mobile the nav is portaled directly under <body>, so its own
+        // z-index is what controls its position above the EVO layer.
         setZ(n, z);
+        // Keep the hamburger/header itself just behind the opened nav.
         setZ(h, String(BASE_Z));
-        setZ(l, String(BASE_Z));
-        setEvo(String(BASE_Z));
       } else if (type === 'lang') {
-        // Language menu lives inside the header stacking context, so raise
-        // the header itself and keep the menu at the top of that context.
+        // The language dropdown remains inside the header stacking context.
+        // Therefore the header must be raised together with the dropdown.
         setZ(h, z);
-        setZ(l, String(Number(z) + 1));
-        setZ(n, String(BASE_Z));
-        setEvo(String(BASE_Z));
+        setZ(l, String(BASE_Z + layerCounter + 1));
       }
     }
 
     window.__bringLayer = bring;
 
-    document.addEventListener('pointerdown', event => {
-      const target = event.target instanceof Element ? event.target : null;
-      if (!target) return;
-      if (target.closest('#evo-fixed, #evo-panel')) bring('evo');
-      else if (target.closest('.lang-dropdown, .lang-content')) bring('lang');
-      else if (target.closest('#navMenu, .mobile-menu-btn')) bring('menu');
-    }, true);
+    function layerFromTarget(target) {
+      if (!target || !(target instanceof Element)) return null;
+      if (target.closest('#evo-fixed, #evo-panel')) return 'evo';
+      if (target.closest('.lang-dropdown, .lang-content, #currentLangText')) return 'lang';
+      if (target.closest('#navMenu, .mobile-menu-btn')) return 'menu';
+      return null;
+    }
+
+    // Capture both pointerdown and click. pointerdown makes the transition
+    // immediate; click catches dynamically rendered menu items as well.
+    const activateLayer = event => {
+      const type = layerFromTarget(event.target instanceof Element ? event.target : null);
+      if (type) bring(type);
+    };
+
+    document.addEventListener('pointerdown', activateLayer, true);
+    document.addEventListener('click', activateLayer, true);
 
     const observer = new MutationObserver(() => {
       const e = evo();
@@ -379,14 +398,6 @@
         nav.style.setProperty('width', '100vw', 'important');
         nav.style.setProperty('max-width', '100vw', 'important');
       }
-      const header = document.querySelector('header');
-      const evoRoot = document.getElementById('evo-fixed');
-      const evoPanel = document.getElementById('evo-panel');
-      const menuZ = String(2000000000 + Date.now() % 1000000);
-      if (header) header.style.setProperty('z-index', menuZ, 'important');
-      nav.style.setProperty('z-index', String(Number(menuZ) + 1), 'important');
-      if (evoRoot) evoRoot.style.setProperty('z-index', '1999999999', 'important');
-      if (evoPanel) evoPanel.style.setProperty('z-index', '1999999999', 'important');
       if (window.__bringLayer) window.__bringLayer('menu');
     } else {
       nav.classList.remove('active');
