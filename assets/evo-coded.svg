@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 675" role="img" aria-labelledby="title desc">
+<title id="title">EVO</title><desc id="desc">Erol Vural dijital sağlık asistanı</desc>
+<defs>
+ <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset=".72" stop-color="#edf7fb"/><stop offset="1" stop-color="#c9e9f3"/></linearGradient>
+ <linearGradient id="edge" x1="0" x2="1"><stop stop-color="#74efff"/><stop offset=".5" stop-color="#00a9c2"/><stop offset="1" stop-color="#78f3ff"/></linearGradient>
+ <linearGradient id="visor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#172f4d"/><stop offset=".45" stop-color="#061425"/><stop offset="1" stop-color="#020914"/></linearGradient>
+ <radialGradient id="iris" cx=".35" cy=".3"><stop stop-color="#eaffff"/><stop offset=".35" stop-color="#59fbff"/><stop offset="1" stop-color="#00aebd"/></radialGradient>
+ <linearGradient id="mouth" x1="0" x2="1"><stop stop-color="#56faff"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#56faff"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="soft"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <style>
+  .eye{transform-box:fill-box;transform-origin:center;animation:blink 5.8s ease-in-out infinite}.eye.r{animation-delay:.15s}
+  .pupil{transform-box:fill-box;transform-origin:center;animation:look 7s ease-in-out infinite}
+  .brow{transform-box:fill-box;transform-origin:center;animation:brow 6.5s ease-in-out infinite}
+  .mouth{transform-box:fill-box;transform-origin:center;animation:talk 3.8s ease-in-out infinite}.talk2{opacity:0;animation:talk2 3.8s ease-in-out infinite}
+  .shine{animation:shine 2.8s ease-in-out infinite}
+  @keyframes blink{0%,45%,49%,100%{transform:scaleY(1)}47%{transform:scaleY(.08)}}
+  @keyframes look{0%,18%{transform:translateX(0)}26%{transform:translateX(-7px)}34%{transform:translateX(7px)}42%,100%{transform:translateX(0)}}
+  @keyframes brow{0%,65%,100%{transform:translateY(0)}69%{transform:translateY(-5px)}73%{transform:translateY(1px)}}
+  @keyframes talk{0%,72%,100%{transform:scaleY(1)}75%{transform:scaleY(.72)}78%{transform:scaleY(1.05)}81%{transform:scaleY(.8)}84%{transform:scaleY(1)}}
+  @keyframes talk2{0%,72%{opacity:0}75%,81%{opacity:1}84%,100%{opacity:0}}
+  @keyframes shine{0%,100%{opacity:.2}50%{opacity:.8}}
+  @media(prefers-reduced-motion:reduce){.eye,.pupil,.brow,.mouth,.talk2,.shine{animation:none}}
+ </style>
+</defs>
+<!-- featureless base head recreated as clean SVG geometry -->
+<ellipse cx="450" cy="615" rx="300" ry="28" fill="#6deaff" opacity=".22" filter="url(#soft)"/>
+<path d="M188 270C188 125 298 45 450 45s262 80 262 225v275c0 70-58 112-130 112H318c-72 0-130-42-130-112V270Z" fill="url(#shell)" stroke="#b9e8f4" stroke-width="6"/>
+<!-- top vent -->
+<path d="M368 68h164c22 0 35 16 31 35l-7 31H344l-7-31c-4-19 9-35 31-35Z" fill="#0b7188" stroke="#6befff" stroke-width="5"/>
+<!-- side ears -->
+<g><ellipse cx="135" cy="385" rx="70" ry="105" fill="#0b8198" stroke="#66efff" stroke-width="7"/><ellipse cx="135" cy="385" rx="48" ry="82" fill="#f5fbfd" stroke="#bcebf4" stroke-width="4"/><path d="M116 327v116" stroke="#08dff6" stroke-width="12" stroke-linecap="round" filter="url(#glow)"/></g>
+<g><ellipse cx="765" cy="385" rx="70" ry="105" fill="#0b8198" stroke="#66efff" stroke-width="7"/><ellipse cx="765" cy="385" rx="48" ry="82" fill="#f5fbfd" stroke="#bcebf4" stroke-width="4"/><path d="M784 327v116" stroke="#08dff6" stroke-width="12" stroke-linecap="round" filter="url(#glow)"/></g>
+<!-- side crown lights -->
+<path d="M226 160Q270 96 326 78M674 160Q630 96 574 78" fill="none" stroke="url(#edge)" stroke-width="14" stroke-linecap="round" filter="url(#glow)"/>
+<!-- forehead logo -->
+<g transform="translate(450 190)">
+ <path d="M-10-82c-15 0-33 5-50 17l22 35c13-10 25-14 37-14 18 0 32 8 42 20 9 11 13 25 13 42 0 9-1 17-4 25 32-17 51-46 51-76 0-29-18-49-46-49Z" fill="#7fbd12"/>
+ <path d="M6-82v30c27 0 49 17 49 42 0 20-13 37-31 44l-35 14 22 32c50-16 80-51 80-94 0-42-33-68-85-68Z" fill="#0d94a8"/>
+ <circle cx="28" cy="-42" r="10" fill="#fff"/>
+</g>
+<!-- dark visor -->
+<path d="M270 278C315 250 355 252 392 268c38 16 76 22 116 0 37-20 83-20 122 10 29 22 42 52 42 91v166c0 55-45 94-100 94H328c-55 0-100-39-100-94V369c0-39 13-69 42-91Z" fill="url(#visor)" stroke="#08152a" stroke-width="8"/>
+<path d="M276 294Q335 265 394 285T506 284Q570 253 628 291" fill="none" stroke="#5da8e6" stroke-opacity=".35" stroke-width="5"/>
+<!-- coded eyebrows -->
+<g class="brow" fill="none" stroke="#2cf6ff" stroke-width="17" stroke-linecap="round" filter="url(#glow)">
+ <path d="M270 365Q325 326 382 363"/><path d="M518 363Q575 326 630 365"/>
+</g>
+<!-- coded eyes -->
+<g class="eye"><ellipse cx="326" cy="448" rx="72" ry="88" fill="url(#iris)" filter="url(#glow)"/><ellipse cx="326" cy="453" rx="40" ry="52" fill="#02070d"/><circle cx="344" cy="430" r="15" fill="#fff"/><circle cx="306" cy="476" r="7" fill="#fff"/><ellipse cx="326" cy="448" rx="66" ry="81" fill="none" stroke="#a4ffff" stroke-width="4" opacity=".75"/></g>
+<g class="eye r"><ellipse cx="574" cy="448" rx="72" ry="88" fill="url(#iris)" filter="url(#glow)"/><ellipse cx="574" cy="453" rx="40" ry="52" fill="#02070d"/><circle cx="592" cy="430" r="15" fill="#fff"/><circle cx="554" cy="476" r="7" fill="#fff"/><ellipse cx="574" cy="448" rx="66" ry="81" fill="none" stroke="#a4ffff" stroke-width="4" opacity=".75"/></g>
+<g class="pupil" opacity=".7" fill="#fff"><circle cx="326" cy="448" r="3"/><circle cx="574" cy="448" r="3"/></g>
+<!-- coded mouth -->
+<g class="mouth"><path d="M418 538Q450 558 482 538" fill="none" stroke="url(#mouth)" stroke-width="15" stroke-linecap="round" filter="url(#glow)"/></g>
+<g class="talk2"><ellipse cx="450" cy="541" rx="25" ry="11" fill="#efffff" stroke="#5bffff" stroke-width="7" filter="url(#soft)"/></g>
+<circle class="shine" cx="450" cy="328" r="3" fill="#fff"/>
+</svg>

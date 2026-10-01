@@ -1,0 +1,22 @@
+FINAL 5 HOTFIX / URL + BLOG RECOVERY
+Date: 2026-09-21
+
+Fixes:
+- Removed 11 self-redirect entries that caused infinite redirect loops.
+- Legacy redirects targeting current /blog/*.html routes now target extensionless canonical routes.
+- Removed duplicate Worker-level www->root redirect; Cloudflare domain-level canonicalization remains authoritative.
+- Added current extensionless /blog routes to Worker allowlist.
+- Added data/recovered-articles.json containing all extensionless recovered article targets (96 in deployed map).
+- Updated blog.js to list recovered articles and link directly to canonical extensionless article URLs.
+- Updated blog.js cache-busting query in blog.html.
+- Updated sitemap current blog URLs from .html to extensionless canonical routes.
+
+Validation:
+- Worker syntax: PASS
+- Blog JS syntax: PASS
+- Redirect graph self-loops: 0
+- Redirect graph cycles: 0
+- Recovered article manifest: 96
+- ZIP integrity: PASS
+
+QA-FIX: 2026-09-21 - Removed extensionless article -> .html ASSETS.fetch routing that could loop on Cloudflare Pages canonical HTML redirects. Clean article URLs now fall through directly to Pages asset routing.

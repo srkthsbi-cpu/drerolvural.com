@@ -1,0 +1,13 @@
+EROL VURAL - CLOUDFLARE PAGES DIRECT UPLOAD
+
+Bu sürüm Advanced Mode _worker.js kullanır. Cloudflare Dashboard drag-and-drop yüklemesiyle _worker.js desteklenir.
+
+1. ZIP'i açın ve içindeki index klasörünün tamamını Cloudflare Pages Direct Upload ekranına yükleyin.
+2. D1 veritabanı: erolvural-db oluşturun ve Pages/Workers projesinde binding adı DB olacak şekilde bağlayın.
+3. R2 bucket: erolvural-media oluşturun ve binding adı MEDIA olacak şekilde bağlayın.
+4. Environment variable/secret: ADMIN_USERNAME=admin
+5. Secret: ADMIN_INITIAL_PASSWORD = güçlü ilk şifre.
+6. Kaydedip yeniden deploy edin.
+7. /erol_admin/ adresinden giriş yapın.
+
+NOT: D1 ve R2 bağlanmadan site statik içerikleri çalışır; admin, banner yükleme ve dinamik blog yönetimi çalışmaz.

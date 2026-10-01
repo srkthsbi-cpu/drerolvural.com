@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /erol_admin/
+Sitemap: https://drerolvural.com/sitemap.xml

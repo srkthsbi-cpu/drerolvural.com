@@ -1,0 +1,90 @@
+{
+  "name": "EVO",
+  "version": "1.0",
+  "purpose": "Doç. Dr. Erol Vural sitesi için genel sağlık bilgilendirme asistanı.",
+  "topics": [
+    "BMI",
+    "obezite",
+    "diyabet",
+    "genel sağlık",
+    "tüp mide",
+    "sleeve gastrektomi",
+    "gastrik bypass",
+    "ameliyat süreci",
+    "beslenme",
+    "randevu ve iletişim"
+  ],
+  "safety": [
+    "Tanı koyma.",
+    "Kişiye özel tedavi veya ilaç dozu önerme.",
+    "Ameliyat uygunluğu hakkında kesin karar verme.",
+    "Acil durumlarda gecikmeye neden olabilecek yönlendirme yapma.",
+    "Doktor veya sağlık profesyoneli yerine geçtiğini iddia etme."
+  ],
+  "faq": [
+    {
+      "q": "BMI nedir?",
+      "a": "BMI (Vücut Kitle İndeksi), yetişkinlerde boy ve kilo arasındaki ilişkiyi değerlendirmede kullanılan bir ölçüttür. Tek başına tanı veya tedavi kararı vermez."
+    },
+    {
+      "q": "BMI nasıl hesaplanır?",
+      "a": "BMI, kilogram cinsinden vücut ağırlığının metre cinsinden boyun karesine bölünmesiyle hesaplanır. Sitedeki BMI hesaplayıcısını kullanabilirsiniz."
+    },
+    {
+      "q": "Obezite nedir?",
+      "a": "Obezite, sağlık üzerinde olumsuz etkileri olabilen fazla yağ dokusunun birikimiyle ilişkili kronik bir durumdur. Nedenleri ve tedavisi kişiden kişiye değişebilir."
+    },
+    {
+      "q": "Obezite neden olur?",
+      "a": "Obezite; beslenme, fiziksel aktivite, genetik, uyku, çevresel ve metabolik faktörlerin birlikte etkisiyle gelişebilir. Tek bir nedene indirgenemez."
+    },
+    {
+      "q": "Tüp mide nedir?",
+      "a": "Tüp mide (sleeve gastrektomi), midenin bir bölümünün cerrahi olarak çıkarılmasıyla mide hacminin azaltılmasını amaçlayan bariatrik cerrahi yöntemidir. Uygunluk kişisel hekim değerlendirmesi gerektirir."
+    },
+    {
+      "q": "Tüp mide ameliyatı nasıl yapılır?",
+      "a": "Tüp mide ameliyatında midenin büyük bölümü çıkarılarak daha küçük, tüp şeklinde bir mide oluşturulur. Ameliyat tekniği ve süreç hastanın durumuna ve cerrahi değerlendirmeye göre değişebilir."
+    },
+    {
+      "q": "Gastrik bypass nedir?",
+      "a": "Gastrik bypass, mide hacmini küçültmenin yanında ince bağırsağın besinlerle temas eden bölümünü değiştiren bariatrik cerrahi yöntemlerden biridir. Hangi yöntemin uygun olduğu kişisel değerlendirmeyle belirlenir."
+    },
+    {
+      "q": "Diyabet nedir?",
+      "a": "Tip 2 diyabet, kan şekeri düzenlenmesinde bozulmayla ilişkili kronik bir hastalıktır. Kişisel tedavi ve ilaç kararları hekim değerlendirmesi gerektirir."
+    },
+    {
+      "q": "İnsülin direnci nedir?",
+      "a": "İnsülin direnci, hücrelerin insülinin etkisine yeterince yanıt vermemesiyle ilişkili metabolik bir durumdur. Değerlendirme laboratuvar sonuçları ve klinik bilgiler birlikte ele alınarak yapılır."
+    },
+    {
+      "q": "Ameliyat kimlere uygulanır?",
+      "a": "Bariatrik cerrahi uygunluğu BMI, eşlik eden hastalıklar, önceki tedaviler, genel sağlık durumu ve başka klinik faktörlerin birlikte değerlendirilmesini gerektirir. EVO kişisel ameliyat kararı vermez."
+    },
+    {
+      "q": "Ameliyat öncesi neler değerlendirilir?",
+      "a": "Ameliyat öncesinde genel sağlık durumu, eşlik eden hastalıklar, kullanılan ilaçlar, beslenme durumu ve gerekli görülen tetkikler değerlendirilir. Ayrıntılı plan hekim tarafından oluşturulur."
+    },
+    {
+      "q": "Ameliyat sonrası beslenme nasıl olur?",
+      "a": "Bariatrik cerrahi sonrası beslenme genellikle aşamalı olarak ilerler ve sıvı, protein, porsiyon ve vitamin-mineral gereksinimleri kişiye göre planlanır. Kişisel plan sağlık ekibi tarafından verilmelidir."
+    },
+    {
+      "q": "Ameliyattan sonra vitamin gerekir mi?",
+      "a": "Bazı bariatrik cerrahi yöntemlerinden sonra vitamin ve mineral takviyeleri gerekebilir. Hangi takviyenin ve dozun kullanılacağı ameliyat türü ve laboratuvar sonuçlarına göre sağlık ekibi tarafından belirlenmelidir."
+    },
+    {
+      "q": "Diyabet ve obezite arasında ilişki var mı?",
+      "a": "Obezite, özellikle tip 2 diyabet gelişme riskini artıran önemli faktörlerden biridir. Kişisel risk ve tedavi planı hekim değerlendirmesi gerektirir."
+    },
+    {
+      "q": "Sağlıklı beslenme nasıl olmalı?",
+      "a": "Genel olarak sebze, meyve, protein kaynakları, tam tahıllar ve yeterli sıvı içeren dengeli bir beslenme; aşırı işlenmiş ve yüksek şekerli gıdaların sınırlandırılması önerilir. Kişisel ihtiyaçlar değişebilir."
+    },
+    {
+      "q": "Ne zaman acile başvurmalıyım?",
+      "a": "Şiddetli göğüs ağrısı, ciddi nefes darlığı, bilinç değişikliği, bayılma, ciddi kanama veya yaşamı tehdit eden başka belirtilerde çevrimiçi bilgi beklemek yerine acil sağlık hizmetlerine başvurun."
+    }
+  ]
+}

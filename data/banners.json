@@ -1,0 +1,17 @@
+[
+  {
+    "file": "banner1.png",
+    "alt": "Doç. Dr. Erol Vural – Banner 1",
+    "enabled": true
+  },
+  {
+    "file": "banner2.png",
+    "alt": "Doç. Dr. Erol Vural – Banner 2",
+    "enabled": true
+  },
+  {
+    "file": "banner3.png",
+    "alt": "Doç. Dr. Erol Vural – Banner 3",
+    "enabled": true
+  }
+]

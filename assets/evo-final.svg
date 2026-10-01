@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 675" class="evo-svg" role="img" aria-label="EVO sağlık asistanı">
+<defs>
+ <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".72" stop-color="#f1f9fc"/><stop offset="1" stop-color="#cfeaf2"/></linearGradient>
+ <linearGradient id="ear" x1="0" x2="1"><stop stop-color="#063e59"/><stop offset=".5" stop-color="#09d9ef"/><stop offset="1" stop-color="#007d9c"/></linearGradient>
+ <linearGradient id="visor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#071a33"/><stop offset="1" stop-color="#020b18"/></linearGradient>
+ <radialGradient id="iris" cx=".35" cy=".3"><stop stop-color="#efffff"/><stop offset=".34" stop-color="#73fff0"/><stop offset="1" stop-color="#00bfae"/></radialGradient>
+ <linearGradient id="mouth" x1="0" x2="1"><stop stop-color="#45fff1"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#45fff1"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#00527d" flood-opacity=".22"/></filter>
+ <style>
+  .eye{transform-box:fill-box;transform-origin:center;animation:blink 6s ease-in-out infinite}.eye.r{animation-delay:.2s}
+  .pupil{transform-box:fill-box;transform-origin:center;animation:look 7s ease-in-out infinite}
+  .brow{transform-box:fill-box;transform-origin:center;animation:brow 6.5s ease-in-out infinite}
+  .mouth{transform-box:fill-box;transform-origin:center;animation:talk 3.6s ease-in-out infinite}
+  .halo{animation:halo 3.2s ease-in-out infinite}
+  @keyframes blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.06)}}
+  @keyframes look{0%,20%,100%{transform:translateX(0)}28%{transform:translateX(-7px)}36%{transform:translateX(7px)}44%{transform:translateX(0)}}
+  @keyframes brow{0%,65%,100%{transform:translateY(0)}70%{transform:translateY(-5px)}75%{transform:translateY(1px)}}
+  @keyframes talk{0%,70%,100%{transform:scaleY(1)}73%{transform:scaleY(.7)}76%{transform:scaleY(1.08)}79%{transform:scaleY(.78)}82%{transform:scaleY(1)}}
+  @keyframes halo{0%,100%{opacity:.25}50%{opacity:.6}}
+  .is-attention .pupil{transform:translateY(-4px)}.is-thinking .pupil{transform:translate(9px,-5px)}
+  .is-talking .mouth{animation:talkFast .22s ease-in-out infinite alternate}
+  @keyframes talkFast{from{transform:scaleY(.7)}to{transform:scaleY(1.22)}}
+  @media(prefers-reduced-motion:reduce){.eye,.pupil,.brow,.mouth,.halo{animation:none!important}}
+ </style>
+</defs>
+<!-- BASE: recreated from the supplied EVO head reference. No face artwork is baked into it. -->
+<g filter="url(#shadow)">
+ <ellipse class="halo" cx="450" cy="618" rx="300" ry="25" fill="#39eaff"/>
+ <!-- ears -->
+ <g>
+  <ellipse cx="120" cy="375" rx="70" ry="105" fill="url(#ear)" stroke="#55edff" stroke-width="5"/>
+  <ellipse cx="120" cy="375" rx="46" ry="79" fill="#f8fcfe" stroke="#b9e8f1" stroke-width="4"/>
+  <path d="M102 320v110" stroke="#08dff4" stroke-width="11" stroke-linecap="round" filter="url(#glow)"/>
+  <ellipse cx="780" cy="375" rx="70" ry="105" fill="url(#ear)" stroke="#55edff" stroke-width="5"/>
+  <ellipse cx="780" cy="375" rx="46" ry="79" fill="#f8fcfe" stroke="#b9e8f1" stroke-width="4"/>
+  <path d="M798 320v110" stroke="#08dff4" stroke-width="11" stroke-linecap="round" filter="url(#glow)"/>
+ </g>
+ <!-- white shell -->
+ <path d="M190 275C190 125 292 53 450 53s260 72 260 222v250c0 66-51 101-126 111-76 10-202 10-268 0-75-10-126-45-126-111Z" fill="url(#shell)" stroke="#d8f1f6" stroke-width="6"/>
+ <!-- top vent -->
+ <path d="M364 73h172c20 0 31 12 28 28l-8 30H344l-8-30c-3-16 8-28 28-28Z" fill="#087a91" stroke="#4de8f8" stroke-width="5"/>
+ <!-- cyan side lights -->
+ <path d="M238 175Q276 101 344 80M662 175Q624 101 556 80" fill="none" stroke="#10dff4" stroke-width="13" stroke-linecap="round" filter="url(#glow)"/>
+ <!-- logo -->
+ <g transform="translate(450 176)">
+  <path d="M-8 30C-47 19-63-13-47-45-21-39-5-15-8 30Z" fill="#80b817"/>
+  <path d="M0 33C14-5 35-30 57-34 66-3 45 26 0 33Z" fill="#0797aa"/>
+  <path d="M-4 31C5 18 14 5 22-9" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+ </g>
+ <!-- dark blank screen -->
+ <path d="M280 293C323 263 362 266 399 282 435 297 465 298 501 282 538 266 577 263 620 293 649 314 663 348 663 389v157c0 49-37 79-86 87-70 11-184 11-254 0-49-8-86-38-86-87V389c0-41 14-75 43-96Z" fill="url(#visor)" stroke="#06152a" stroke-width="8"/>
+ <path d="M286 308Q346 280 401 300T501 301Q556 280 614 308" fill="none" stroke="#4a91d0" stroke-width="4" opacity=".35"/>
+</g>
+<!-- CODE-DRAWN FACE: eyes, brows and mouth only -->
+<g class="brow" fill="none" stroke="#35f5ea" stroke-width="13" stroke-linecap="round" filter="url(#glow)">
+ <path d="M318 370Q356 344 393 370"/><path d="M507 370Q544 344 582 370"/>
+</g>
+<g class="eye">
+ <ellipse cx="355" cy="435" rx="56" ry="66" fill="url(#iris)" filter="url(#glow)"/>
+ <ellipse class="pupil" cx="359" cy="438" rx="28" ry="37" fill="#02080e"/>
+ <circle cx="376" cy="417" r="11" fill="#fff"/><circle cx="347" cy="457" r="5" fill="#fff"/>
+</g>
+<g class="eye r">
+ <ellipse cx="545" cy="435" rx="56" ry="66" fill="url(#iris)" filter="url(#glow)"/>
+ <ellipse class="pupil" cx="549" cy="438" rx="28" ry="37" fill="#02080e"/>
+ <circle cx="566" cy="417" r="11" fill="#fff"/><circle cx="537" cy="457" r="5" fill="#fff"/>
+</g>
+<path class="mouth" d="M419 500Q450 525 481 500" fill="none" stroke="url(#mouth)" stroke-width="13" stroke-linecap="round" filter="url(#glow)"/>
+</svg>

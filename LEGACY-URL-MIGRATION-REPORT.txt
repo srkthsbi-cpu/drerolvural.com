@@ -1,0 +1,85 @@
+EROL VURAL — LEGACY URL MIGRATION RAPORU
+
+Bu sürüm, mevcut Final_3_Ajan_Analiz_Duzeltilmis.zip üzerine hazırlanmıştır.
+Amaç: eski WordPress URL'lerinin yeni siteye 301 ile taşınması ve bilinmeyen eski URL'lerin dosya olarak indirilmesinin kesin olarak engellenmesi.
+
+Bilinen legacy 301 eşleşmesi: 55
+
+KAYNAKLAR / KEŞİF:
+- Önceki migration haritası
+- Kullanıcının Google Search Console 16 aylık Sayfalar ekranında görünen eski URL'ler
+- Web üzerinde halen indeksli görünen eski drerolvural.com URL'leri
+- Eski WordPress URL patternleri: /kategori/, /category/, /tag/, /author/, /YYYY/MM/...
+
+ÖRNEK 301 EŞLEŞMELERİ:
+/insulin-seviyenizi-dusurmenin-14-yolu  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/insulin-direnci-icin-diyet-ipuclari  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/diyabeti-kontrol-etmek-icin-en-iyi-15-yiyecek  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaligi-icin-bitki-onerileri  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaliginin-zarar-verdigi-organlar-hangileridir  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaliginda-gorulen-komplikasyonlar  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaliginda-ortaya-cikabilecek-rahatsizliklar  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaligi-tipleri  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaligi-genetik-mi  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaligi-neden-olur  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaligi-hakkinda-bilinmesi-gerekenler  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaligi-hakkinda-dogru-bilinen-yanlislar  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaligi-ameliyati-sonrasi-2  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/insulin-direnci-nedir  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/diyabet/insulin-direnci-nedir  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/bariatrik-cerrahi-sonrasi-dumping-sendromu-ve-beslenme-onerileri  ->  /blog/obezite-cerrahisi-sonrasi-spor-ve-hareket
+/yeme-problemi-olan-yakininiza-nasil-davranmaniz-gerekir  ->  /blog/tup-mide-ameliyati-sonrasi-beslenme-nasil-olmali
+/insulin-ve-insulin-direnci-guncel-kilavuz  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/diyabet-tip-1-ve-tip-2-diyabetin-karsilastirilmasi  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/tip-1-ve-tip-2-diyabet-ikisinin-farki-nedir  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/tip-2-diyabet-tip-1-diyabete-donusebilir-mi  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/tip-1-diyabet-nedir  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/diyabet-risk-faktorleri-nelerdir  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/diyabet-ve-yara-iyilesmesi-arasindaki-baglanti-nedir  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/diyabetin-vucudunuz-uzerindeki-etkileri  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/kalp-hastaligi-ve-diyabet-arasindaki-baglantiyi-anlamak  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/diyabetli-insanlar-kuru-uzum-yiyebilir-mi  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-diyabete-neden-olur-mu  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/diyabet-kasintiya-sebep-olur-mu  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/seker-hastaligina-bagli-sisen-ayaklari-tedavi-etmek-icin-10-ipucu  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/tip-2-diyabette-mesane-ve-bobrekler  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/bariatrik-cerrahi  ->  /blog/obezite-cerrahisi-rehberi
+/bariatrik-cerrahi-nedir  ->  /blog/obezite-cerrahisi-rehberi
+/bariatrik-cerrahi-hakkinda  ->  /blog/obezite-cerrahisi-rehberi
+/bariatrik-cerrahi-sonrasi-diyet-esaslari  ->  /blog/tup-mide-ameliyati-sonrasi-beslenme-nasil-olmali
+/bariatrik-cerrahi-ve-sonrasi-egzersiz-ve-fitness  ->  /blog/obezite-cerrahisi-sonrasi-spor-ve-hareket
+/bariatrik-cerrahi-oncesi-ve-sonrasi-psikolojik-degerlendirme  ->  /blog/obezite-cerrahisi-rehberi
+/obezite-nedir-nasil-mucadele-edilir  ->  /blog/obezite-cerrahisi-rehberi
+/obezite-nedir-nedenleri-nedir  ->  /blog/obezite-cerrahisi-rehberi
+/obezite-neden-bir-hastalik-olarak-kabul-edilir-edilmez  ->  /blog/obezite-cerrahisi-rehberi
+/obezite-teshisi-nasil-koyulur  ->  /blog/obezite-cerrahisi-rehberi
+/obezitenin-nedenleri-ve-sonuclari  ->  /blog/obezite-cerrahisi-rehberi
+/obezite-ve-kilolu-olmanin-farki-nedir  ->  /blog/obezite-cerrahisi-rehberi
+/turkiyede-obezite  ->  /blog/obezite-cerrahisi-rehberi
+/kilo-alma-ve-obezitenin-onde-gelen-10-nedeni  ->  /blog/obezite-cerrahisi-rehberi
+/obezite-icin-kilo-yonetimi-programinda-dikkate-alinmasi-gereken-8-sey  ->  /blog/obezite-cerrahisi-rehberi
+/uzun-sureli-kilo-kaybi-icin-5-ipucu  ->  /blog/obezite-cerrahisi-rehberi
+/obezite-cerrahisinde-riskler-ve-yan-etkiler  ->  /blog/tupe-mide-riskleri
+/mide-kucultme-ameliyati-ile-obeziteye-son  ->  /blog/tupe-mide-ameliyati-nedir
+/tup-mide-ameliyatinda-iyilesme-donemi  ->  /blog/tupe-mide-ameliyati-sonrasi
+/tup-mide-ameliyati-ve-ameliyattan-sonraki-surecler  ->  /blog/tupe-mide-ameliyati-sonrasi
+/mide-botoksu-kimler-icin-uygun-degildir  ->  /blog/mide-botoksu-nedir
+/transit-bipartisyon-nedir-kimlere-uygulanir  ->  /blog/metabolik-cerrahi-kimlere-uygulanir
+/transit-bipartisyon-ameliyati-sonrasi  ->  /blog/metabolik-cerrahi-tip2-diyabet
+/transit-bipartisyon-yontemi-ile-ameliyat  ->  /blog/metabolik-cerrahi-tip2-diyabet
+
+GÜVENLİK DAVRANIŞI:
+- Bilinen legacy URL: HTTP 301
+- Bilinmeyen extensionless eski URL: HTTP 404
+- ASSETS katmanından gelen attachment/octet-stream/download yanıtları: HTTP 404 + noindex
+- 404 yanıtlarında Content-Disposition temizlenir ve cache devre dışı bırakılır.
+- www.drerolvural.com derin URL'leri Worker katmanında drerolvural.com'a canonicalize edilir.
+
+TESTLER:
+- Worker JavaScript syntax: PASS
+- 5 adet Search Console ekranındaki eski URL: 301 PASS
+- Bilinmeyen eski extensionless URL: 404 PASS
+- Mevcut /blog/tupe-mide-ameliyati-nedir route: 200 (mock asset test) PASS
+- www + eski URL: canonical 301 PASS
+
+NOT: Cloudflare deploy sonrası eski edge cache etkisini ortadan kaldırmak için Cache > Purge Everything yapılması önerilir. Yeni Worker sürümünde 404 yanıtları no-store olarak ayarlanmıştır.
