@@ -371,6 +371,7 @@ async function handleAdmin(context) {
         message_count INTEGER NOT NULL DEFAULT 0
       )`,
 
+      `ALTER TABLE evo_conversations ADD COLUMN ip TEXT`,
       `CREATE INDEX IF NOT EXISTS idx_evo_conversations_last
        ON evo_conversations(last_at DESC)`,
 
@@ -1216,7 +1217,7 @@ async function handleAdmin(context) {
         method === 'GET'
       ) {
         const r = await env.DB.prepare(
-          `SELECT conversation_id,language,started_at,last_at,message_count
+          `SELECT conversation_id,language,started_at,last_at,message_count,ip
            FROM evo_conversations
            ORDER BY datetime(last_at) DESC
            LIMIT 200`
@@ -3797,7 +3798,7 @@ export default {
       let csrf='';let conversations=[];
       async function api(path,opts={}){const r=await fetch('/api/'+path,{credentials:'same-origin',...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});const d=await r.json().catch(()=>({}));if(r.status===401){location.href='/erol_admin/';throw new Error('Oturum gerekli.')}if(!r.ok)throw new Error(d.error||'İşlem başarısız.');return d}
       async function init(){const me=await api('auth/me');if(!me.authenticated){location.href='/erol_admin/';return}csrf=me.csrf;await loadList()}
-      async function loadList(){try{conversations=await api('evo-conversations');document.getElementById('list').innerHTML=conversations.length?conversations.map(function(x,i){return '<div class="item" onclick="openConversation('+i+')"><strong>'+escapeHtml(x.conversation_id.slice(0,20))+'…</strong><span>'+new Date(x.last_at).toLocaleString('tr-TR')+' · '+x.message_count+' mesaj · '+escapeHtml(x.language)+'</span></div>';}).join(''):'<div class="empty">Henüz EVO sohbeti yok.</div>'}catch(e){document.getElementById('list').innerHTML='<div class="empty">'+escapeHtml(e.message)+'</div>'}}
+      async function loadList(){try{conversations=await api('evo-conversations');document.getElementById('list').innerHTML=conversations.length?conversations.map(function(x,i){return '<div class="item" onclick="openConversation('+i+')"><strong>'+escapeHtml(x.conversation_id.slice(0,20))+'…</strong><span>'+new Date(x.last_at).toLocaleString('tr-TR')+' · '+x.message_count+' mesaj · '+escapeHtml(x.language)+' · IP: '+escapeHtml(x.ip||'bilinmiyor')+'</span></div>';}).join(''):'<div class="empty">Henüz EVO sohbeti yok.</div>'}catch(e){document.getElementById('list').innerHTML='<div class="empty">'+escapeHtml(e.message)+'</div>'}}
       async function openConversation(i){try{const x=await api('evo-conversations/'+encodeURIComponent(conversations[i].conversation_id));document.getElementById('detail').innerHTML='<h2 style="margin-top:0">Sohbet</h2>'+x.messages.map(function(m){return '<div class="meta">'+(m.role==='user'?'Kullanıcı':'EVO')+' · '+new Date(m.created_at).toLocaleString('tr-TR')+'</div><div class="bubble '+(m.role==='user'?'user':'assistant')+'">'+escapeHtml(m.message)+'</div>';}).join('')}catch(e){alert(e.message)}}
       function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
       init();
@@ -3911,9 +3912,13 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
             ).bind(conversationId).first();
             await env.DB.prepare(
               `INSERT OR IGNORE INTO evo_conversations
-               (conversation_id,language,started_at,last_at,message_count)
-               VALUES(?,?,?,?,0)`
-            ).bind(conversationId,responseLanguage,createdAt,createdAt).run();
+               (conversation_id,language,started_at,last_at,message_count,ip)
+               VALUES(?,?,?,?,0,?)`
+            ).bind(conversationId,responseLanguage,createdAt,createdAt,request.headers.get('CF-Connecting-IP') || 'unknown').run();
+            await env.DB.prepare(
+              `UPDATE evo_conversations SET ip=COALESCE(ip,?) WHERE conversation_id=?`
+            ).bind(request.headers.get('CF-Connecting-IP') || 'unknown',conversationId).run();
+
             await env.DB.prepare(
               `INSERT INTO evo_messages
                (conversation_id,role,message,language,created_at)
