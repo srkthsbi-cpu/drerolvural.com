@@ -358,7 +358,30 @@ async function handleAdmin(context) {
        ON contact_messages(created_at DESC)`,
 
       `CREATE INDEX IF NOT EXISTS idx_contact_messages_ip
-       ON contact_messages(ip_hash,created_at)`
+       ON contact_messages(ip_hash,created_at)`,
+
+      `CREATE TABLE IF NOT EXISTS evo_conversations (
+        conversation_id TEXT PRIMARY KEY,
+        language TEXT NOT NULL DEFAULT 'tr',
+        started_at TEXT NOT NULL,
+        last_at TEXT NOT NULL,
+        message_count INTEGER NOT NULL DEFAULT 0
+      )`,
+
+      `CREATE INDEX IF NOT EXISTS idx_evo_conversations_last
+       ON evo_conversations(last_at DESC)`,
+
+      `CREATE TABLE IF NOT EXISTS evo_messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        conversation_id TEXT NOT NULL,
+        role TEXT NOT NULL,
+        message TEXT NOT NULL,
+        language TEXT NOT NULL DEFAULT 'tr',
+        created_at TEXT NOT NULL
+      )`,
+
+      `CREATE INDEX IF NOT EXISTS idx_evo_messages_conversation
+       ON evo_messages(conversation_id,id)`
     ];
 
     for (const q of stmts) {
@@ -1175,6 +1198,77 @@ async function handleAdmin(context) {
       }
 
       if (
+        path === 'evo-conversations' &&
+        method === 'GET'
+      ) {
+        const r = await env.DB.prepare(
+          `SELECT conversation_id,language,started_at,last_at,message_count
+           FROM evo_conversations
+           ORDER BY datetime(last_at) DESC
+           LIMIT 200`
+        ).all();
+        return json(r.results || []);
+      }
+
+      if (
+        path.startsWith('evo-conversations/') &&
+        method === 'GET'
+      ) {
+        const conversationId = decodeURIComponent(
+          path.slice('evo-conversations/'.length)
+        ).trim();
+
+        if (!conversationId || conversationId.length > 120) {
+          return json({error:'Geçerli sohbet kimliği gerekli.'},400);
+        }
+
+        const conversation = await env.DB.prepare(
+          `SELECT conversation_id,language,started_at,last_at,message_count
+           FROM evo_conversations
+           WHERE conversation_id=?`
+        ).bind(conversationId).first();
+
+        if (!conversation) {
+          return json({error:'Sohbet bulunamadı.'},404);
+        }
+
+        const messages = await env.DB.prepare(
+          `SELECT id,role,message,language,created_at
+           FROM evo_messages
+           WHERE conversation_id=?
+           ORDER BY id ASC`
+        ).bind(conversationId).all();
+
+        return json({
+          conversation,
+          messages: messages.results || []
+        });
+      }
+
+      if (
+        path === 'evo-conversations' &&
+        method === 'DELETE'
+      ) {
+        const b = await body(request);
+        const conversationId = String(b.conversationId || '').trim();
+
+        if (!conversationId) {
+          return json({error:'Sohbet kimliği gerekli.'},400);
+        }
+
+        await env.DB.prepare(
+          'DELETE FROM evo_messages WHERE conversation_id=?'
+        ).bind(conversationId).run();
+
+        await env.DB.prepare(
+          'DELETE FROM evo_conversations WHERE conversation_id=?'
+        ).bind(conversationId).run();
+
+        await audit(env,s,'evo-conversation.delete',conversationId,request);
+        return json({ok:true});
+      }
+
+            if (
         path === 'banners' &&
         method === 'GET'
       ) {
@@ -3672,13 +3766,41 @@ export default {
     /* ADMIN UI PANEL RROTA */
 
     if (
+      url.pathname === '/erol_admin/evo.html' ||
+      url.pathname === '/erol_admin/evo'
+    ) {
+      const html = `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EVO Sohbetleri — Erol Admin</title><style>
+      :root{color-scheme:light;--bg:#f4f7f9;--card:#fff;--text:#10232b;--muted:#6d7d84;--line:#dce5e9;--accent:#009bb4}
+      *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+      .wrap{max-width:1180px;margin:0 auto;padding:28px 18px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}.title h1{margin:0;font-size:28px}.title p{margin:6px 0 0;color:var(--muted)}button{border:0;border-radius:12px;padding:11px 15px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.ghost{background:#e9f0f3;color:#17313a}.grid{display:grid;grid-template-columns:360px 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 30px rgba(16,35,43,.06);overflow:hidden}.list{max-height:calc(100vh - 150px);overflow:auto}.item{padding:16px;border-bottom:1px solid var(--line);cursor:pointer}.item:hover,.item.active{background:#eef8fa}.item strong{display:block;font-size:14px}.item span{display:block;color:var(--muted);font-size:12px;margin-top:5px}.detail{min-height:500px;padding:20px}.bubble{padding:13px 15px;border-radius:16px;margin:10px 0;white-space:pre-wrap;line-height:1.55}.user{background:#e9f5f7;margin-left:12%}.assistant{background:#f2f4f5;margin-right:12%}.meta{font-size:11px;color:var(--muted);margin-bottom:4px}.empty{color:var(--muted);padding:40px;text-align:center}@media(max-width:800px){.grid{grid-template-columns:1fr}.list{max-height:360px}.user,.assistant{margin-left:0;margin-right:0}}
+      </style></head><body><div class="wrap"><div class="top"><div class="title"><h1>🤖 EVO Sohbetleri</h1><p>Kaydedilmiş EVO konuşmalarını yalnızca yetkili admin oturumuyla görüntüleyin.</p></div><div><button class="ghost" onclick="location.href='/erol_admin/'">Admin Paneli</button> <button onclick="loadList()">Yenile</button></div></div><div class="grid"><div class="card"><div id="list" class="list"><div class="empty">Yükleniyor…</div></div></div><div class="card"><div id="detail" class="detail"><div class="empty">Soldan bir sohbet seçin.</div></div></div></div></div><script>
+      let csrf='';let conversations=[];
+      async function api(path,opts={}){const r=await fetch('/api/'+path,{credentials:'same-origin',...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});const d=await r.json().catch(()=>({}));if(r.status===401){location.href='/erol_admin/';throw new Error('Oturum gerekli.')}if(!r.ok)throw new Error(d.error||'İşlem başarısız.');return d}
+      async function init(){const me=await api('auth/me');if(!me.authenticated){location.href='/erol_admin/';return}csrf=me.csrf;await loadList()}
+      async function loadList(){try{conversations=await api('evo-conversations');document.getElementById('list').innerHTML=conversations.length?conversations.map((x,i)=>`<div class="item" onclick="openConversation(${i})"><strong>${escapeHtml(x.conversation_id.slice(0,20))}…</strong><span>${new Date(x.last_at).toLocaleString('tr-TR')} · ${x.message_count} mesaj · ${escapeHtml(x.language)}</span></div>`).join(''):'<div class="empty">Henüz EVO sohbeti yok.</div>'}catch(e){document.getElementById('list').innerHTML='<div class="empty">'+escapeHtml(e.message)+'</div>'}}
+      async function openConversation(i){try{const x=await api('evo-conversations/'+encodeURIComponent(conversations[i].conversation_id));document.getElementById('detail').innerHTML='<h2 style="margin-top:0">Sohbet</h2>'+x.messages.map(m=>`<div class="meta">${m.role==='user'?'Kullanıcı':'EVO'} · ${new Date(m.created_at).toLocaleString('tr-TR')}</div><div class="bubble ${m.role==='user'?'user':'assistant'}">${escapeHtml(m.message)}</div>`).join('')}catch(e){alert(e.message)}}
+      function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+      init();
+      </script></body></html>`;
+      return new Response(html,{status:200,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
+    }
+
+    if (
       url.pathname === '/erol_admin' ||
       url.pathname === '/erol_admin/'
     ) {
-      // Gerçek yönetim arayüzünü ASSETS'ten servis et. Eski gömülü login ekranı
-      // kaldırıldı; aksi halde başarılı oturumdan sonra panel hiç açılmıyordu.
       const adminUrl = new URL('/erol_admin/index.html', request.url);
-      return env.ASSETS.fetch(new Request(adminUrl, request));
+      const adminResponse = await env.ASSETS.fetch(new Request(adminUrl, request));
+      if (!adminResponse.ok) return adminResponse;
+      const contentType = adminResponse.headers.get('content-type') || '';
+      if (!contentType.includes('text/html')) return adminResponse;
+      const textHtml = await adminResponse.text();
+      const injected = textHtml.replace(/<\/body>/i,
+        `<a href="/erol_admin/evo.html" style="position:fixed;right:18px;bottom:18px;z-index:99999;background:#009bb4;color:#fff;padding:12px 16px;border-radius:14px;text-decoration:none;font:700 14px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.18)">🤖 EVO Sohbetleri</a></body>`);
+      const headers = new Headers(adminResponse.headers);
+      headers.set('content-type','text/html; charset=utf-8');
+      headers.set('cache-control','no-store');
+      return new Response(injected,{status:adminResponse.status,headers});
     }
 
 
@@ -3729,6 +3851,70 @@ export default {
         const responseLanguage = languageNames[requestedLanguage] ? requestedLanguage : 'tr';
         const languageName = languageNames[responseLanguage];
         const history = Array.isArray(payload.history) ? payload.history.slice(-8).map(x => ({role: x && x.role === 'assistant' ? 'assistant' : 'user', content: String(x && x.content || '').trim().slice(0, 1200)})).filter(x => x.content) : [];
+        const conversationId = String(payload.conversationId || '').trim().slice(0,120);
+        const saveEvoTurn = async (answer, source) => {
+          if (!env.DB || !conversationId || !message || !String(answer || '').trim()) return;
+          const createdAt = new Date().toISOString();
+          const existing = await env.DB.prepare(
+            'SELECT conversation_id FROM evo_conversations WHERE conversation_id=?'
+          ).bind(conversationId).first();
+          await env.DB.prepare(
+            `INSERT OR IGNORE INTO evo_conversations
+             (conversation_id,language,started_at,last_at,message_count)
+             VALUES(?,?,?,?,0)`
+          ).bind(conversationId,responseLanguage,createdAt,createdAt).run();
+          await env.DB.prepare(
+            `INSERT INTO evo_messages
+             (conversation_id,role,message,language,created_at)
+             VALUES(?,?,?,?,?)`
+          ).bind(conversationId,'user',message,responseLanguage,createdAt).run();
+          await env.DB.prepare(
+            `INSERT INTO evo_messages
+             (conversation_id,role,message,language,created_at)
+             VALUES(?,?,?,?,?)`
+          ).bind(conversationId,'assistant',String(answer).trim(),responseLanguage,new Date().toISOString()).run();
+          await env.DB.prepare(
+            `UPDATE evo_conversations
+             SET last_at=?,message_count=(SELECT COUNT(*) FROM evo_messages WHERE conversation_id=?)
+             WHERE conversation_id=?`
+          ).bind(new Date().toISOString(),conversationId,conversationId).run();
+
+          if (!existing && env.GMAIL_CLIENT_ID && env.GMAIL_CLIENT_SECRET && env.GMAIL_REFRESH_TOKEN) {
+            const notify = async () => {
+              try {
+                const accessToken = await getGmailAccessToken(env);
+                const to = env.GMAIL_TO_EMAIL || 'srkthsbi@gmail.com';
+                const subject = 'Yeni EVO Sohbeti — ' + conversationId.slice(0,12);
+                const adminUrl = new URL('/erol_admin/evo.html', request.url).href;
+                const html =
+                  '<h2>Yeni EVO sohbeti</h2>' +
+                  '<p>Yeni bir EVO sohbeti başlatıldı.</p>' +
+                  '<p><strong>Dil:</strong> ' + escapeHtml(responseLanguage) + '</p>' +
+                  '<p><strong>Sohbet ID:</strong> ' + escapeHtml(conversationId) + '</p>' +
+                  '<p><a href="' + escapeHtml(adminUrl) + '">EVO sohbetlerini admin panelinde aç</a></p>' +
+                  '<p><small>Gizlilik nedeniyle sağlık konuşmasının içeriği e-postaya eklenmemiştir.</small></p>';
+                const mimeMessage = [
+                  'To: ' + to,
+                  'Subject: ' + mimeSubject(subject),
+                  'MIME-Version: 1.0',
+                  'Content-Type: text/html; charset=UTF-8',
+                  'Content-Transfer-Encoding: 8bit',
+                  '',
+                  html
+                ].join('\\r\\n');
+                await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{
+                  method:'POST',
+                  headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
+                  body:JSON.stringify({raw:base64UrlUtf8(mimeMessage)})
+                });
+              } catch (mailError) {
+                console.error(JSON.stringify({type:'evo_email_exception',conversationId,error:String(mailError?.message||mailError).slice(0,1000)}));
+              }
+            };
+            if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(notify());
+            else await notify();
+          }
+        };
         if (!message) {
           return new Response(JSON.stringify({error:responseLanguage==='tr'?'Soru boş olamaz.':responseLanguage==='en'?'The question cannot be empty.':'Please enter a question.'}), {status:400, headers:baseHeaders});
         }
@@ -3763,7 +3949,9 @@ export default {
 
         if (/^(naber|merhaba|selam|hi|hello|hey)\b/i.test(normalized)) {
           const greetings={tr:'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet, tüp mide ve bariatrik cerrahi hakkında genel bilgi verebilirim. Size nasıl yardımcı olabilirim?',en:'Hello! I’m EVO 👋 I can provide general information about obesity, BMI, diabetes, sleeve gastrectomy and bariatric surgery. How can I help?',de:'Hallo! Ich bin EVO 👋 Ich kann allgemeine Informationen zu Adipositas, BMI, Diabetes, Schlauchmagen und bariatrischer Chirurgie geben. Wie kann ich helfen?',fr:'Bonjour ! Je suis EVO 👋 Je peux fournir des informations générales sur l’obésité, l’IMC, le diabète, la sleeve gastrectomie et la chirurgie bariatrique. Comment puis-je vous aider ?',ar:'مرحباً! أنا EVO 👋 يمكنني تقديم معلومات صحية عامة حول السمنة ومؤشر كتلة الجسم والسكري وتكميم المعدة وجراحات السمنة. كيف يمكنني مساعدتك؟',ru:'Здравствуйте! Я EVO 👋 Я могу предоставить общую информацию об ожирении, ИМТ, диабете, продольной резекции желудка и бариатрической хирургии. Чем могу помочь?',az:'Salam! Mən EVO 👋 Piylənmə, BKİ, diabet, sleeve qastrektomiya və bariatrik cərrahiyyə haqqında ümumi məlumat verə bilərəm. Sizə necə kömək edə bilərəm?',sq:'Përshëndetje! Jam EVO 👋 Mund të jap informacion të përgjithshëm për obezitetin, BMI-në, diabetin, gastrektominë në mëngë dhe kirurgjinë bariatrike. Si mund t’ju ndihmoj?',nl:'Hallo! Ik ben EVO 👋 Ik kan algemene informatie geven over obesitas, BMI, diabetes, sleeve-gastrectomie en bariatrische chirurgie. Hoe kan ik u helpen?',es:'¡Hola! Soy EVO 👋 Puedo ofrecer información general sobre obesidad, IMC, diabetes, gastrectomía en manga y cirugía bariátrica. ¿Cómo puedo ayudarle?'};
-          return new Response(JSON.stringify({answer:greetings[responseLanguage]||greetings.tr,source:'local'}), {status:200, headers:baseHeaders});
+          const answer = greetings[responseLanguage]||greetings.tr;
+          await saveEvoTurn(answer,'local');
+          return new Response(JSON.stringify({answer,source:'local'}), {status:200, headers:baseHeaders});
         }
 
         let evoData = {faq:[]};
@@ -3776,6 +3964,7 @@ export default {
 
         // Yerel bilgi bankasında bulunan sorular Cloudflare AI kotası tüketmeden cevaplanır.
         if (localFaq && responseLanguage==='tr') {
+          await saveEvoTurn(localFaq,'knowledge-base');
           return new Response(JSON.stringify({answer:localFaq,source:'knowledge-base'}), {status:200, headers:baseHeaders});
         }
 
@@ -3833,6 +4022,7 @@ export default {
                   .replace(/\bbody mass index\b/gi, 'indice de masse corporelle')
                   .replace(/\bsleeve gastrectomy\b/gi, 'gastrectomie en manchon');
               }
+              await saveEvoTurn(answer.trim(),'cloudflare-ai');
               return new Response(JSON.stringify({
                 answer:answer.trim(),
                 source:'cloudflare-ai',
@@ -3842,17 +4032,21 @@ export default {
           } catch (_) {}
         }
 
+        const fallbackAnswer = responseLanguage === 'fr'
+          ? 'La connexion à l’intelligence artificielle rencontre actuellement un problème temporaire. Vous pouvez réessayer votre question sur l’obésité, l’IMC, le diabète, la gastrectomie en manchon ou la chirurgie bariatrique.'
+          : 'Şu anda yapay zekâ bağlantısında kısa süreli bir sorun var. Obezite, BMI, diyabet, tüp mide veya bariatrik cerrahi hakkında sorunuzu tekrar yazabilirsiniz.';
+        await saveEvoTurn(fallbackAnswer,'fallback');
         return new Response(JSON.stringify({
-          answer: responseLanguage === 'fr'
-            ? 'La connexion à l’intelligence artificielle rencontre actuellement un problème temporaire. Vous pouvez réessayer votre question sur l’obésité, l’IMC, le diabète, la gastrectomie en manchon ou la chirurgie bariatrique.'
-            : 'Şu anda yapay zekâ bağlantısında kısa süreli bir sorun var. Obezite, BMI, diyabet, tüp mide veya bariatrik cerrahi hakkında sorunuzu tekrar yazabilirsiniz.',
+          answer: fallbackAnswer,
           source:'fallback'
         }), {status:200, headers:baseHeaders});
       } catch (_) {
+        const safeFallbackAnswer = responseLanguage === 'fr'
+          ? 'Bonjour ! Je suis EVO 👋 Je peux fournir des informations générales sur l’obésité, l’IMC, le diabète et la chirurgie bariatrique. Vous pouvez réessayer votre question.'
+          : 'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Sorunuzu tekrar yazabilirsiniz.';
+        await saveEvoTurn(safeFallbackAnswer,'safe-fallback');
         return new Response(JSON.stringify({
-          answer: responseLanguage === 'fr'
-            ? 'Bonjour ! Je suis EVO 👋 Je peux fournir des informations générales sur l’obésité, l’IMC, le diabète et la chirurgie bariatrique. Vous pouvez réessayer votre question.'
-            : 'Merhaba! Ben EVO 👋 Obezite, BMI, diyabet ve bariatrik cerrahi hakkında genel bilgi verebilirim. Sorunuzu tekrar yazabilirsiniz.',
+          answer: safeFallbackAnswer,
           source:'safe-fallback'
         }), {status:200, headers:baseHeaders});
       }
