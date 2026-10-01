@@ -4415,7 +4415,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
       const htmlAssetUrl = new URL(requestedFile + '.html', request.url);
       const htmlAssetResponse = await env.ASSETS.fetch(new Request(htmlAssetUrl, request));
       const htmlAssetType = (htmlAssetResponse.headers.get('content-type') || '').toLowerCase();
-      if (htmlAssetResponse.ok && (htmlAssetType.includes('text/html') || htmlAssetType.includes('application/octet-stream'))) {
+      if (htmlAssetResponse.ok && htmlAssetType.includes('text/html') && !(htmlAssetResponse.headers.get('content-disposition') || '').toLowerCase().includes('attachment')) {
         const h = new Headers(htmlAssetResponse.headers);
         h.set('Content-Type', 'text/html; charset=utf-8');
         h.delete('Content-Disposition');
@@ -4454,7 +4454,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
       const htmlAssetUrl = new URL(cleanPathname + '.html', request.url);
       const htmlResponse = await env.ASSETS.fetch(new Request(htmlAssetUrl, request));
       const htmlType = (htmlResponse.headers.get('content-type') || '').toLowerCase();
-      if (htmlResponse.ok && htmlType.includes('text/html')) {
+      if (htmlResponse.ok && htmlType.includes('text/html') && !(htmlResponse.headers.get('content-disposition') || '').toLowerCase().includes('attachment')) {
         response = htmlResponse;
       }
     }
