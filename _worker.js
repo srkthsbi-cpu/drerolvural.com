@@ -968,7 +968,7 @@ async function handleAdmin(context) {
         ) {
           try {
             const accessToken = await getGmailAccessToken(env);
-            const to = env.GMAIL_TO_EMAIL || 'srkthsbi@gmail.com';
+            const to = 'info@drerolvural.com';
             const subject = 'Yeni İletişim Formu — ' + name;
             const html =
               '<h2>Yeni iletişim formu</h2>' +
