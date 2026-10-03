@@ -4502,9 +4502,23 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
       '/es/turismo-sanitario': '/es/turismo-sanitario.html'
     };
 
+    const healthCleanPath = cleanPathname.replace(/\.html$/i, '');
+    if (/\.html$/i.test(cleanPathname) && healthTourismPages[healthCleanPath]) {
+      const cleanUrl = new URL(request.url);
+      cleanUrl.pathname = healthCleanPath;
+      return new Response(null, {
+        status: 308,
+        headers: {
+          'Location': cleanUrl.toString(),
+          'Cache-Control': 'no-store',
+          'X-Content-Type-Options': 'nosniff'
+        }
+      });
+    }
+
     const healthAssetPath =
       healthTourismPages[cleanPathname] ||
-      healthTourismPages[cleanPathname.replace(/\.html$/, '')];
+      healthTourismPages[healthCleanPath];
 
     if (healthAssetPath) {
       const assetUrl = new URL(healthAssetPath, request.url);
