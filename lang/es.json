@@ -227,6 +227,7 @@
       "eyebrow": "Archivo de prensa",
       "title": "En la prensa",
       "intro": "Una selección de entrevistas, noticias de salud y registros de actividades profesionales publicados en años anteriores y relacionados con el Prof. Asociado Dr. Erol Vural.",
+      "ariaLabel": "Cobertura mediática",
       "selected": "Publicaciones seleccionadas",
       "sourceNote": "Fuentes: archivos de los respectivos medios",
       "tagInterviewHealth": "Entrevista · Salud",
