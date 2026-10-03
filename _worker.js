@@ -3667,6 +3667,8 @@ footer{overflow:hidden}
   nav ul{width:100%;padding:16px 12px!important;gap:10px!important}
   nav ul li,nav ul li a{width:100%;text-align:center}
   .hero,.inner-hero{margin-top:72px!important;padding:34px 18px!important}
+  .top + main > .hero{margin-top:0!important}
+  .top + main{padding-top:0!important}
   .hero h1,.inner-hero h1{font-size:clamp(28px,8vw,38px)!important;line-height:1.18!important}
   .hero p,.inner-hero p{font-size:16px!important;line-height:1.55!important}
   main,section,article,.container,.content,.page-container{width:100%!important;max-width:100%!important}
@@ -3707,7 +3709,7 @@ footer{overflow:hidden}
 }
 @media(max-width:420px){
   .logo img{max-height:52px!important}
-  .lang-btn,.langicon,.lang{width:78px!important;min-width:78px!important}
+  .lang-btn,.lang{width:78px!important;min-width:78px!important}
   .contact-container{padding:18px!important;border-radius:16px!important}
   .contact-section{padding-left:10px!important;padding-right:10px!important}
   .info-item{gap:10px!important}
