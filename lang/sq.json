@@ -227,6 +227,7 @@
       "eyebrow": "Arkivi i shtypit",
       "title": "Në media",
       "intro": "Përzgjedhje intervistash të verifikueshme, lajmesh shëndetësore dhe regjistrimesh të aktiviteteve profesionale për Assoc. Prof. Dr. Erol Vural të publikuara në vitet e mëparshme.",
+      "ariaLabel": "Përmbajtje në media",
       "selected": "Lajme të përzgjedhura",
       "sourceNote": "Burimi: arkivat e organizatave përkatëse të lajmeve",
       "tagInterviewHealth": "Intervistë · Shëndet",
