@@ -2,7 +2,7 @@
 // Admin API + Public API + R2 Media + Sitemap + 404 fallback
 
 async function handleAdmin(context) {
-  const LANGS = ['tr','en','de','ar','ru','az','sq','nl','es'];
+  const LANGS = ['tr','en','de','fr','ar','ru','az','sq','nl','es'];
   const COOKIE = 'erol_admin_session';
   const SESSION_TTL = 60 * 60 * 8;
   const MAX_LOGIN_ATTEMPTS = 7;
@@ -4490,6 +4490,7 @@ $('logout').addEventListener('click',async()=>{await api('auth/logout',{method:'
     const healthTourismPages = {
       '/saglik-turizmi': '/saglik-turizmi.html',
       '/en/health-tourism': '/en/health-tourism.html',
+      '/fr/tourisme-medical': '/fr/tourisme-medical.html',
       '/de/gesundheitstourismus': '/de/gesundheitstourismus.html',
       '/ar/alsiyaaha-alssihiyya': '/ar/alsiyaaha-alssihiyya.html',
       '/ru/medturizm': '/ru/medturizm.html',
