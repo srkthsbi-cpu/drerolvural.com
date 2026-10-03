@@ -287,7 +287,7 @@
 
     renderLanguageMenu();
     updateLanguageUI();
-    const internationalLinks = {tr:'/saglik-turizmi',en:'/en/health-tourism',de:'/de/gesundheitstourismus',fr:'/fr/tourisme-medical',ar:'/ar/alsiyaaha-alssihiyya',ru:'/ru/medturizm',az:'/az/saglamliq-turizmi',sq:'/sq/turizmi-shendetesor',nl:'/nl/medisch-toerism',es:'/es/turismo-sanitario'};
+    const internationalLinks = {tr:'/saglik-turizmi',en:'/en/health-tourism',de:'/de/gesundheitstourismus',fr:'/fr/tourisme-medical',ar:'/ar/alsiyaaha-alssihiyya',ru:'/ru/medturizm',az:'/az/saglamliq-turizmi',sq:'/sq/turizmi-shendetesor',nl:'/nl/medisch-toerisme',es:'/es/turismo-sanitario'};
     document.querySelectorAll('[data-international-link]').forEach(el => { if (internationalLinks[currentLang]) el.setAttribute('href', internationalLinks[currentLang]); });
     updatePageSEO();
     if (document.getElementById('siteBannerSlider')) await loadBanners();
