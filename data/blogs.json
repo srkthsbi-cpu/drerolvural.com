@@ -1278,5 +1278,98 @@
     "url": {
       "tr": "blog/metabolik-cerrahi-tip2-diyabet.html"
     }
+  },
+  {
+    "id": "robotik-tup-mide-ameliyati",
+    "published": true,
+    "featured": false,
+    "icon": "fa-robot",
+    "category": {
+      "tr": "Robotik Bariatrik Cerrahi",
+      "en": "Robotic Bariatric Surgery",
+      "de": "Robotische bariatrische Chirurgie",
+      "fr": "Chirurgie bariatrique robotisée",
+      "ar": "جراحة السمنة بمساعدة الروبوت",
+      "ru": "Робот-ассистированная бариатрическая хирургия",
+      "az": "Robotik bariatrik cərrahiyyə",
+      "sq": "Kirurgjia bariatrike robotike",
+      "nl": "Robotische bariatrische chirurgie",
+      "es": "Cirugía bariátrica robótica"
+    },
+    "title": {
+      "tr": "Robotik Tüp Mide Ameliyatı Nedir? Laparoskopik Tüp Mide ile Farkları",
+      "en": "What Is Robotic Sleeve Gastrectomy? How Does It Differ From Laparoscopic Surgery?",
+      "de": "Was ist eine robotische Schlauchmagen-Operation? Unterschiede zur Laparoskopie",
+      "fr": "Qu’est-ce qu’une sleeve gastrectomie robotisée ? Différences avec la laparoscopie",
+      "ar": "ما هي عملية تكميم المعدة بمساعدة الروبوت؟ وما الفرق عن المنظار؟",
+      "ru": "Что такое робот-ассистированная рукавная резекция желудка? Отличия от лапароскопии",
+      "az": "Robotik sleeve qastrektomiya nədir? Laparoskopik əməliyyatdan fərqləri",
+      "sq": "Çfarë është gastrektomia sleeve robotike? Dallimet me laparoskopinë",
+      "nl": "Wat is een robotische sleeve-gastrectomie? Verschillen met laparoscopie",
+      "es": "¿Qué es la gastrectomía en manga robótica? Diferencias con la laparoscopia"
+    },
+    "description": {
+      "tr": "Robotik tüp mide ameliyatının nasıl yapıldığını, robotik sistemin cerraha sağladığı teknik özellikleri ve mevcut bilimsel kanıtların laparoskopik tüp mide ile karşılaştırmasını anlatan rehber.",
+      "en": "A practical guide to robotic sleeve gastrectomy, the technical features of robotic systems and what current evidence shows compared with laparoscopic sleeve gastrectomy.",
+      "de": "Ein verständlicher Überblick über die robotische Schlauchmagen-Operation, technische Möglichkeiten und den aktuellen Vergleich mit der laparoskopischen Methode.",
+      "fr": "Un guide sur la sleeve gastrectomie robotisée, ses caractéristiques techniques et les données actuelles par rapport à la laparoscopie.",
+      "ar": "دليل مبسط حول تكميم المعدة بمساعدة الروبوت والخصائص التقنية والأدلة الحالية مقارنة بالجراحة بالمنظار.",
+      "ru": "Понятный обзор робот-ассистированной рукавной резекции желудка, технических возможностей и современных данных по сравнению с лапароскопией.",
+      "az": "Robotik sleeve qastrektomiya, robotik sistemlərin texniki imkanları və mövcud sübutların laparoskopik üsulla müqayisəsi haqqında bələdçi.",
+      "sq": "Një udhëzues mbi gastrektominë sleeve robotike, veçoritë teknike dhe evidencat aktuale krahasuar me laparoskopinë.",
+      "nl": "Een praktische uitleg over robotische sleeve-gastrectomie, technische mogelijkheden en de huidige wetenschappelijke vergelijking met laparoscopie.",
+      "es": "Una guía sobre la gastrectomía en manga robótica, sus características técnicas y la evidencia actual frente a la laparoscopia."
+    },
+    "content": {
+      "tr": "<p>Robotik tüp mide ameliyatı, tüp mide (sleeve gastrektomi) işleminin cerrah tarafından robotik cerrahi platformu kullanılarak gerçekleştirilen minimal invaziv bir yaklaşımıdır. Robot ameliyatı kendi başına yapmaz; cerrah, sistemin kollarındaki özel aletleri konsoldan kontrol eder.</p>\n<h2>Robotik tüp mide ameliyatı nasıl yapılır?</h2>\n<p>Ameliyat genel anestezi altında, karın duvarındaki küçük kesilerden girilerek gerçekleştirilir. Robotik sistem, cerrahın ameliyat sahasını büyütülmüş üç boyutlu görüntüyle değerlendirmesine ve cerrahi aletleri hassas şekilde yönlendirmesine yardımcı olur. Tüp mide işleminde midenin büyük bölümü çıkarılır ve geride daha dar, tüp şeklinde bir mide bırakılır.</p>\n<p>İşlemin hangi teknikle yapılacağı; hastanın vücut yapısı, önceki ameliyatları, eşlik eden hastalıkları, cerrahın deneyimi ve merkezin teknik olanakları birlikte değerlendirilerek belirlenir.</p>\n<h2>Robotik sistem cerraha ne sağlar?</h2>\n<ul>\n<li>Büyütülmüş üç boyutlu görüntüleme ve derinlik algısı sağlayabilir.</li>\n<li>Bilekli robotik aletler, bazı cerrahi hareketlerin daha kontrollü yapılmasına yardımcı olabilir.</li>\n<li>Cerrahın konsolda oturarak çalışması ergonomik avantaj sağlayabilir.</li>\n<li>Robotik platform, özellikle teknik olarak daha karmaşık veya revizyon gerektiren bazı ameliyatlarda cerraha farklı teknik imkanlar sunabilir.</li>\n</ul>\n<p>Ancak bu teknik özellikler, her hastada daha iyi klinik sonuç anlamına gelmez. Robotik sistem bir cerrahın deneyiminin veya hasta seçiminin yerine geçmez.</p>\n<h2>Robotik tüp mide mi, laparoskopik tüp mide mi?</h2>\n<p>Güncel bilimsel çalışmalar, robotik ve laparoskopik tüp mide ameliyatlarının kilo kaybı ve birçok önemli kısa dönem sonuç açısından genel olarak benzer olduğunu göstermektedir. 2024 yılında yayımlanan bir sistematik derleme ve meta-analizde iki yöntem arasında komplikasyon, yeniden yatış, dönüşüm ve mortalite açısından anlamlı bir fark gösterilmemiş; robotik yöntemde ise ameliyat süresi, hastanede kalış ve maliyetlerin daha yüksek olduğu bildirilmiştir.</p>\n<p>2025 ve 2026 tarihli daha yeni analizlerde de robotik tüp midenin laparoskopiye karşı belirgin bir üstünlüğü olduğu gösterilememiştir. Özellikle büyük veri tabanı analizleri ve prospektif çalışmalar, robotik yaklaşımın rutin olarak daha iyi sonuç verdiği sonucunu desteklememektedir. Bu nedenle “robotik” ifadesi tek başına daha güvenli veya daha etkili bir ameliyat anlamına gelmez.</p>\n<h2>Robotik tüp mide ameliyatının avantajları var mı?</h2>\n<p>Robotik yaklaşımın en önemli potansiyel avantajı, cerraha sunduğu teknik kontrol ve ergonomidir. Bunun klinik faydaya dönüşüp dönüşmeyeceği ise ameliyatın zorluk derecesine ve cerrahın robotik sistemdeki deneyimine göre değişebilir.</p>\n<p>Özellikle karmaşık anatomi, önceki karın ameliyatları veya revizyon cerrahisi gibi durumlarda robotik platformun teknik özellikleri cerrah açısından yararlı olabilir. Buna karşın standart primer tüp mide ameliyatında mevcut kanıtlar, robotik yaklaşımın laparoskopiye karşı kesin bir klinik üstünlüğünü ortaya koymamaktadır.</p>\n<h2>Robotik tüp mide ameliyatı kimler için uygundur?</h2>\n<p>Robotik yöntem, tüp mide ameliyatı için uygun olduğu değerlendirilen hastalarda seçeneklerden biri olabilir. Ancak önce robotik yöntemin kendisinden bağımsız olarak hastanın bariatrik cerrahiye uygunluğu değerlendirilmelidir. Vücut kitle indeksi (VKİ), eşlik eden hastalıklar, reflü, önceki ameliyatlar, beslenme durumu, psikososyal durum ve uzun dönem takip gereksinimi birlikte ele alınır.</p>\n<p>Hangi yöntemin kullanılacağı, kişisel değerlendirme sonrasında cerrah ile birlikte kararlaştırılmalıdır.</p>\n<h2>Ameliyat sonrası süreç</h2>\n<p>Robotik veya laparoskopik yapılmasından bağımsız olarak tüp mide sonrası takip; sıvı ve beslenme planı, protein ve mikrobesin gereksinimleri, fiziksel aktivite, kilo değişimi ve gerekli kontrolleri kapsar. Uzun dönem başarı yalnızca ameliyat tekniğine değil, düzenli takip ve yaşam tarzı değişikliklerinin sürdürülebilmesine de bağlıdır.</p>\n<h2>Sonuç</h2>\n<p>Robotik tüp mide ameliyatı, cerrahın robotik bir platform aracılığıyla uyguladığı minimal invaziv bir tüp mide yöntemidir. Robotik sistemin gelişmiş görüntüleme ve alet kontrolü gibi teknik özellikleri bulunmakla birlikte, güncel kanıtlar standart tüp mide ameliyatında robotik yaklaşımın laparoskopiye göre herkes için daha iyi sonuç verdiğini göstermemektedir. En uygun yöntem; hastanın özellikleri, ameliyatın gereklilikleri ve cerrahın deneyimi birlikte değerlendirilerek belirlenmelidir.</p>\n<p><strong>Önemli:</strong> Bu yazı genel tıbbi bilgilendirme amacıyla hazırlanmıştır. Tanı, ameliyat kararı veya kişiye özel tedavi planı için hekim muayenesi ve değerlendirmesi gerekir.</p>\n<p><strong>Bilimsel dayanak:</strong> Zhao ve ark., 2024 sistematik derleme ve meta-analizi; 2025 ve 2026 yıllarında yayımlanan robotik ve laparoskopik sleeve gastrektomi karşılaştırmaları.</p>",
+      "en": "Robotic sleeve gastrectomy is a minimally invasive approach in which the surgeon performs sleeve gastrectomy using a robotic surgical platform. The robot does not perform the operation independently; the surgeon controls the instruments from a console.",
+      "de": "Die robotische Schlauchmagen-Operation ist ein minimalinvasiver Ansatz, bei dem der Chirurg eine Schlauchmagen-Operation mit einem robotischen Operationssystem durchführt. Das System arbeitet nicht selbstständig; die Instrumente werden vom Chirurgen gesteuert.",
+      "fr": "La sleeve gastrectomie robotisée est une approche mini-invasive dans laquelle le chirurgien réalise la sleeve à l’aide d’une plateforme robotique. Le robot n’opère pas de manière autonome : le chirurgien contrôle les instruments depuis une console.",
+      "ar": "تكميم المعدة بمساعدة الروبوت هو نهج جراحي طفيف التوغل يتحكم فيه الجرّاح عبر منصة روبوتية. الروبوت لا يجري العملية بشكل مستقل، بل يتحكم الجرّاح بالأدوات من وحدة التحكم.",
+      "ru": "Робот-ассистированная рукавная резекция желудка — это малоинвазивный подход, при котором хирург выполняет операцию с помощью роботической платформы. Робот не оперирует самостоятельно: хирург управляет инструментами с консоли.",
+      "az": "Robotik sleeve qastrektomiya minimal invaziv yanaşmadır və cərrah əməliyyatı robotik platforma vasitəsilə idarə edir. Robot əməliyyatı müstəqil şəkildə həyata keçirmir.",
+      "sq": "Gastrektomia sleeve robotike është një qasje minimalisht invazive ku kirurgu kryen ndërhyrjen duke përdorur një platformë robotike. Roboti nuk e kryen operacionin vetë; instrumentet kontrollohen nga kirurgu.",
+      "nl": "Een robotische sleeve-gastrectomie is een minimaal invasieve aanpak waarbij de chirurg de sleeve-operatie uitvoert met een robotisch platform. De robot voert de operatie niet zelfstandig uit; de chirurg bestuurt de instrumenten.",
+      "es": "La gastrectomía en manga robótica es un abordaje mínimamente invasivo en el que el cirujano realiza la intervención mediante una plataforma robótica. El robot no opera de forma autónoma; el cirujano controla los instrumentos."
+    },
+    "slug": {
+      "tr": "robotik-tup-mide-ameliyati-nedir",
+      "en": "what-is-robotic-sleeve-gastrectomy",
+      "de": "was-ist-eine-robotische-schlauchmagen-operation",
+      "fr": "quest-ce-quune-sleeve-gastrectomie-robotisee",
+      "ar": "ma-hya-takmyym-almaedat-bimosaaedat-alroboot",
+      "ru": "robot-assistirovannaya-rukavnaya-rezektsiya",
+      "az": "robotik-sleeve-qastrektomiya-nedir",
+      "sq": "cfare-eshte-gastrektomia-sleeve-robotike",
+      "nl": "wat-is-een-robotische-sleeve-gastrectomie",
+      "es": "que-es-la-gastrectomia-en-manga-robotica"
+    },
+    "meta_title": {
+      "tr": "Robotik Tüp Mide Ameliyatı Nedir? | Doç. Dr. Erol Vural",
+      "en": "Robotic Sleeve Gastrectomy: What You Should Know | Erol Vural",
+      "de": "Robotische Schlauchmagen-Operation: Was Sie wissen sollten",
+      "fr": "Sleeve gastrectomie robotisée : ce qu’il faut savoir",
+      "ar": "تكميم المعدة بمساعدة الروبوت: ما الذي يجب معرفته؟",
+      "ru": "Робот-ассистированная рукавная резекция: что важно знать",
+      "az": "Robotik sleeve qastrektomiya: nələri bilmək lazımdır?",
+      "sq": "Gastrektomia sleeve robotike: çfarë duhet të dini?",
+      "nl": "Robotische sleeve-gastrectomie: wat u moet weten",
+      "es": "Gastrectomía en manga robótica: lo que debe saber"
+    },
+    "meta_description": {
+      "tr": "Robotik tüp mide ameliyatı nedir? Robotik ve laparoskopik tüp mide arasındaki farklar, avantajlar ve güncel bilimsel kanıtlar hakkında uzman bilgilendirmesi.",
+      "en": "What is robotic sleeve gastrectomy? Learn about the differences, potential benefits and current evidence compared with laparoscopic sleeve surgery.",
+      "de": "Was ist eine robotische Schlauchmagen-Operation? Unterschiede, mögliche Vorteile und aktuelle Evidenz im Vergleich zur Laparoskopie.",
+      "fr": "Qu’est-ce qu’une sleeve gastrectomie robotisée ? Différences, avantages potentiels et données actuelles par rapport à la laparoscopie.",
+      "ar": "ما هي عملية تكميم المعدة بمساعدة الروبوت؟ تعرف على الفروق والمزايا المحتملة والأدلة الحالية مقارنة بالمنظار.",
+      "ru": "Что такое робот-ассистированная рукавная резекция? Отличия, возможные преимущества и современные данные по сравнению с лапароскопией.",
+      "az": "Robotik sleeve qastrektomiya nədir? Fərqlər, mümkün üstünlüklər və laparoskopik üsulla bağlı müasir sübutlar.",
+      "sq": "Çfarë është gastrektomia sleeve robotike? Dallimet, përfitimet e mundshme dhe evidencat aktuale.",
+      "nl": "Wat is een robotische sleeve-gastrectomie? Verschillen, mogelijke voordelen en actuele wetenschappelijke gegevens.",
+      "es": "¿Qué es la gastrectomía en manga robótica? Diferencias, posibles ventajas y evidencia actual frente a la laparoscopia."
+    },
+    "keywords": {
+      "tr": "robotik tüp mide ameliyatı, robotik sleeve gastrektomi, robotik obezite cerrahisi, tüp mide ameliyatı, laparoskopik tüp mide, bariatrik cerrahi, obezite cerrahisi"
+    }
   }
 ]
